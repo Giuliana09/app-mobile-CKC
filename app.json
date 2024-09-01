@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "novoAps",
-    "slug": "novoAps",
+    "name": "app-mobile-CKC",
+    "slug": "app-mobile-CKC",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
