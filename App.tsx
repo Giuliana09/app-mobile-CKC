@@ -1,21 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Home from './src/Home';
+import {NativeBaseProvider, StatusBar} from 'native-base';
+import { TEMAS } from './src/style/temas';
 
 export default function App() {
+
+  //                  TESTE DA API
+  // useEffect(() => {
+  //   async function pegarDados(){
+  //     const resultados = await api.get('/usuario')
+  //     console.log(resultados.data)
+  //   }
+  //   pegarDados()
+  // }, [])
+
   return (
-    <View style={styles.container}>
-      <Text>TEM QUE RODAR ISSO AQUI</Text>
-      <Text>Vamos de cabo USB</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider theme={TEMAS}>
+      <StatusBar backgroundColor={TEMAS.colors.blue[500]}></StatusBar>
+      <Home />
+    </NativeBaseProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
