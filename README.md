@@ -55,7 +55,7 @@ Abaixo segue uma tabela onde explicamos um padrão para nossos commits.
 | **CLEANUP** | Remover trechos desnecessários                                  |
 | **STYLE**   | Formatações de código                                           |
 
-`Exemplo de uso:`
+Exemplo de uso:
 ```
 git commit -m "FEAT - CRUD de Usuarios"
 ```
@@ -67,13 +67,13 @@ git commit -m "FEAT - CRUD de Usuarios"
 
 As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 
--  ** [ JavaScript ] ( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript ) **
--  ** [ Html ] ( https://developer.mozilla.org/pt-BR/docs/Web/HTML ) **
--  ** [ MySQL ] ( https://www.mysql.com ) **
+-  **[ JavaScript ]** ( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript ) **
+-  **[ Html ]** ( https://developer.mozilla.org/pt-BR/docs/Web/HTML ) **
+-  **[ MySQL ]** ( https://www.mysql.com ) **
 
 ## 📑 Apêndices
 
--  ` Confira o Projeto antes de mudar API aqui: ` ➡️➡️ [ Projeto Web via PHP ] ( https://github.com/LarissaSL/SistemaCKC )
+-  ` Confira o Projeto antes de mudar API aqui: `  ➡️➡️ [ Projeto Web via PHP ] ( https://github.com/LarissaSL/SistemaCKC )
 -  ` Confira o Projeto Mobile aqui: ` ➡️➡️ [ Projeto Mobile ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
 -  ` Confira o Novo Projeto Web aqui: ` ➡️➡️ [ Projeto Web via JS ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
-![ imagem ] ( https://github.com/user-attachments/assets/771efd4a-6c3a-4b3f-a926-c4631126a62b )![image](https://github.com/user-attachments/assets/200e2f87-c2df-4cad-95ec-81271997ac3d)
+- ![ imagem ] ( https://github.com/user-attachments/assets/771efd4a-6c3a-4b3f-a926-c4631126a62b )
