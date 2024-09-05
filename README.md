@@ -138,7 +138,7 @@ npx expo start --tunnel
 
 As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 
--  **[ avaScript]( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript )**
+-  **[JavaScript]( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript )**
 -  **[ReactNative]( https://reactnative.dev/ )**
 -  **[ Expo ]( https://docs.expo.dev/)**
 -  **[ Html ]( https://developer.mozilla.org/pt-BR/docs/Web/HTML )**
@@ -149,4 +149,3 @@ As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 -  ` Confira o Projeto antes de mudar API aqui: `  ➡️➡️ [ Projeto Web via PHP ] ( https://github.com/LarissaSL/SistemaCKC )
 -  ` Confira o Projeto Mobile aqui: ` ➡️➡️ [ Projeto Mobile ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
 -  ` Confira o Novo Projeto Web aqui: ` ➡️➡️ [ Projeto Web via JS ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
-- ![ imagem ] ( https://github.com/user-attachments/assets/771efd4a-6c3a-4b3f-a926-c4631126a62b )
