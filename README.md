@@ -113,6 +113,10 @@ adb devices
 - Ainda no terminal digite:
 
 ```
+npm uninstall -g ngrok
+```
+- Em seguida:
+```
 npm install -g ngrok
 ```
 ## Executando o projeto
@@ -121,7 +125,6 @@ No terminal escreva:
 ```
 npx expo start --tunnel
 ```
-
 - No aplicativo você pode ler o QR code ou escrever manualmente o link que está em seu terminal
 
 ![image](https://github.com/user-attachments/assets/cefda90f-4479-4883-b1ec-03af9e5c1694)
