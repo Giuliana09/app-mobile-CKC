@@ -135,7 +135,32 @@ npx expo start --tunnel
 
 
 <br><br><br>
----
+
+## Como Resolver o Problema de "ADB Devices" Não Reconhecido
+
+Se o seu computador não reconhecer o comando `adb devices`, siga os passos abaixo:
+
+1. **Baixar Ferramenta ADB**  
+   - Você precisará baixar a ferramenta ADB da plataforma oficial do Android.
+   - Acesse o link para a página de download: [SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools?hl=pt-br).
+   - Na seção **Downloads**, faça o download do SDK Platform-Tools de acordo com o seu sistema operacional (Windows, macOS ou Linux).
+
+2. **Descompactar e Configurar Caminho**  
+   - Após o download, descompacte a pasta baixada.
+   - Abra a pasta **Platform-tools** e copie o caminho dela.
+
+3. **Configurar Variáveis de Ambiente no Windows**  
+   - No Windows, procure por "Editar as Variáveis de Ambiente do Sistema" no menu de pesquisa.
+   - Clique em **Variáveis de Ambiente**.
+   - Na seção **Variáveis do Sistema**, procure por `Path`, selecione-o e clique em **Editar**.
+   - Clique em **Novo** e cole o caminho da pasta **Platform-tools** que você copiou anteriormente.
+
+4. **Testar Configuração**  
+   - Feche e reabra o prompt de comando (CMD).
+   - Execute o comando `adb devices` para verificar se o ADB foi reconhecido corretamente.
+
+--- 
+
 
 ## 🛠 Tecnologias
 
