@@ -1,6 +1,8 @@
-import Home from './src/Home';
+import Login from './src/Login';
+// import EsqueciSenha from './src/pages/EsqueciSenha';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import { TEMAS } from './src/style/temas';
+
 
 export default function App() {
 
@@ -15,8 +17,9 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={TEMAS}>
-      <StatusBar backgroundColor={TEMAS.colors.blue[500]}></StatusBar>
-      <Home />
+      <StatusBar backgroundColor={TEMAS.colors.black[300]}></StatusBar>
+      <Login/>
+      {/* <EsqueciSenha/> */}
     </NativeBaseProvider>
   );
 }

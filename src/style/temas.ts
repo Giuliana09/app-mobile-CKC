@@ -2,32 +2,23 @@ import { extendTheme } from 'native-base'
 
 export const TEMAS = extendTheme({
     colors: {
-        gray: '#C4C4C4',
-        while:'#fff',
+        gray: {
+            300: '#C4C4C4'
+        },
         black:{
             300: '#1E1A18',
         },
         blue:{
             500:'#0033C1'
         },
+        while:'#fff'
     },
 
     fontSizes: {
-        xs: 11, // minúsculo
-        sm: { // pequeno
-            smMin:14,
-            smMax: 16
-        }, 
-        md: {// medio
-            mdMin:20,
-            mdMed:24,
-            mdMax:32
-        }, 
-        lg:{ // largo
-            lgMin:36,
-            lgMax:40    
-        },
-        xl: 48  // big
-
+        xs: 12,
+        sm: 14,
+        md: 16,
+        lg: 20,
+        xl: 36,
     }
 })
