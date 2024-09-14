@@ -60,7 +60,7 @@ Exemplo de uso:
 git commit -m "FEAT - CRUD de Usuarios"
 ```
 
-<br><br><br>
+<br><br>
 ---
 
 # 🖥️🛠️ Como usar?
@@ -78,20 +78,42 @@ Como este arquivo é muito pesado, então é padrão que ele esteja entre os arq
 ```
 npm install
 ```
+---
+### 2- React Navigation
+React Navigation é composto de alguns utilitários principais e eles são usados ​​para criar a estrutura de navegação em aplicativos
 
-### 2- Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
+
+**_Instalação_**
+
+```
+npm install @react-navigation/native
+```
+**_Instalando suas dependências_**
+```
+npx expo install react-native-screens react-native-safe-area-context
+```
+
+**_Instalando native stack navigator_**
+- Ele fornece uma maneira para o aplicativo fazer a transição entre telas e gerenciar o histórico de navegação
+
+
+```
+npm install @react-navigation/native-stack
+```
+---
+### 3- Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
  
 Através dele é possível utilizar seu próprio celular para emular o projeto, sem a necessidade de sobrecarregar seu pc com o emulador Android por exemplo.
 
 - Com ele você pode ler o QR code que irá aparecer quando executar a aplicação para conectar com seu celular, porém é necessário que esteja na mesma rede de internet que seu computador. Ou pode conectar com o cabo USB:
 
-### 3- Conexão via USB
+### 4- Conexão via USB
 Com o celular conectado ao computador, você irá verificar se seu celular está sendo reconhecido através do comando:
 
 ```
 adb devices 
 ```
- Deve aparecer assim:
+- Deve aparecer assim:
   
 ![image](https://github.com/user-attachments/assets/29fe6fb7-8746-4fbc-98c8-80b084266310)
 
@@ -106,10 +128,12 @@ adb kill-server
 ```
 
 - Excute este comando novamente.
-`tem que aparecer Devices no lugar do offiline`
 ```
 adb devices
 ```
+`Dessa vez irá aparecer Devices no lugar do offiline`
+<br>
+
 - Ainda no terminal digite:
 
 ```
@@ -134,7 +158,8 @@ npx expo start --tunnel
 ![image](https://github.com/user-attachments/assets/ae7aa87f-67d0-49fd-b590-7b25aa22fcdb)
 
 
-<br><br><br>
+<br><br>
+---
 
 ## Como Resolver o Problema de "ADB Devices" Não Reconhecido
 
@@ -160,7 +185,7 @@ Se o seu computador não reconhecer o comando `adb devices`, siga os passos abai
    - Execute o comando `adb devices` para verificar se o ADB foi reconhecido corretamente.
 
 --- 
-
+<br><br>
 
 ## 🛠 Tecnologias
 
@@ -174,6 +199,6 @@ As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 
 ## 📑 Apêndices
 
--  ` Confira o Projeto antes de mudar API aqui: `  ➡️➡️ [ Projeto Web via PHP ] ( https://github.com/LarissaSL/SistemaCKC )
--  ` Confira o Projeto Mobile aqui: ` ➡️➡️ [ Projeto Mobile ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
--  ` Confira o Novo Projeto Web aqui: ` ➡️➡️ [ Projeto Web via JS ] ( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
+-  ` Confira o Projeto antes de mudar API aqui: `  ➡️➡️ [ Projeto Web via PHP ]( https://github.com/LarissaSL/SistemaCKC )
+-  ` Confira o Projeto Mobile aqui: ` ➡️➡️ [ Projeto Mobile ]( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
+-  ` Confira o Novo Projeto Web aqui: ` ➡️➡️ [ Projeto Web via JS ]( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
