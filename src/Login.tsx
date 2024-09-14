@@ -1,11 +1,33 @@
-import {VStack, Image, Text, Box, FormControl, Input, Button} from 'native-base'; // VStack é como se fosse a View do react-native
+import {VStack, Image, Text, Box} from 'native-base'; // VStack é como se fosse a View do react-native
 import { TouchableOpacity } from 'react-native';
 import { TEMAS } from './style/temas'; 
 import logoCKC1 from './assets/logoCKC1.png'
-import logoGoogle from './assets/logoGoogle.png'
-// import curva from './assets/curva.png'
+// import logoGoogle from './assets/logoGoogle.png'
 import { Cabecalho } from './components/Cabecalho';
-export default function Login() {
+import { EntradaTexto } from './components/EntradaTexto';
+import { Botao } from './components/Botao';
+import { useState } from 'react';
+import { fazerLogin } from './service/AutenticacaoLogin';
+
+
+
+export default function Login({navigation} : any ) {
+
+  const[email, setEmail] = useState('')
+  const[senha, setSenha] = useState('')
+
+  async function login(){
+    const resultado = await fazerLogin(email, senha)
+    // Verifique o que está sendo retornado aqui
+    console.log('Resultado do login:', resultado);  
+    
+    if(resultado || resultado === ""){
+      navigation.navigate('Menu')
+    }
+    else{
+      console.log('Erro')
+    }
+  }
 
   return (
         // flex={1} => quer dizer que a VStack vai ocupar a tela inteira                                                                               
@@ -13,50 +35,37 @@ export default function Login() {
           {/* cabeçalho com a logo */}
           <Cabecalho>
             <Image source={logoCKC1} alt="Logo CKC" width={40}  resizeMode="contain"/>
+            {/* Titulo */}
           </Cabecalho>
+
           {/* Titulo */}
           <Text fontSize="5xl"
-            fontWeight="bold"
-            color="black"
-            textAlign="center"
-            // mt = margin top
-            mt={1}
-            mb={5}
+          fontWeight="bold"
+          color="black"
+          textAlign="center"
+          // mt = margin top
+          mt={1}
+          mb={2}
           >
-            Login
+              Login
           </Text>
+        
+          <Box flex={4} backgroundColor={TEMAS.colors.gray[300]} alignItems="center"  p={5} >  
           
-          <Box flex={5} backgroundColor={TEMAS.colors.gray[300]} alignItems="center"  p={5} >  
-          
-            <FormControl mt={3}>
-              {/* compo de Email */}
-              <FormControl.Label>Email:</FormControl.Label>
-              <Input 
-                placeholder='Insira seu email aqui'
-                /* tamanho do texto dentro do input */
-                size='lg'
-                w="100%"
-                borderRadius='lg'
-                bgColor='gray.100'
-                //sombra  
-                shadow={3}
-              />
-            </FormControl>
+            <EntradaTexto 
+            label="Email"
+            placeholder="Insira seu endereço de e-mail"
+            value={email}
+            onChangeText={setEmail}
+            />
 
-            <FormControl mt={3}>
-              {/* compo de Senha */}
-              <FormControl.Label>Senha:</FormControl.Label>
-              <Input 
-                placeholder='Insira sua senha'
-                /* tamanho do texto dentro do input */
-                size='lg'
-                w="100%"
-                borderRadius='lg'
-                bgColor='gray.100'
-                //sombra  
-                shadow={3}
-              />
-            </FormControl>
+          <EntradaTexto
+            label="Senha"
+            placeholder="Insira sua senha"
+            value={senha}
+            onChangeText={setSenha}
+            // secureTextEntry
+            />
           </Box>
           
           {/* bt do google */}
@@ -65,27 +74,27 @@ export default function Login() {
           flexDirection="row"      
           bgColor={'black'}
           >
-              <Image source={logoGoogle}/>
+              
               <TouchableOpacity>
                 <Text>Continuar com o Google</Text>
               </TouchableOpacity>
           </Box>
 
-          {/* <Button 
+          {/* <Botao 
           mb={5}
           bg='black.300'
           mt={10} 
           >          
            Continuar com o Google
-          </Button> */}
+          </Botao> */}
 
           {/* bt entar */}
-          <Button 
-          mb={5}
-          bg='black.300'
-          mt={10}>
+          <Botao 
+          onPress={login}
+          // onPress={ () => navigation.navigate('Menu')}
+          >
             Entrar
-          </Button>
+          </Botao>
 
         {/* link de esqueci minha senha */}
           <Box w="100%" flexDirection="row">

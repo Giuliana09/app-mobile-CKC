@@ -1,18 +1,19 @@
-import {VStack, Image,  Box, ITextProps} from 'native-base';
+import {VStack, Image, Box, ITextProps} from 'native-base';
 import { TEMAS } from '../style/temas'; 
 import curva from '../assets/curva.png';
 import { ReactNode } from 'react';
 
 //interface para o TypeScript aceite o children;
 interface CabecalhoProps extends ITextProps {
-    children: ReactNode
+    readonly children: ReactNode;
+    
 }
 
-export function Cabecalho({children, ...rest}: CabecalhoProps){
+export function Cabecalho({children,  ...rest}: CabecalhoProps){
 
     return (
-        <VStack flex={1} backgroundColor={TEMAS.colors.gray[300]} justifyContent="center" {...rest}>
-            <Box flex={2.5} backgroundColor={TEMAS.colors.black[300]} alignItems="center" justifyContent="center" {...rest}>
+        <VStack backgroundColor={TEMAS.colors.gray[300]} justifyContent="center" {...rest}>
+            <Box backgroundColor={TEMAS.colors.black[300]} alignItems="center" justifyContent="center" {...rest}>
                 {/* faz com que o cabeçalho se torne dinamico, posso mudar a logo e por um texto sem repetir a estrutura padrão do cabeçalho */}
                 {children}
             </Box>
@@ -23,6 +24,8 @@ export function Cabecalho({children, ...rest}: CabecalhoProps){
                 height={100} 
                 resizeMode="cover"/>
             </Box>
+
+          
         </VStack>
     )
 }
