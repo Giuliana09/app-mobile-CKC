@@ -2,12 +2,14 @@ import {VStack, Image, Text, Box} from 'native-base'; // VStack é como se fosse
 import { TouchableOpacity } from 'react-native';
 import { TEMAS } from './style/temas'; 
 import logoCKC1 from './assets/logoCKC1.png'
-// import logoGoogle from './assets/logoGoogle.png'
 import { Cabecalho } from './components/Cabecalho';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
 import { useState } from 'react';
 import { fazerLogin } from './service/AutenticacaoLogin';
+import { useLoadFonts } from './hooks/useLoadFonts';
+
+
 
 
 
@@ -29,6 +31,13 @@ export default function Login({navigation} : any ) {
     }
   }
 
+  // para verificação do uso da fonte
+  const fontsLoaded = useLoadFonts();
+
+  if (!fontsLoaded) {
+    return null;  // A SplashScreen está sendo gerenciada automaticamente
+  }
+
   return (
         // flex={1} => quer dizer que a VStack vai ocupar a tela inteira                                                                               
         <VStack flex={1} backgroundColor={TEMAS.colors.gray[300]} justifyContent="center">
@@ -38,17 +47,19 @@ export default function Login({navigation} : any ) {
             {/* Titulo */}
           </Cabecalho>
 
+         
           {/* Titulo */}
-          <Text fontSize="5xl"
-          fontWeight="bold"
+          <Text 
+          fontSize="6xl"
+          fontFamily="petch_Bold"
+          textAlign="center"        
+      
           color="black"
-          textAlign="center"
-          // mt = margin top
-          mt={1}
           mb={2}
           >
               Login
           </Text>
+          
         
           <Box flex={4} backgroundColor={TEMAS.colors.gray[300]} alignItems="center"  p={5} >  
           
@@ -74,19 +85,10 @@ export default function Login({navigation} : any ) {
           flexDirection="row"      
           bgColor={'black'}
           >
-              
               <TouchableOpacity>
                 <Text>Continuar com o Google</Text>
               </TouchableOpacity>
           </Box>
-
-          {/* <Botao 
-          mb={5}
-          bg='black.300'
-          mt={10} 
-          >          
-           Continuar com o Google
-          </Botao> */}
 
           {/* bt entar */}
           <Botao 

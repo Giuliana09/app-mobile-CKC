@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/chakra-petch": "^0.2.3",
     "@expo/metro-runtime": "~3.2.3",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
@@ -16,6 +17,8 @@
     "app-mobile-ckc": "file:",
     "axios": "^1.7.7",
     "expo": "~51.0.28",
+    "expo-font": "~12.0.10",
+    "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "native-base": "^3.4.28",
     "normalize-css-color": "^1.0.2",

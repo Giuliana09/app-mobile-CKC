@@ -1,18 +1,16 @@
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import { TEMAS } from './src/style/temas';
-import Rotas from './src/Rotas';
+import Rotas from './src/navigation/Rotas';
+import { useLoadFonts } from './src/hooks/useLoadFonts';
 
 
 export default function App() {
 
-  //                  TESTE DA API
-  // useEffect(() => {
-  //   async function pegarDados(){
-  //     const resultados = await api.get('/usuario')
-  //     console.log(resultados.data)
-  //   }
-  //   pegarDados()
-  // }, [])  
+  const fontsLoaded = useLoadFonts();
+
+  if (!fontsLoaded) {
+    return null;  
+  }
 
   return (
     <NativeBaseProvider theme={TEMAS}>

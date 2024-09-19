@@ -20,5 +20,13 @@ export const TEMAS = extendTheme({
         md: 16,
         lg: 20,
         xl: 36,
-    }
+    },
+
+    fonts: {
+        body: 'ChakraPetch-Regular',
+        petch_Bold: 'ChakraPetch-Bold',
+        petch_Light: 'ChakraPetch-Light',
+        petch_semiBold: 'ChakraPetch-SemiBold',
+        petch_medium: 'ChakraPetch-Medium',
+      },
 })

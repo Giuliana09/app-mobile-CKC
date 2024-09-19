@@ -23,6 +23,7 @@ export function EntradaTexto ({
           placeholder={placeholder}
           size="lg"
           w="100%"
+          fontFamily='body'
           borderRadius="lg"
           bgColor="gray.100"
           secureTextEntry={secureTextEntry}
