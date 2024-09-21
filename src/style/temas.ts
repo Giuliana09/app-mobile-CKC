@@ -11,7 +11,7 @@ export const TEMAS = extendTheme({
         blue:{
             500:'#0033C1'
         },
-        while:'#fff'
+        white:'#fff'
     },
 
     fontSizes: {
