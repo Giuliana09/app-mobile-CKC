@@ -9,10 +9,10 @@ import logout from './assets/logout.png'
 
   export default function Menu() {
     return (
-      <VStack flex={1} backgroundColor={TEMAS.colors.gray[300]} justifyContent="center">
+      <VStack style={styles.view}>
         {/* cabeçalho com a logo */}
-        <Cabecalho >
-        <Image source={logoCKC1} alt="Logo CKC" width={40}  resizeMode="contain"/>
+        <Cabecalho>
+        <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
         </Cabecalho>
       
         {/* Card de sortear */}
@@ -46,12 +46,23 @@ import logout from './assets/logout.png'
   }
 
   const styles = StyleSheet.create({
-    onecard: {
+    view: {
       flex: 1,
+      justifyContent: "center",
+      backgroundColor: TEMAS.colors.gray[300],
+    },
+
+    logo: {
+      width: 200,
+      resizeMode: "contain",
+    },
+
+    onecard: {
+      flex: 2,
       flexDirection: "column",
       justifyContent: "space-around",
       alignItems: "center",
-      padding: 30,
+      padding: 60,
       margin: 16,
       height: 200,
       borderRadius: 10,
@@ -60,11 +71,11 @@ import logout from './assets/logout.png'
     },
 
     card: {
-      flex: 1,
+      flex: 2,
       flexDirection: "column",
       justifyContent: "space-around",
       alignItems: "center",
-      padding: 30,
+      padding: 60,
       margin: 16,
       height: 200,
       borderRadius: 10,
