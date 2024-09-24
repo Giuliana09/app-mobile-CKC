@@ -16,7 +16,7 @@ export async function fazerLogin(email: string, senha: string) {
     } catch (error) {
         console.log('Erro: catch', error.message);
         if (error.response) {
-            console.log('Erro na resposta:', error.response.data);
+            console.log('Erro na resposta:', error.response);
         }
         return null;
     }
