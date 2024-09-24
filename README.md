@@ -101,13 +101,29 @@ npx expo install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native-stack
 ```
 ---
-### 3- Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
+### 3 - Uso da font
+
+- Primeiro comando:
+ 
+	```
+	npx expo install expo-font
+	```
+ 
+ - Segundo comando:
+ 
+	```
+	npx expo install expo-splash-screen  
+	```
+
+---
+
+### 4- Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
  
 Através dele é possível utilizar seu próprio celular para emular o projeto, sem a necessidade de sobrecarregar seu pc com o emulador Android por exemplo.
 
 - Com ele você pode ler o QR code que irá aparecer quando executar a aplicação para conectar com seu celular, porém é necessário que esteja na mesma rede de internet que seu computador. Ou pode conectar com o cabo USB:
 
-### 4- Conexão via USB
+### 5- Conexão via USB
 Com o celular conectado ao computador, você irá verificar se seu celular está sendo reconhecido através do comando:
 
 ```
@@ -143,12 +159,25 @@ npm uninstall -g ngrok
 ```
 npm install -g ngrok
 ```
-## Executando o projeto
-No terminal escreva:
+## 6 - Executando o projeto
+Para iniciar o projeto escreva o seguinte comando:
+```
+npx expo start 
+```
+
+Caso deseja usa a conexão via USB:
 
 ```
 npx expo start --tunnel
 ```
+
+Para limpar o cache:
+- Esse comando irá iniciar o projeto e ao mesmo tempo limpar o cache.
+
+```
+npx expo start -c
+```
+
 - No aplicativo você pode ler o QR code ou escrever manualmente o link que está em seu terminal
 
 ![image](https://github.com/user-attachments/assets/cefda90f-4479-4883-b1ec-03af9e5c1694)

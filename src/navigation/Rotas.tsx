@@ -6,8 +6,8 @@ const Tab = createNativeStackNavigator();
 
 
 import Login from "../Login";
-import Menu from "../Menu"
-
+import Menu from "../Menu";
+import Tabs from "../tabs";
 
 export default function Rotas(){
     return(
@@ -23,7 +23,12 @@ export default function Rotas(){
                     component={Menu}
                     options={{ headerShown: false }}
                 />
+                <Tab.Screen
+                    name="tabs"
+                    component={Tabs}
+                    options={{ headerShown: false }}
+                />
             </Tab.Navigator>
-        </NavigationContainer>
+        </NavigationContainer>            
     )    
 }

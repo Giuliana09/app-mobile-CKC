@@ -21,11 +21,10 @@ export function Cabecalho({children,  ...rest}: CabecalhoProps){
             <Box position="relative">
                 <Image source={curva} alt="Onda"
                 width="100%" 
-                height={100} 
+                height={100}
+                marginBottom={-80} 
                 resizeMode="cover"/>
-            </Box>
-
-          
+            </Box> 
         </VStack>
     )
 }
