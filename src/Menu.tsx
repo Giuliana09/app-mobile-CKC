@@ -1,18 +1,22 @@
 import {VStack, Image, Text, Box} from 'native-base'; // VStack é como se fosse a View do react-native
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { TEMAS } from './style/temas'; 
+import { TEMAS } from './style/temas';
+import { useNavigation } from '@react-navigation/native';
 import { Cabecalho } from './components/Cabecalho';
 import logoCKC1 from './assets/logoCKC1.png'
 import clover from './assets/clover.png'
 import check from './assets/check_circle.png'
 import logout from './assets/logout.png'
+import Tabs from './tabs';
 
   export default function Menu() {
+    const navigation = useNavigation();
+    
     return (
       <VStack style={styles.view}>
         {/* cabeçalho com a logo */}
         <Cabecalho>
-        <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
+          <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
         </Cabecalho>
       
         {/* Card de sortear */}
@@ -41,6 +45,9 @@ import logout from './assets/logout.png'
           <Text style={styles.textMD}>Validar os pilotos ao final da corrida</Text>
           </TouchableOpacity>
         </Box>
+
+        {/* Componente de navegação */}
+        <Tabs />        
       </VStack>  
     )
   }
