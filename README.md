@@ -82,7 +82,6 @@ npm install
 ### 2- React Navigation
 React Navigation é composto de alguns utilitários principais e eles são usados ​​para criar a estrutura de navegação em aplicativos
 
-
 **_Instalação_**
 
 ```
@@ -92,13 +91,29 @@ npm install @react-navigation/native
 ```
 npx expo install react-native-screens react-native-safe-area-context
 ```
-
 **_Instalando native stack navigator_**
 - Ele fornece uma maneira para o aplicativo fazer a transição entre telas e gerenciar o histórico de navegação
 
-
 ```
 npm install @react-navigation/native-stack
+```
+**_Instalando tabs para barra de navegação_**
+- Ele fornece a estrutura para desenvolver a navbar do aplicativo
+
+```
+npm install @react-navigation/bottom-tabs
+```
+**_Instalando ícones do react_**
+- Ele fornece uma biblioteca de ícones que podem ser usados diretamente no código, utilizando apenas o seu nome
+
+```
+npm install react-native-vector-icons
+```
+**_Instalando recurso para o typescript_**
+- Ele fornece um recurso para que o typescript reconheça os ícones do react.
+
+```
+npm i --save-dev @types/react-native-vector-icons
 ```
 ---
 ### 3 - Uso da font
