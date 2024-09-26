@@ -4,7 +4,6 @@ import api from "./api"
 
 export async function fazerLogin(email: string, senha: string) {
     if (!email || !senha) return null;
-
     try {
         const resultado = await api.post('/login', {
             email,
@@ -16,7 +15,7 @@ export async function fazerLogin(email: string, senha: string) {
     } catch (error) {
         console.log('Erro: catch', error.message);
         if (error.response) {
-            console.log('Erro na resposta:', error.response);
+            console.log('Erro na resposta:', error.response.data);
         }
         return null;
     }
