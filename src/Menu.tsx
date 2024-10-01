@@ -22,7 +22,7 @@ import Tabs from './tabs';
         {/* Card de sortear */}
         <Box style={styles.onecard}>
           <TouchableOpacity>
-          <Image style={styles.iconMenu} source={clover}/>
+          <Image style={styles.iconMenu} source={clover} alt="icone de trevo"/>
           <Text style={styles.textLG}>Sortear</Text>
           <Text style={styles.textMD}>Sortear os karts para os pilotos</Text>
           </TouchableOpacity>
@@ -31,7 +31,7 @@ import Tabs from './tabs';
         {/* Card de check-in */}
         <Box style={styles.card}>
           <TouchableOpacity>
-          <Image style={styles.iconMenu} source={check}/>
+          <Image style={styles.iconMenu} source={check} alt="icone de check"/>
           <Text style={styles.textLG}>Check-in</Text>
           <Text style={styles.textMD}>Listar pilotos inscritos nas corridas</Text>
           </TouchableOpacity>
@@ -40,14 +40,14 @@ import Tabs from './tabs';
         {/* Card de check-out */}
         <Box style={styles.card}>
           <TouchableOpacity>
-          <Image style={styles.iconMenu} source={logout}/>
+          <Image style={styles.iconMenu} source={logout} alt= "icone de saida"/>
           <Text style={styles.textLG}>Check-out</Text>
           <Text style={styles.textMD}>Validar os pilotos ao final da corrida</Text>
           </TouchableOpacity>
         </Box>
 
         {/* Componente de navegação */}
-        <Tabs />        
+        <Tabs /> 
       </VStack>  
     )
   }
@@ -60,7 +60,7 @@ import Tabs from './tabs';
     },
 
     logo: {
-      width: 200,
+      width: 180,
       resizeMode: "contain",
     },
 
@@ -69,9 +69,11 @@ import Tabs from './tabs';
       flexDirection: "column",
       justifyContent: "space-around",
       alignItems: "center",
-      padding: 60,
-      margin: 16,
-      height: 200,
+      height: 180,
+      marginHorizontal: 20,
+      marginVertical: 10,
+      paddingHorizontal: 40,
+      paddingVertical: 40,
       borderRadius: 10,
       color: TEMAS.colors.white,
       backgroundColor: TEMAS.colors.blue[500],
@@ -82,9 +84,11 @@ import Tabs from './tabs';
       flexDirection: "column",
       justifyContent: "space-around",
       alignItems: "center",
-      padding: 60,
-      margin: 16,
-      height: 200,
+      height: 180,
+      marginHorizontal: 20,
+      marginVertical: 10,
+      paddingHorizontal: 40,
+      paddingVertical: 40, 
       borderRadius: 10,
       color: TEMAS.colors.white,
       backgroundColor: TEMAS.colors.black[300],

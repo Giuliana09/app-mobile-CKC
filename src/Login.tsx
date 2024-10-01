@@ -108,8 +108,8 @@ export default function Login({navigation} : any ) {
             {/* bt entar */}
             <Botao 
             style={style.btEntrar}
-            onPress={login}
-            // onPress={ () => navigation.navigate('Menu')}
+            //onPress={login}
+            onPress={ () => navigation.navigate('Menu')}
             >
               Entrar
             </Botao>

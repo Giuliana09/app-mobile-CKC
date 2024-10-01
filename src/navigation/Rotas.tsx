@@ -16,17 +16,25 @@ export default function Rotas(){
                 <Tab.Screen
                     name="Login"
                     component={Login}
-                    options={{ headerShown: false }}
+                    options={{
+                        headerShown: false,  
+                    }}
+                    
                 />
                 <Tab.Screen
                     name="Menu"
                     component={Menu}
-                    options={{ headerShown: false }}
+                    options={{
+                        headerShown: false,  
+                    }}
+                    
                 />
                 <Tab.Screen
                     name="tabs"
                     component={Tabs}
-                    options={{ headerShown: false }}
+                    options={{
+                        headerShown: false,  
+                    }} 
                 />
             </Tab.Navigator>
         </NavigationContainer>            

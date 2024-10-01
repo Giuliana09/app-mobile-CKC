@@ -11,7 +11,7 @@ const tabs = createBottomTabNavigator();
 
 const screenOptions = ({ route }) => ({
   tabBarIcon: ({ color, size }) => {
-    let iconName;
+    let iconName: string;
 
     switch (route.name) {
       case "Home":
@@ -35,7 +35,7 @@ const screenOptions = ({ route }) => ({
 
     return <Ionicons name={iconName} size={size} color={color} />;
   },
-  tabBarStyle: { backgroundColor: '#232121' },
+  tabBarStyle: { backgroundColor: '#232121'}, 
   tabBarActiveTintColor: '#0033C1',
   tabBarInactiveTintColor: '#fff',
   tabBarShowLabel: false
