@@ -1,13 +1,13 @@
 import {VStack, Image, Text, Box} from 'native-base'; // VStack é como se fosse a View do react-native
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { TEMAS } from './style/temas';
+import { TEMAS } from '../style/temas';
 import { useNavigation } from '@react-navigation/native';
-import { Cabecalho } from './components/Cabecalho';
-import logoCKC1 from './assets/logoCKC1.png'
-import clover from './assets/clover.png'
-import check from './assets/check_circle.png'
-import logout from './assets/logout.png'
-import Tabs from './tabs';
+import { Cabecalho } from '../components/Cabecalho';
+import logoCKC1 from '../assets/logoCKC1.png';
+import clover from '../assets/clover.png';
+import check from '../assets/check_circle.png';
+import logout from '../assets/logout.png';
+import Tabs from '.';
 
   export default function Menu() {
     const navigation = useNavigation();
