@@ -1,10 +1,10 @@
 import { Image, Text, Box, useToast, ScrollView} from 'native-base'; // VStack é como se fosse a View do react-native
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import { TEMAS } from './style/temas'; 
 import { Cabecalho } from './components/Cabecalho';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
-import { useState } from 'react';
 import { fazerLogin } from './service/AutenticacaoLogin';
 import { notificacãoLogin } from './service/notificacaoLogin';
 import { useLoadFonts } from './hooks/useLoadFonts';
@@ -97,19 +97,11 @@ export default function Login({navigation} : any ) {
               </TouchableOpacity>
             </Box>
 
-            {/* <Botao 
-            mb={5}
-            bg='black.300'
-            mt={10} 
-            >          
-            Continuar com o Google
-            </Botao> */}
-
             {/* bt entar */}
             <Botao 
             style={style.btEntrar}
-            //onPress={login}
-            onPress={ () => navigation.navigate('tabs')}
+            onPress={login}
+            // onPress={ () => navigation.navigate('Menu')}
             >
               Entrar
             </Botao>
@@ -121,7 +113,6 @@ export default function Login({navigation} : any ) {
                   <Text style={style.linkSenhaClick}>clique aqui</Text>
                 </TouchableOpacity>
             </Box>
-
         </Box>  
 
         </ScrollView>

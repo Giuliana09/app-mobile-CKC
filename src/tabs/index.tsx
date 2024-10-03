@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import Menu from "./Menu";
+import Home from "./Home";
 import Sortear from "./Sortear";
 import Checkin from "./Checkin";
 import Checkout from "./Checkout";
@@ -14,7 +14,7 @@ const screenOptions = ({ route }) => ({
     let iconName: string;
 
     switch (route.name) {
-      case "Menu":
+      case "Home":
         iconName = "home-outline";
         break;
       case "Sortear":
@@ -44,7 +44,7 @@ const screenOptions = ({ route }) => ({
 export default function Tabs() {
   return (
     <tabs.Navigator screenOptions={screenOptions}>
-      <tabs.Screen name="Menu" component={Menu} />
+      <tabs.Screen name="Home" component={Home} />
       <tabs.Screen name="Sortear" component={Sortear} />
       <tabs.Screen name="Checkin" component={Checkin} />
       <tabs.Screen name="Checkout" component={Checkout} />
