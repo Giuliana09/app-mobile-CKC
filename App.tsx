@@ -1,7 +1,7 @@
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import { TEMAS } from './src/style/temas';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
-import Checkin from './src/tabs/Checkin';
+import Rotas from './src/navigation/Rotas';
 
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
     <NativeBaseProvider theme={TEMAS}>
       <StatusBar backgroundColor={TEMAS.colors.black[300]}></StatusBar>
       
-      <Checkin/>
+      <Rotas/>
 
     </NativeBaseProvider>
   );

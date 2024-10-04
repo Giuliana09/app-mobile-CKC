@@ -4,3 +4,12 @@ module.exports = function(api) {
     presets: ['babel-preset-expo'],
   };
 };
+
+module.exports = {
+  presets: ['@babel/preset-env'],
+  plugins: [
+    // Outros plugins
+    'transform-inline-environment-variables'
+  ]
+};
+
