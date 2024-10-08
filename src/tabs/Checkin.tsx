@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { VStack, Image, Input, Box, Text, Select, CheckIcon } from "native-base";
 import { StyleSheet } from "react-native";
@@ -14,7 +15,7 @@ export default function Checkin() {
     <VStack style={styles.view}>
         {/* cabeçalho com a logo */}
         <Cabecalho>
-          <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
+          <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain"/>
         </Cabecalho>
 
         {/* barra de pesquisa */}
@@ -65,11 +66,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     backgroundColor: TEMAS.colors.gray[300],
-  },
-
-  logo: {
-    width: 180,
-    resizeMode: "contain",
   },
 
   input_pequisa: {

@@ -1,3 +1,4 @@
+import React from 'react';
 import {VStack, Image, Box, ITextProps} from 'native-base';
 import { TEMAS } from '../style/temas'; 
 import curva from '../assets/curva.png';

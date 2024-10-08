@@ -1,14 +1,13 @@
+import React from 'react';
 import {VStack, Text,  ITextProps} from 'native-base';
 import { TEMAS } from '../style/temas'; 
 import { ReactNode } from 'react';
-
 
 //interface para o TypeScript aceite o children;
 interface TituloProps extends ITextProps {
     
     readonly tituloPage?: ReactNode;
 }
-
 
 export function Titulo({tituloPage, ...rest}: TituloProps){
     return(

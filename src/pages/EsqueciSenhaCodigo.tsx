@@ -1,3 +1,4 @@
+import React from 'react';
 import {VStack, Image, Text, Box, FormControl, Input, Button} from 'native-base'; //como se fosse a View do react-native
 import { TEMAS } from '../style/temas';
 import curva from '../assets/curva.png'

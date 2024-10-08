@@ -1,6 +1,4 @@
-import api from "./api"
-
-
+import api from './api';
 
 export async function fazerLogin(email: string, senha: string) {
     if (!email || !senha) return null;
@@ -12,11 +10,12 @@ export async function fazerLogin(email: string, senha: string) {
         console.log('Resposta completa da API:', resultado);  // Mostrar a resposta completa
         console.log('Usuario logado', resultado);
         return resultado.data;  // se `resultado.data` está retornando os dados corretos
-    } catch (error) {
-        console.log('Erro: catch', error.message);
+    } catch (error: any) {
+        console.log('Erro na requisição:', error.message);
         if (error.response) {
             console.log('Erro na resposta:', error.response.data);
         }
-        return null;
+     
+    return null;
     }
 }
