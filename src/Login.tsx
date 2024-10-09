@@ -2,14 +2,15 @@ import React from 'react';
 import { useState } from 'react';
 import { ScrollView, useToast, Image, Text, Box } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { notificacaoLogin } from './service/notificacaoLogin';
-import { fazerLogin } from './service/AutenticacaoLogin';
+import { notificacaoLogin } from './service/login/notificacaoLogin';
+import { fazerLogin } from './service/login/AutenticacaoLogin';
 import { useLoadFonts } from './hooks/useLoadFonts';
 import { Cabecalho } from './components/Cabecalho';
 import logoCKC1 from './assets/logoCKC1.png';
 import { TEMAS } from './style/temas';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
+
 
 export default function Login({ navigation }: any) {
 
@@ -37,10 +38,11 @@ export default function Login({ navigation }: any) {
       description: notificacao.details,
       backgroundColor: notificacao.background,
     });
+    
   }
 
+  
   const fontsLoaded = useLoadFonts();
-
   if (!fontsLoaded) {
     return null;
   }
