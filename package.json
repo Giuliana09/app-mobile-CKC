@@ -21,7 +21,7 @@
     "axios": "^1.7.7",
     "expo": "~51.0.36",
     "expo-font": "~12.0.10",
-    "expo-splash-screen": "^0.27.6",
+    "expo-splash-screen": "~0.27.6",
     "expo-status-bar": "~1.12.1",
     "native-base": "^3.4.28",
     "normalize-css-color": "^1.0.2",

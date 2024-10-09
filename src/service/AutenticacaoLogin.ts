@@ -7,15 +7,24 @@ export async function fazerLogin(email: string, senha: string) {
             email,
             senha
         });
-        console.log('Resposta completa da API:', resultado);  // Mostrar a resposta completa
-        console.log('Usuario logado', resultado);
-        return resultado.data;  // se `resultado.data` está retornando os dados corretos
+
+        // Caso de consulta a API com sucesso (a API devolve apenas o Status, sem corpo)
+        console.log('Status Code: ', resultado.status);
+
+        return {
+            status: resultado.status
+        }
     } catch (error: any) {
         console.log('Erro na requisição:', error.message);
         if (error.response) {
-            console.log('Erro na resposta:', error.response.data);
+            console.log('Erro exposto pela API:', error.response.data);
         }
-     
-    return null;
+
+        // Caso de erro ele retorna o Status, Titulo e o Detalhe
+        return {
+            status: error.response.data.status,
+            title: error.response.data.title,
+            details: error.response.data.details,
+        };
     }
 }

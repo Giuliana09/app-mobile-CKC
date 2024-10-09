@@ -6,32 +6,37 @@ import { notificacaoLogin } from './service/notificacaoLogin';
 import { fazerLogin } from './service/AutenticacaoLogin';
 import { useLoadFonts } from './hooks/useLoadFonts';
 import { Cabecalho } from './components/Cabecalho';
-import logoCKC1 from './assets/logoCKC1.png'; 
+import logoCKC1 from './assets/logoCKC1.png';
 import { TEMAS } from './style/temas';
 import { EntradaTexto } from './components/EntradaTexto';
 import { Botao } from './components/Botao';
 
-export default function Login({navigation} : any) {
-  
+export default function Login({ navigation }: any) {
+
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const toast = useToast();
 
   async function login() {
     const resultado = await fazerLogin(email, senha);
-    const notificacao = await notificacaoLogin();
-
-    if(resultado || resultado === ""){
+    const notificacao = notificacaoLogin(resultado?.status, resultado?.title, resultado?.details);
+    
+    if (resultado?.status === 200) {
       navigation.navigate('Menu');
-    }else{
-      console.log("entrei aqui", resultado);
-      console.log("variavel", process.env.MY_IP);
-      toast.show({
-        title: notificacao.title,
-        description: notificacao.details,
-        backgroundColor: "red.500",
-      });
+    } else {
+      // Exibindo os Detalhes do erro no Console
+      console.log("Status Code: ", resultado?.status);
+      console.log("Titulo do Erro:", resultado?.title);
+      console.log("Detalhes: ", resultado?.details);
+      //console.log("variavel", process.env.MY_IP);
     }
+
+    // Exibindo a notificação em casos de Sucesso e Erro
+    toast.show({
+      title: notificacao.title,
+      description: notificacao.details,
+      backgroundColor: notificacao.background,
+    });
   }
 
   const fontsLoaded = useLoadFonts();
@@ -53,15 +58,15 @@ export default function Login({navigation} : any) {
       {/* inputs */}
       <Box style={style.inputs}>
         <EntradaTexto
-         label = "Email"
-         placeholder = "Insira seu endereço de e-mail"
-         value={email}
-         onChangeText={setEmail}
+          label="Email"
+          placeholder="Insira seu endereço de e-mail"
+          value={email}
+          onChangeText={setEmail}
         />
 
         <EntradaTexto
-          label = "Senha"
-          placeholder = "Insira sua senha"
+          label="Senha"
+          placeholder="Insira sua senha"
           value={senha}
           onChangeText={setSenha}
         />
@@ -69,8 +74,8 @@ export default function Login({navigation} : any) {
 
       {/* botão */}
       <Box style={style.botoes}>
-        <Botao style={style.btEntrar} 
-        onPress={login}
+        <Botao style={style.btEntrar}
+          onPress={login}
         //onPress={navigation.navigate('Menu')}
 
         >Entrar</Botao>
@@ -83,7 +88,7 @@ export default function Login({navigation} : any) {
           <Text style={style.linkSenhaClick}>Clique aqui</Text>
         </TouchableOpacity>
       </Box>
-    </ScrollView> 
+    </ScrollView>
   );
 }
 
