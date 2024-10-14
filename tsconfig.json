@@ -13,7 +13,8 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src"
+    "src",
+    "env.d.ts"
   ],
   "extends": "expo/tsconfig.base"
 }
