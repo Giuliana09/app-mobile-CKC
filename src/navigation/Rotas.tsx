@@ -3,12 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Menu from '../tabs/Menu';
 import Checkin from '../tabs/Checkin';
 import Sortear from '../tabs/Sortear';
-import Checkout from '../tabs/Checkout';
 import Perfil from '../tabs/Perfil';
 
 import {Ionicons} from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
+import CheckOutStackNavigator from './CheckOutStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,13 +56,13 @@ function Rotas() {
             }}
         />
         <Tab.Screen 
-            name="Checkout"
-            component={Checkout}
+            name="CheckOutStack" 
+            component={CheckOutStackNavigator} 
             options={{
-                headerShown: false,
-                tabBarIcon: ({color, size}) => (
-                    <Entypo name="log-out" size={size} color={color} />  
-                ),
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+                <Entypo name="log-out" size={size} color={color} />  
+            ),
             }}
         />
         <Tab.Screen
