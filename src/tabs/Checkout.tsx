@@ -7,7 +7,7 @@ import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from "../assets/logoCKC1.png"; 
 import Ionicons from "react-native-vector-icons/Ionicons"; 
 import { navegarParaTelaDeInformacoesDoCheckIn } from "../service/corrida/checkInService";
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
 
@@ -62,8 +62,7 @@ export default function Checkout() {
   }, [parametros]); 
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
-      <VStack>
+      <VStack style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
         <Cabecalho>
           <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
         </Cabecalho>
@@ -117,7 +116,6 @@ export default function Checkout() {
 
         {/* Componente filtrar (seletor de Kartodromo) */}
         <Box style={styles.selectorContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Kartódromo:</Text>
           <Select
             selectedValue={selectedKartodromo}
             minWidth={200}
@@ -157,7 +155,6 @@ export default function Checkout() {
           ListEmptyComponent={<Text>Nenhuma corrida encontrada.</Text>}
         />
       </VStack>
-    </ScrollView>
   );
 }
 
