@@ -67,29 +67,23 @@ git commit -m "FEAT - CRUD de Usuarios"
 
 ## 1° Instalando dependências e bibliotecas
 
-**_Utilizando seu IP em uma variável de ambiente_**
+**_Utilizando seu IP de Rede em uma variável de ambiente_**
 
-Em seu sistema operacional crie uma variável de ambiente com o IPv4 da sua conecxão de internet e inclua no final ```:8080```
-
-No projeto instale o plugin que irá transformar a variável de ambiente criada em código durante o build.
-
+Crie um arquivo .env na raiz do projeto
 ```
-npm install --save-dev babel-plugin-transform-inline-environment-variables
+API_URL="http://{SEU-IP-DE-REDE}:8080"
 ```
-Configure o arquivo `babel.config.js` (copie e cole o trecho abaixo)
+
+No projeto instale o plugin que irá permitir a leitura dessa variável no código.
 
 ```
-module.exports = {
-  presets: ['@babel/preset-env'],
-  plugins: [
-    // Outros plugins
-    'transform-inline-environment-variables'
-  ]
-};
+npm install dotenv
 ```
-No arquivo ```api.ts```
-atualize o endereço de IP para:
-baseURL: process.env.suavariavelambiente
+
+Resultado esperado:
+
+![image](https://github.com/user-attachments/assets/b0e85850-e690-4f7e-9954-017462da316f)
+
 
 Como este projeto é desenvolvido com React Native, é necessário ter o NodeJS instalado [instale a última versão LTS](https://nodejs.org/en/) e algumas bibliotecas:
 
