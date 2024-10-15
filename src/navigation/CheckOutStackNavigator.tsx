@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Checkout from '../tabs/Checkout';  
 import DetalhesCorridaCheckIn from '../pages/DetalhesCorridaCheckIn';
+import RealizarCheckIn from '../pages/RealizarCheckIn';
 import { TouchableOpacity } from 'react-native'; 
 import {Ionicons} from '@expo/vector-icons';
 
@@ -38,6 +39,24 @@ function CheckOutStackNavigator() {
           //Quando colocar o Cabeçalho ativar essa propriedade = headerTransparent: true, 
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
+              <Ionicons name="arrow-back" size={24} color="white" style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+        })} 
+      />
+      <Stack.Screen 
+      //Trocar para RealizarCheckout
+        name="RealizarCheckIn" 
+        component={RealizarCheckIn} 
+        options={({ navigation }) => ({
+          headerShown: true, 
+          title: '', 
+          //Quando colocar o Cabeçalho ativar essa propriedade = headerTransparent: true, 
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="arrow-back" size={24} color="white" style={{ marginLeft: 10 }} />
             </TouchableOpacity>
           ),

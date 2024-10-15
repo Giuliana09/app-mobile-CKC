@@ -1,22 +1,127 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
+import { notificacaoGeral } from '../service/notificacaoGeral';
+import { consultarCorrida } from '../service/corrida/corridaService';
+import { useToast } from 'native-base';
+import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
+import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
+import { Ionicons } from '@expo/vector-icons';
 
-// Defina o tipo para os parametros da rota
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
 };
 
 function DetalhesCorridaCheckIn() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckIn'>>();
-  const { idCorrida } = route.params; 
+  const { idCorrida } = route.params;
+  const [corrida, setCorrida] = useState<any>(null);
+  const [pilotos, setPilotos] = useState<any>(null);
+  const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
+  const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
+  const navigation = useNavigation();
 
-  console.log("ID da Corrida recebido:", idCorrida);
+  useEffect(() => {
+    const dadoCorrida = async () => {
+      const resultado = await consultarCorrida(idCorrida);
+      const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
+
+      if (resultado.status === 200) {
+        setCorrida(resultado.corrida);
+        setError(null);
+      } else {
+        setError(resultado.details);
+        toast.show({
+          title: notificacao.title,
+          description: notificacao.details,
+          backgroundColor: notificacao.background,
+        });
+      }
+    };
+
+    dadoCorrida();
+  }, [idCorrida]);
+
+  useEffect(() => {
+    const dadosPilotos = async () => {
+      const resultado = await listarPilotosPorCorrida(idCorrida);
+      
+      if (resultado.status === 200 && resultado.qtdPilotos > 0) {
+        setPilotos(resultado.dadosPilotos);
+        setError(null);
+        await verificarCheckIns(resultado.dadosPilotos);
+      } else {
+        setError(resultado.details);
+      }
+    };
+
+    dadosPilotos();
+  }, [idCorrida]);
+
+  const verificarCheckIns = async (pilotos: any) => {
+    const checkInStatus: { [key: number]: boolean } = {};
+    
+    for (const piloto of pilotos) {
+      const { status } = await verificarSeJaFezCheckIn(piloto.inscricao_id);
+      checkInStatus[piloto.inscricao_id] = status === 200;
+    }
+    
+    setCheckIns(checkInStatus);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (pilotos) {
+        verificarCheckIns(pilotos);
+      }
+    }, [pilotos])
+  );
+
+  // Calcula a quantidade de check-ins realizados
+  const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Detalhes da Corrida</Text>
-      <Text>ID da Corrida: {idCorrida}</Text>
+      <Text style={styles.title}>Fazer Check-in para:</Text>
+      {corrida ? (
+        <>
+          <Text>{corrida.nome} - {corrida.campeonato.nome}</Text>
+          <Text>{formatarDataCorrida(corrida.data)}</Text>
+          <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
+        </>
+      ) : (
+        <Text style={styles.errorMessage}>
+          {error || 'Nenhuma corrida encontrada.'}
+        </Text>
+      )}
+
+      {pilotos ? (
+        <>
+          <Text style={styles.title}>Pilotos Cadastrados [{qtdPilotosComCheckIn}/{pilotos.length}]</Text>
+          <FlatList
+            data={pilotos}
+            keyExtractor={(piloto) => piloto.inscricao_id.toString()}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity onPress={() => navegarParaTelaDeRealizarCheckIn(item.inscricao_id, navigation)}>
+                <Text style={styles.pilotoItem}>Piloto {index + 1}</Text>
+                <View style={styles.pilotoBox}>
+                  <Text style={styles.pilotoItem}>{`${item.usuario.nome} ${item.usuario.sobrenome}`}</Text>
+                  {/* Ícone se fez ou não o Check-in */}
+                  {checkIns[item.inscricao_id] && (
+                    <Ionicons name="checkmark-circle" size={24} color="green" style={styles.checkIcon} />
+                  )}
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </>
+      ) : (
+        <Text style={styles.errorMessage}>
+          {error || 'Nenhum piloto encontrado.'}
+        </Text>
+      )}
     </View>
   );
 }
@@ -24,13 +129,33 @@ function DetalhesCorridaCheckIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#F0F0F0',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+  },
+  errorMessage: {
+    color: 'red',
+    marginTop: 10,
+  },
+  pilotoItem: {
+    fontSize: 16,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pilotoBox: {
+    marginBottom: 35,
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 5, 
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+  },
+  checkIcon: {
+    marginLeft: 10, 
   },
 });
 
