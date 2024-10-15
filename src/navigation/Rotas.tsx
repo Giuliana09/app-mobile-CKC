@@ -9,6 +9,7 @@ import {Ionicons} from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import CheckOutStackNavigator from './CheckOutStackNavigator';
+import CheckInStackNavigator from './CheckInStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,8 +37,8 @@ function Rotas() {
             }}
         />
         <Tab.Screen
-            name="Checkin"
-            component={Checkin}
+            name="CheckInStack"
+            component={CheckInStackNavigator}
             options={{
                 headerShown: false,
                 tabBarIcon: ({color, size}) => (

@@ -1,14 +1,14 @@
 import api from '../api';
 
 export function navegarParaTelaDeInformacoesDoCheckIn(idCorrida: number, navigation: any) {
-  navigation.navigate('CheckOutStack', {
+  navigation.navigate('CheckInStack', {
     screen: 'DetalhesCorridaCheckIn',
     params: { idCorrida },
   });
 }
 
 export function navegarParaTelaDeRealizarCheckIn(idInscricao: number, navigation: any) {
-  navigation.navigate('CheckOutStack', {
+  navigation.navigate('CheckInStack', {
     screen: 'RealizarCheckIn',
     params: { idInscricao },
   });
