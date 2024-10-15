@@ -145,7 +145,6 @@ export default function Checkout() {
               <Text bold>{item.nome} - {item.campeonato_nome}</Text>
               <Text>{formatarDataCorrida(item.data)}</Text>
               <Button onPress={() => {
-                  console.log("ID da Corrida:", item.id); 
                   navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
               }}>
                 Realizar Check-in
