@@ -6,6 +6,7 @@ import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { TEMAS } from './src/style/temas';
 import Rotas from './src/navigation/Rotas';
 import Login from './src/Login';
+import Checkin from './src/tabs/Checkin';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,11 @@ export default function App() {
             <Stack.Screen
               name="Menu"
               component={Rotas}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Checkin"
+              component={Checkin}
               options={{headerShown: false}}
             />
           </Stack.Navigator>      
