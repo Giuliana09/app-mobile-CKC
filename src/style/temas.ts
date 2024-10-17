@@ -7,9 +7,13 @@ export const TEMAS = extendTheme({
         },
         black:{
             300: '#1E1A18',
+            500: '#000',
         },
         blue:{
             500:'#0033C1'
+        },
+        yellow:{
+            500:'#FBBC04'
         },
         white:'#fff'
     },
