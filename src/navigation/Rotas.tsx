@@ -1,8 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Menu from '../tabs/Menu';
-import Checkin from '../tabs/Checkin';
-import Sortear from '../tabs/Sortear';
 import Perfil from '../tabs/Perfil';
 
 import {Ionicons} from '@expo/vector-icons';
@@ -10,6 +8,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import CheckOutStackNavigator from './CheckOutStackNavigator';
 import CheckInStackNavigator from './CheckInStackNavigator';
+import SortearStackNavigator from './SortearStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,8 +46,8 @@ function Rotas() {
             }}
         />
         <Tab.Screen
-            name="Sortear"
-            component={Sortear}
+            name="SortearStack"
+            component={SortearStackNavigator}
             options={{
                 headerShown: false,
                 tabBarIcon: ({color, size}) => (
