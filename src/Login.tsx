@@ -26,7 +26,7 @@ export default function Login({ navigation }: any) {
       navigation.navigate('Menu');
     } else {
       // Exibindo os Detalhes do erro no Console
-      console.log("Status Code: ", resultado?.status);
+      console.log("Status Code do Erro: ", resultado?.status);
       console.log("Titulo do Erro:", resultado?.title);
       console.log("Detalhes: ", resultado?.details);
       //console.log("variavel", process.env.MY_IP);

@@ -9,7 +9,7 @@ export async function fazerLogin(email: string, senha: string) {
         });
 
         // Caso de consulta a API com sucesso (a API devolve apenas o Status, sem corpo)
-        console.log('Status Code: ', resultado.status);
+        console.log('Status Code do Login: ', resultado.status);
 
         return {
             status: resultado.status
