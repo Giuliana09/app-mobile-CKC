@@ -27,7 +27,7 @@ function Rotas() {
             },
         }}>
         <Tab.Screen
-            name="Menu"
+            name="MenuTela"
             component={Menu}
             options={{
                 headerShown: false,
