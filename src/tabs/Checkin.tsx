@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Image, Input, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack } from "native-base"; 
-import { consultarCorridas, formatarDataCorrida, consultarKartodromos } from '../service/corrida/corridaService'; 
-import { IcorridaParametros } from '../service/corrida/IcorridaParametros'; 
-import { notificacaoGeral } from '../service/notificacaoGeral'; 
-import { Cabecalho } from "../components/Cabecalho"; 
+import { Image, Input, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack } from "native-base";
+import { consultarCorridas, formatarDataCorrida, consultarKartodromos, formatarCategoriaCorrida } from '../service/corrida/corridaService';
+import { IcorridaParametros } from '../service/corrida/IcorridaParametros';
+import { notificacaoGeral } from '../service/notificacaoGeral';
+import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from "../assets/logoCKC1.png";
-import largada from "../assets/largada.png"; 
-import Ionicons from "react-native-vector-icons/Ionicons"; 
+import largada from "../assets/largada.png";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { navegarParaTelaDeInformacoesDoCheckIn } from "../service/corrida/checkInService";
 import { StyleSheet } from "react-native";
 import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
+import CategoriasDeCorridas from "../components/CategoriasDeCorridas";
 
 export default function Checkin() {
   const [parametros, setParametros] = useState<IcorridaParametros>({
@@ -20,7 +21,7 @@ export default function Checkin() {
   });
 
   const [corridas, setCorridas] = useState<any[]>([]);
-  const [kartodromos, setKartodromos] = useState<any[]>([]); 
+  const [kartodromos, setKartodromos] = useState<any[]>([]);
   const [errorCorridas, setErrorCorridas] = useState<string | null>(null);
   const [errorKartodromos, setErrorKartodromos] = useState<string | null>(null);
   const [temLogKartodromosError, setTemLogKartodromosError] = useState(false);
@@ -50,7 +51,7 @@ export default function Checkin() {
     const fetchCorridas = async () => {
       const response = await consultarCorridas(parametros);
       if (response.status === 200 && Array.isArray(response.dadosCorridas)) {
-        setCorridas(response.dadosCorridas); 
+        setCorridas(response.dadosCorridas);
         setErrorCorridas(null);
       } else {
         setErrorCorridas(response.details);
@@ -72,6 +73,10 @@ export default function Checkin() {
       console.log("Resposta ao carregar as Corridas: ", errorCorridas);
     }
   }, [errorCorridas]);
+
+  function formatarCategoria(classificacao: any): React.ReactNode {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <FlatList
@@ -98,7 +103,7 @@ export default function Checkin() {
 
           {/* Componente filtrar (seletor de meses) */}
           <Text style={styles.titulo_filtrar}>Filtrar:</Text>
-          <Box style={styles.seletores}>          
+          <Box style={styles.seletores}>
             <Select
               selectedValue={selectedMonth}
               minWidth={200}
@@ -107,7 +112,7 @@ export default function Checkin() {
               onValueChange={(itemValue) => {
                 setSelectedMonth(itemValue);
                 setParametros({ ...parametros, mes: itemValue === "undefined" ? undefined : Number(itemValue) });
-              }}          
+              }}
               _selectedItem={{
                 bg: "blue.400",
                 endIcon: <CheckIcon size={5} color="#fff" />,
@@ -144,7 +149,7 @@ export default function Checkin() {
               onValueChange={(itemValue) => {
                 setSelectedKartodromo(itemValue);
                 setParametros({ ...parametros, kartodromo: itemValue });
-              }}          
+              }}
               _selectedItem={{
                 bg: "blue.400",
                 endIcon: <CheckIcon size={5} color="#fff" />,
@@ -178,6 +183,7 @@ export default function Checkin() {
           <Image style={styles.card_img} source={largada} alt="largada dos karts" />
           <Box style={styles.card_infos}>
             <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
+            <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
             <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
             <Button style={styles.card_botao} onPress={() => {
               navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
@@ -213,8 +219,6 @@ const styles = StyleSheet.create({
   },
 
   pesquisa: {
-    fontSize: TEMAS.fontSizes.md,
-    borderRadius: 40,
     backgroundColor: TEMAS.colors.gray[100],
   },
 
@@ -224,73 +228,70 @@ const styles = StyleSheet.create({
   },
 
   titulo_filtrar: {
-    marginTop: 40,
-    marginLeft: 30,
-    marginBottom: 10,
-    fontSize: TEMAS.fontSizes.md,
-    color: TEMAS.colors.gray[900],
+    marginTop: 80,
+    marginHorizontal: 20,
+    fontSize: TEMAS.fontSizes.lg,
+    fontFamily: TEMAS.fonts['petch_Bold'],
   },
-
   seletores: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginBottom: 10,
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
-
   titulo_proximas: {
     marginTop: 20,
-    marginLeft: 30,
-    fontSize: TEMAS.fontSizes.md,
-    color: TEMAS.colors.gray[900],
+    marginHorizontal: 20,
+    fontSize: TEMAS.fontSizes.lg,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+  },
+  card_corridas: {
+    flex: 1,
+    backgroundColor: TEMAS.colors.gray[300],
   },
 
   card_itens: {
     flexDirection: "row",
-    marginHorizontal: 30,
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: TEMAS.colors.white,
+    marginHorizontal: 20,
     marginVertical: 10,
-    borderRadius: 20,
-    backgroundColor: TEMAS.colors.gray[100],
-  },
-
-  card_img: {
-    width: "40%",
-    height: "100%",
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
-  },
-
-  card_infos: {
-    flex: 1,
-    padding: 20,
-  },
-
-  card_titulo: {
-    fontSize: TEMAS.fontSizes.sm,
-    fontWeight: "bold",
-    color: TEMAS.colors.gray[900],
-  },
-
-  card_data: {
-    fontSize: TEMAS.fontSizes.sm,
-    marginVertical: 5,
-    color: TEMAS.colors.gray[900],
-  },
-
-  card_botao: {
-    marginTop: 10,
-    backgroundColor: TEMAS.colors.blue[400],
+    padding: 10,
     borderRadius: 10,
   },
-
-  aviso: {
-    marginTop: 20,
-    marginLeft: 30,
-    fontSize: TEMAS.fontSizes.md,
-    color: TEMAS.colors.gray[900],
+  card_img: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
   },
-
+  card_infos: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  card_titulo: {
+    fontSize: TEMAS.fontSizes.md,
+    fontFamily: TEMAS.fonts['petch_semiBold'],
+  },
+  card_data: {
+    fontSize: TEMAS.fontSizes.sm,
+    fontFamily: TEMAS.fonts['petch_regular'],
+  },
+  card_botao: {
+    marginTop: 10,
+    backgroundColor: TEMAS.colors.blue[500],
+    borderRadius: 10,
+  },
+  aviso: {
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 20,
+    textAlign: "center",
+    fontSize: TEMAS.fontSizes.md,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    color: TEMAS.colors.blue[500],
+  },
   aviso_icone: {
-    fontSize: TEMAS.fontSizes.lg,
-    color: TEMAS.colors.gray[900],
-  }
+    flexDirection: "column",
+    fontSize: 50,
+    color: TEMAS.colors.gray[300],
+  },
 });
