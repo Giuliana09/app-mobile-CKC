@@ -5,7 +5,6 @@ import RealizarCheckIn from '../pages/RealizarCheckIn';
 import Checkin from '../tabs/Checkin';
 import CabecalhoTelasOpcoes from '../components/CabecalhoNavegacaoTelasOpcoes';
 
-
 const Stack = createStackNavigator();
 
 function CheckInStackNavigator() {
@@ -14,17 +13,17 @@ function CheckInStackNavigator() {
       <Stack.Screen 
         name="CheckinScreen1" 
         component={Checkin} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}    
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}    
       />
       <Stack.Screen 
         name="DetalhesCorridaCheckIn" 
         component={DetalhesCorridaCheckIn} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}  
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
       <Stack.Screen 
         name="RealizarCheckIn" 
         component={RealizarCheckIn} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}  
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
     </Stack.Navigator>
   );

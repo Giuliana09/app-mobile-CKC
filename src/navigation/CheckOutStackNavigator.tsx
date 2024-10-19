@@ -5,7 +5,6 @@ import DetalhesCorridaCheckOut from '../pages/DetalhesCorridaCheckOut';
 import RealizarCheckOut from '../pages/RealizarCheckOut';
 import CabecalhoTelasOpcoes from '../components/CabecalhoNavegacaoTelasOpcoes';
 
-
 const Stack = createStackNavigator();
 
 function CheckOutStackNavigator() {
@@ -14,19 +13,17 @@ function CheckOutStackNavigator() {
       <Stack.Screen 
         name="CheckoutScreen1" 
         component={Checkout} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}    
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}    
       />
       <Stack.Screen 
-      //Trocar para DetalhesCorridaCheckOut 
         name="DetalhesCorridaCheckOut" 
         component={DetalhesCorridaCheckOut} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}  
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
       <Stack.Screen 
-      //Trocar para RealizarCheckout
         name="RealizarCheckOut" 
         component={RealizarCheckOut} 
-        options={({ navigation }) => CabecalhoTelasOpcoes(navigation)}  
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
     </Stack.Navigator>
   );
