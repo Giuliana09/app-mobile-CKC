@@ -12,6 +12,7 @@ import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
 import CategoriasDeCorridas from "../components/CategoriasDeCorridas";
 import BarraDePesquisaPorNomeEDia from "../components/BarraDePesquisaPorNomeEDia";
+import { navegarParaTelaDeInformacoesDoCheckOut } from "../service/corrida/checkOutService";
 
 export default function Checkout() {
   const [corridas, setCorridas] = useState<any[]>([]);
@@ -171,9 +172,9 @@ export default function Checkout() {
               <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
               <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
               <Button style={styles.card_botao} onPress={() => {
-                navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
+                navegarParaTelaDeInformacoesDoCheckOut(item.id, navigation);
               }}>
-                Fazer Check-in
+                Fazer Check-out
               </Button>
             </Box>
           </Box>
