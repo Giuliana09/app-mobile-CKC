@@ -8,12 +8,17 @@ type EstilosCategoria = 'CKC_110' | 'CKC_95' | 'DDL_90';
 
 interface ICategoriasDeCorridas {
   item: {
-    classificacao: EstilosCategoria; 
+    classificacao: EstilosCategoria | null; 
   };
 }
 
 // Componente de Categorias de Corridas
 const CategoriasDeCorridas: React.FC<ICategoriasDeCorridas> = ({ item }) => {
+  // Verifica se a classificação é válida
+  if (!item.classificacao) {
+    return <Text>Classificação não disponível</Text>; 
+  }
+
   return (
     <View>
       <Text style={styles[`card_categoria_${item.classificacao}`]}>
