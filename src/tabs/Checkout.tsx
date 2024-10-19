@@ -49,7 +49,7 @@ export default function Checkout() {
         mes: selectedMonth === "undefined" ? undefined : Number(selectedMonth),
         kartodromo: selectedKartodromo,
         pesquisa,
-        check: true // Você pode ajustar isso conforme necessário
+        check: true 
       };
 
       const response = await consultarCorridas(parametros);
