@@ -8,6 +8,7 @@ import { useToast } from 'native-base';
 import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
 import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { Ionicons } from '@expo/vector-icons';
+import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
@@ -88,6 +89,7 @@ function DetalhesCorridaCheckIn() {
       {corrida ? (
         <>
           <Text>{corrida.nome} - {corrida.campeonato.nome}</Text>
+          <CategoriasDeCorridas item={{ classificacao: corrida.classificacao }} />
           <Text>{formatarDataCorrida(corrida.data)}</Text>
           <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
         </>
