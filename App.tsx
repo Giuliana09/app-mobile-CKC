@@ -22,7 +22,7 @@ export default function App() {
     <NativeBaseProvider theme={TEMAS}>
         <StatusBar backgroundColor={TEMAS.colors.black[300]} />
         <NavigationContainer>
-          <Stack.Navigator initialRouteName='Menu'>
+          <Stack.Navigator initialRouteName='Login'>
             <Stack.Screen 
               name="Login"
               component={Login}
