@@ -10,7 +10,7 @@ export async function consultarCorridas(parametros: IcorridaParametros) {
         const fullUrl = `${api.defaults.baseURL}${url}`; 
         console.log('URL da Busca na API:', fullUrl); 
         */
-
+       
         // Requisição
         const resultado = await api.get(url);
 
@@ -84,9 +84,9 @@ export const formatarHorarioCorrida = (horario : string) : string => {
 export const formatarCategoriaCorrida = (categoria: string): string => {
     if (!categoria) return '';
   
-    const parts = categoria.split('_');
-    if (parts.length < 2) return '';
+    const partes = categoria.split('_');
+    if (partes.length < 2) return '';
   
-    const categoriaFormatada = parts[1];
+    const categoriaFormatada = partes[1];
     return `${categoriaFormatada} kg`;
 };

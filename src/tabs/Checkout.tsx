@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Image, Input, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack } from "native-base";
+import { Image, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack } from "native-base";
 import { consultarCorridas, formatarDataCorrida, consultarKartodromos } from '../service/corrida/corridaService';
-import { IcorridaParametros } from '../service/corrida/IcorridaParametros';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from "../assets/logoCKC1.png";
@@ -12,15 +11,11 @@ import { StyleSheet } from "react-native";
 import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
 import CategoriasDeCorridas from "../components/CategoriasDeCorridas";
+import BarraDePesquisaPorNomeEDia from "../components/BarraDePesquisaPorNomeEDia";
 
 export default function Checkout() {
-  const [parametros, setParametros] = useState<IcorridaParametros>({
-    mes: undefined,
-    kartodromo: "",
-    pesquisa: ""
-  });
-
   const [corridas, setCorridas] = useState<any[]>([]);
+  const [pesquisa, setPesquisa] = useState<string>("");
   const [kartodromos, setKartodromos] = useState<any[]>([]);
   const [errorCorridas, setErrorCorridas] = useState<string | null>(null);
   const [errorKartodromos, setErrorKartodromos] = useState<string | null>(null);
@@ -46,9 +41,16 @@ export default function Checkout() {
     fetchKartodromos();
   }, []);
 
-  // Faz a busca dinamicamente em caso de mudanças no Filtro de Mes, Kartodromo, Dia ou Nome
+  // Faz a busca dinamicamente em caso de mudanças na pesquisa ou filtros
   useEffect(() => {
     const fetchCorridas = async () => {
+      const parametros = {
+        mes: selectedMonth === "undefined" ? undefined : Number(selectedMonth),
+        kartodromo: selectedKartodromo,
+        pesquisa,
+        check: true // Você pode ajustar isso conforme necessário
+      };
+
       const response = await consultarCorridas(parametros);
       if (response.status === 200 && Array.isArray(response.dadosCorridas)) {
         setCorridas(response.dadosCorridas);
@@ -65,7 +67,7 @@ export default function Checkout() {
     };
 
     fetchCorridas();
-  }, [parametros]);
+  }, [selectedMonth, selectedKartodromo, pesquisa]);
 
   // Log de erros de corridas
   useEffect(() => {
@@ -74,128 +76,117 @@ export default function Checkout() {
     }
   }, [errorCorridas]);
 
+  const handleChangePesquisa = (text: string) => {
+    setPesquisa(text); 
+  };
+
   return (
-    <FlatList
-      data={corridas}
-      keyExtractor={(item) => item.id.toString()}
-      ListHeaderComponent={(
-        <VStack>
-          <Cabecalho key="cabecalho">
-            <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
-          </Cabecalho>
+    <VStack flex={1}>
+      <Cabecalho key="cabecalho">
+        <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
+      </Cabecalho>
 
-          {/* Barra de pesquisa */}
-          <Box style={styles.input_pequisa} key="filtroPesquisa">
-            <Input
-              style={styles.pesquisa}
-              placeholder="Pesquisar corrida"
-              variant="unstyled"
-              InputRightElement={
-                <Ionicons style={styles.icone_pesquisa} name="search" size={20} color={"gray"} />
-              }
-              onChangeText={(text) => setParametros({ ...parametros, pesquisa: text })}
-            />
-          </Box>
+      <BarraDePesquisaPorNomeEDia
+        pesquisa={pesquisa}
+        onChange={handleChangePesquisa} 
+      />
 
-          {/* Componente filtrar (seletor de meses) */}
-          <Text style={styles.titulo_filtrar}>Filtrar:</Text>
-          <Box style={styles.seletores}>
-            <Select
-              selectedValue={selectedMonth}
-              minWidth={200}
-              accessibilityLabel="Mês"
-              placeholder="Selecione um mês"
-              onValueChange={(itemValue) => {
-                setSelectedMonth(itemValue);
-                setParametros({ ...parametros, mes: itemValue === "undefined" ? undefined : Number(itemValue) });
-              }}
-              _selectedItem={{
-                bg: "blue.400",
-                endIcon: <CheckIcon size={5} color="#fff" />,
-              }}
-              fontSize={TEMAS.fontSizes.sm}
-              borderColor={TEMAS.colors.black[300]}
-              borderRadius={12}
-              backgroundColor="#636363"
-              color={TEMAS.colors.white}
-            >
-              <Select.Item label="Selecione um Mês" value="undefined" />
-              {/* Opções de meses */}
-              <Select.Item label="Janeiro" value="1" />
-              <Select.Item label="Fevereiro" value="2" />
-              <Select.Item label="Março" value="3" />
-              <Select.Item label="Abril" value="4" />
-              <Select.Item label="Maio" value="5" />
-              <Select.Item label="Junho" value="6" />
-              <Select.Item label="Julho" value="7" />
-              <Select.Item label="Agosto" value="8" />
-              <Select.Item label="Setembro" value="9" />
-              <Select.Item label="Outubro" value="10" />
-              <Select.Item label="Novembro" value="11" />
-              <Select.Item label="Dezembro" value="12" />
-            </Select>
-          </Box>
+      <Text style={styles.titulo_filtrar}>Filtrar:</Text>
+      <Box style={styles.seletores}>
+        <Select
+          selectedValue={selectedMonth}
+          minWidth={200}
+          accessibilityLabel="Mês"
+          placeholder="Selecione um mês"
+          onValueChange={(itemValue) => setSelectedMonth(itemValue)}
+          _selectedItem={{
+            bg: "blue.400",
+            endIcon: <CheckIcon size={5} color="#fff" />,
+          }}
+          fontSize={TEMAS.fontSizes.sm}
+          borderColor={TEMAS.colors.black[300]}
+          borderRadius={12}
+          backgroundColor="#636363"
+          color={TEMAS.colors.white}
+        >
+          <Select.Item label="Selecione um Mês" value="undefined" />
+          {/* Opções de meses */}
+          <Select.Item label="Janeiro" value="1" />
+          <Select.Item label="Fevereiro" value="2" />
+          <Select.Item label="Março" value="3" />
+          <Select.Item label="Abril" value="4" />
+          <Select.Item label="Maio" value="5" />
+          <Select.Item label="Junho" value="6" />
+          <Select.Item label="Julho" value="7" />
+          <Select.Item label="Agosto" value="8" />
+          <Select.Item label="Setembro" value="9" />
+          <Select.Item label="Outubro" value="10" />
+          <Select.Item label="Novembro" value="11" />
+          <Select.Item label="Dezembro" value="12" />
+        </Select>
+      </Box>
 
-          {/* Componente filtrar (seletor de Kartodromo) */}
-          <Box style={styles.seletores} >
-            <Select
-              selectedValue={selectedKartodromo}
-              minWidth={200}
-              accessibilityLabel="Kartódromo"
-              onValueChange={(itemValue) => {
-                setSelectedKartodromo(itemValue);
-                setParametros({ ...parametros, kartodromo: itemValue });
-              }}
-              _selectedItem={{
-                bg: "blue.400",
-                endIcon: <CheckIcon size={5} color="#fff" />,
-              }}
-              fontSize={TEMAS.fontSizes.sm}
-              borderColor={TEMAS.colors.black[300]}
-              borderRadius={12}
-              backgroundColor="#636363"
-              color={TEMAS.colors.white}
-            >
-              <Select.Item label="Selecione um Kartodromo" value="" />
-              {kartodromos.length > 0 && Array.isArray(kartodromos) && !errorKartodromos ? (
-                kartodromos.map((kartodromo) => (
-                  <Select.Item key={`${kartodromo}`} label={kartodromo} value={kartodromo} />
-                ))
-              ) : (
-                !temLogKartodromosError && (
-                  <>
-                    {console.log("Resposta ao carregar os nomes do Kartodromo: ", errorKartodromos)}
-                    {setTemLogKartodromosError(true)}
-                  </>
-                )
-              )}
-            </Select>
+      <Box style={styles.seletores}>
+        <Select
+          selectedValue={selectedKartodromo}
+          minWidth={200}
+          accessibilityLabel="Kartódromo"
+          onValueChange={(itemValue) => setSelectedKartodromo(itemValue)}
+          _selectedItem={{
+            bg: "blue.400",
+            endIcon: <CheckIcon size={5} color="#fff" />,
+          }}
+          fontSize={TEMAS.fontSizes.sm}
+          borderColor={TEMAS.colors.black[300]}
+          borderRadius={12}
+          backgroundColor="#636363"
+          color={TEMAS.colors.white}
+        >
+          <Select.Item label="Selecione um Kartodromo" value="" />
+          {kartodromos.length > 0 && Array.isArray(kartodromos) && !errorKartodromos ? (
+            kartodromos.map((kartodromo) => (
+              <Select.Item key={`${kartodromo}`} label={kartodromo} value={kartodromo} />
+            ))
+          ) : (
+            !temLogKartodromosError && (
+              <>
+                {console.log("Resposta ao carregar os nomes do Kartodromo: ", errorKartodromos)}
+                {setTemLogKartodromosError(true)}
+              </>
+            )
+          )}
+        </Select>
+      </Box>
+
+      <Text style={styles.titulo_proximas}>Corridas realizadas:</Text>
+
+      <FlatList
+        data={corridas}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <Box key={item.id} style={styles.card_itens}>
+            <Image style={styles.card_img} source={largada} alt="largada dos karts" />
+            <Box style={styles.card_infos}>
+              <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
+              <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
+              <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
+              <Button style={styles.card_botao} onPress={() => {
+                navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
+              }}>
+                Fazer Check-in
+              </Button>
+            </Box>
           </Box>
-          <Text style={styles.titulo_proximas}>Próximas Corridas:</Text>
-        </VStack>
-      )}
-      renderItem={({ item }) => (
-        <Box style={styles.card_itens}>
-          <Image style={styles.card_img} source={largada} alt="largada dos karts" />
-          <Box style={styles.card_infos}>
-            <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
-            <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
-            <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
-            <Button style={styles.card_botao} onPress={() => {
-              navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
-            }}>
-              Fazer Check-in
-            </Button>
-          </Box>
-        </Box>
-      )}
-      ListEmptyComponent={
-        <Text style={styles.aviso}>
-          Nenhuma corrida encontrada.
-          <Ionicons key="aviso-icone" style={styles.aviso_icone} name="cog-outline" />
-        </Text>
-      }
-    />
+        )}
+        ListEmptyComponent={
+          <Text style={styles.aviso}>
+            Nenhuma corrida encontrada.
+            <Ionicons key="aviso-icone" style={styles.aviso_icone} name="cog-outline" />
+          </Text>
+        }
+        contentContainerStyle={{ paddingBottom: 20 }}
+      />
+    </VStack>
   );
 }
 

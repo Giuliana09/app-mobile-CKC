@@ -9,6 +9,9 @@ export function montarUrlCorridas(params: IcorridaParametros): string {
     if (params.kartodromo) {
         queryParametros.push(`kartodromo=${encodeURIComponent(params.kartodromo)}`);
     }
+    if (params.check) {
+        queryParametros.push(`check=${encodeURIComponent(params.check)}`);
+    }
     if (params.pesquisa) {
         // Verifique se a pesquisa é um número (dia) ou string (nome)
         if (!isNaN(Number(params.pesquisa))) {
