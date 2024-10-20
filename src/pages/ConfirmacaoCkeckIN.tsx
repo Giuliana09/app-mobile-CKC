@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native';
 import { TEMAS } from '../style/temas';
 
 
+
 // editar "navegacao"
 async function navegacao() {}
 
@@ -15,9 +16,14 @@ export default function ConfirmacaoCkeckIN() {
         <VStack style={style.container} >
 
         <ConfirmacoesCkecks flex={50}
-        textSucesso="Todos os check-ins dessa cirrida foram realizados com sucesso!"
-        textBotao="Voltar ao check-in"
-        onPressBotao={navegacao}>    
+            textSucesso="Todos os check-ins dessa cirrida foram realizados com sucesso!"
+            textBotao="Voltar ao check-in"
+            onPressBotao={navegacao}  
+            textBotaoAlterar="Refazer Checkin" 
+            onPressBotaoAlterar={() => {
+                    navegacao()
+            }}
+        >  
         </ConfirmacoesCkecks>       
             
         </VStack>

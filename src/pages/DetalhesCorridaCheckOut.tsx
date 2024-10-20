@@ -9,10 +9,13 @@ import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/
 import { Ionicons } from '@expo/vector-icons';
 import { listarDadosDosPilotosParaCheckOut, navegarParaTelaDeRealizarCheckOut } from '../service/corrida/checkOutService';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type ParamList = {
   DetalhesCorridaCheckOut: { idCorrida: number };
+  ConfirmacaoCheckOUT: undefined;
 };
+export type CheckOutNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckOut'>;
 
 function DetalhesCorridaCheckOut() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckOut'>>();
@@ -21,7 +24,7 @@ function DetalhesCorridaCheckOut() {
   const [pilotos, setPilotos] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-  const navigation = useNavigation();
+  const navigation = useNavigation<CheckOutNavigationProp>();
 
   useEffect(() => {
     const dadoCorrida = async () => {
@@ -65,6 +68,13 @@ function DetalhesCorridaCheckOut() {
 
   // Calcula a quantidade de check-outs realizados
   const qtdPilotosComCheckOut = pilotos.filter(item => item.check_out_feito).length;
+  
+  // Verifica se todos os pilotos já fizeram check-out e navega para a tela de confirmação de check-out
+  useEffect(() => {
+    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length) {
+      navigation.navigate('ConfirmacaoCheckOUT');
+    }
+  }, [qtdPilotosComCheckOut, pilotos]);
 
   return (
     <View style={styles.container}>

@@ -4,6 +4,7 @@ import Checkout from '../tabs/Checkout';
 import DetalhesCorridaCheckOut from '../pages/DetalhesCorridaCheckOut';
 import RealizarCheckOut from '../pages/RealizarCheckOut';
 import CabecalhoTelasOpcoes from '../components/CabecalhoNavegacaoTelasOpcoes';
+import ConfirmacaoCkeckOUT from '../pages/ConfirmacaoCkeckOUT';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,11 @@ function CheckOutStackNavigator() {
       <Stack.Screen 
         name="RealizarCheckOut" 
         component={RealizarCheckOut} 
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
+      />
+      <Stack.Screen 
+        name="ConfirmacaoCkeckOUT" 
+        component={ConfirmacaoCkeckOUT} 
         options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
     </Stack.Navigator>
