@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { formatarCategoriaCorrida } from '../service/corrida/corridaService';
 import { TEMAS } from '../style/temas';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Definindo os tipos de classificação
 type EstilosCategoria = 'CKC_110' | 'CKC_95' | 'DDL_90';
@@ -32,14 +33,19 @@ const CategoriasDeCorridas: React.FC<ICategoriasDeCorridas> = ({ item }) => {
 const styles = StyleSheet.create({
   card_categoria_CKC_110: {
     fontFamily: TEMAS.fonts['petch_semiBold'],
-    color: TEMAS.colors.blue[500],
+    color: TEMAS.colors.orange[500],
   },
+
   card_categoria_CKC_95: {
     fontFamily: TEMAS.fonts['petch_semiBold'],
+    color: TEMAS.colors.yellow[300],
   },
+
   card_categoria_DDL_90: {
     fontFamily: TEMAS.fonts['petch_semiBold'],
+    color: TEMAS.colors.green[300],
   },
+
 });
 
 export default CategoriasDeCorridas;

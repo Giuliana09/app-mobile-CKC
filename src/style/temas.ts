@@ -1,4 +1,6 @@
 import { extendTheme } from 'native-base'
+import { green } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
+import { OrganizeImportsMode } from 'typescript'
 
 export const TEMAS = extendTheme({
     colors: {
@@ -13,9 +15,16 @@ export const TEMAS = extendTheme({
             500:'#0033C1'
         },
         yellow:{
-            500:'#FBBC04'
+            300:'#B5CC18',
+            500:'#FBBC04',
         },
-        white:'#fff'
+        white: '#fff',
+        green:{
+            300:'#069B0C'
+        },
+        orange:{
+            300: '#CC5918',
+        },
     },
 
     fontSizes: {
