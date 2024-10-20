@@ -9,10 +9,14 @@ import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/
 import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { Ionicons } from '@expo/vector-icons';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
+  ConfirmacaoCheckIN: undefined;
 };
+export type CheckInNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckIn'>;
 
 function DetalhesCorridaCheckIn() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckIn'>>();
@@ -22,7 +26,7 @@ function DetalhesCorridaCheckIn() {
   const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-  const navigation = useNavigation();
+  const navigation = useNavigation<CheckInNavigationProp>();
 
   useEffect(() => {
     const dadoCorrida = async () => {
@@ -82,6 +86,14 @@ function DetalhesCorridaCheckIn() {
 
   // Calcula a quantidade de check-ins realizados
   const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
+
+  // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos redirecionar a tela de confirmação
+  useEffect(() => {
+    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
+      navigation.navigate('ConfirmacaoCheckIN');
+    }
+  }, [qtdPilotosComCheckIn, pilotos]);
+  
 
   return (
     <View style={styles.container}>

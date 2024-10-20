@@ -55,7 +55,7 @@ export default function Login({ navigation }: any) {
       </Cabecalho>
 
       {/* titulo */}
-      <Text style={style.tituloPag}>Login</Text>
+      <Text style={style.tituloPag} fontSize="6xl">Login</Text>
 
       {/* inputs */}
       <Box style={style.inputs}>
@@ -101,11 +101,10 @@ export const style = StyleSheet.create({
   },
 
   tituloPag: {
-    fontSize: TEMAS.fontSizes.xl,
     fontFamily: 'ChakraPetch-Bold',
     color: TEMAS.colors.black[300],
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 60,
   },
 
   inputs: {

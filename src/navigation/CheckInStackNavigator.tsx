@@ -4,6 +4,7 @@ import DetalhesCorridaCheckIn from '../pages/DetalhesCorridaCheckIn';
 import RealizarCheckIn from '../pages/RealizarCheckIn';
 import Checkin from '../tabs/Checkin';
 import CabecalhoTelasOpcoes from '../components/CabecalhoNavegacaoTelasOpcoes';
+import ConfirmacaoCheckIN from '../pages/ConfirmacaoCkeckIN';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,11 @@ function CheckInStackNavigator() {
       <Stack.Screen 
         name="RealizarCheckIn" 
         component={RealizarCheckIn} 
+        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
+        />
+      <Stack.Screen 
+        name="ConfirmacaoCheckIN" 
+        component={ConfirmacaoCheckIN} 
         options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
       />
     </Stack.Navigator>
