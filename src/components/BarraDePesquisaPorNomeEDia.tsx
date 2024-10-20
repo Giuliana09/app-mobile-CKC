@@ -33,7 +33,7 @@ const BarraDePesquisaPorNomeEDia: React.FC<BarraDePesquisaPorNomeEDiaProps> = ({
 const styles = StyleSheet.create({
     input_pequisa: {
         position: "relative",
-        marginHorizontal: 30,
+        marginLeft: 20,
         marginVertical: -30,
         flexDirection: "row",
         justifyContent: "center",
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     },
 
     pesquisa: {
+        borderRadius: 20,
         backgroundColor: TEMAS.colors.gray[100],
     },
 

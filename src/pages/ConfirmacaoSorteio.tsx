@@ -1,6 +1,6 @@
 import React from 'react';
 import {VStack, } from 'native-base';
-import ConfirmacoesCkecks from '../components/ConfirmacoesCkecks';
+import ConfirmacoesChecks from '../components/ConfirmacoesChecks';
 import { StyleSheet } from 'react-native';
 import { TEMAS } from '../style/temas';
 
@@ -11,14 +11,16 @@ export default function ConfirmacaoSorteio() {
 
     return (
         <VStack style={style.container}>
-
-        <ConfirmacoesCkecks 
-        textSucesso="Todos os sorteio dessa cirrida foram finalizado com Sucesso!"
-        textBotao="Fazer o check-out da corrida"
-        onPressBotao={navegacao}>    
-        </ConfirmacoesCkecks>       
-            
-        </VStack>
+        <ConfirmacoesChecks 
+            textSucesso="Todos os sorteios dessa corrida foram finalizados com sucesso!"
+            textBotao="Fazer o check-out da corrida"
+            onPressBotao={navegacao} 
+            textBotaoAlterar="Refazer sorteio" 
+            onPressBotaoAlterar={() => {
+                navegacao()
+            }}
+        />       
+    </VStack>
     )
 }
 
