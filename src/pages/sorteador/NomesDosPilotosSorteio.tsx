@@ -3,7 +3,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { VStack, Text, Image, Button, FlatList, Box, useToast } from "native-base";
 import { TEMAS } from "../../style/temas";
 import logoCKC1 from "../../assets/logoCKC1.png";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Cabecalho } from "../../components/Cabecalho";
 import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoService";
 import { listarDadosDePilotosQueParticiparaoDoSorteio } from "../../service/sorteador/sorteadorService";
@@ -15,10 +15,9 @@ type ParamList = {
     numerosForaDoSorteio: number[];
     maiorNumeroDeKart: number;
     idCorrida: number;
+    qtdDePessoasComCheckIn: number,
   };
 };
-
-const { width } = Dimensions.get("window");
 
 export default function NomesDosPilotosSorteio() {
   const route = useRoute<RouteProp<ParamList, 'NomesDosPilotosSorteio'>>();
@@ -29,7 +28,7 @@ export default function NomesDosPilotosSorteio() {
 
   const [loading, setLoading] = useState(true);
 
-  const { numerosForaDoSorteio, maiorNumeroDeKart, idCorrida } = route.params;
+  const { numerosForaDoSorteio, maiorNumeroDeKart, idCorrida, qtdDePessoasComCheckIn } = route.params;
 
   useEffect(() => {
     fetchPilotos();
@@ -53,7 +52,7 @@ export default function NomesDosPilotosSorteio() {
         backgroundColor: notificacao.background,
       });
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -62,20 +61,22 @@ export default function NomesDosPilotosSorteio() {
       numerosForaDoSorteio: numerosForaDoSorteio,
       maiorNumeroDeKart: maiorNumeroDeKart,
       idCorrida: idCorrida,
+      qtdDePessoasComCheckIn: qtdDePessoasComCheckIn,
     });
   };
 
   return (
     <VStack flex={1} style={styles.view}>
+      <Cabecalho key="cabecalho">
+        <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
+      </Cabecalho>
+      <Text style={styles.titulo}>Nome dos Pilotos</Text>
+      <Text style={styles.texto}>Lista de nomes dos pilotos que irão participar da corrida:</Text>
       <FlatList
         ListHeaderComponent={
           <VStack>
-            <Cabecalho key="cabecalho">
-              <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
-            </Cabecalho>
-            <Text style={styles.titulo}>Nome dos Pilotos</Text>
             <Text style={styles.texto}>
-              {loading ? "Carregando..." : "Lista de nomes dos pilotos que irão participar da corrida:"}
+              {loading ? "Carregando..." : null}
             </Text>
           </VStack>
         }
@@ -113,12 +114,12 @@ const styles = StyleSheet.create({
   containerPilotos: {
     backgroundColor: TEMAS.colors.white,
     borderRadius: 8,
-    width: width * 0.85,
+    width: '85%',
     flexDirection: 'column',
     alignItems: "flex-start",
+    alignSelf: 'center',
     padding: 10,
     margin: 10,
-    marginLeft: 30 // Migreragem pra tentar centralizar ^^
   },
 
   logo: {
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
   },
   titulo: {
     marginTop: 60,
+    marginBottom: 20,
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
     textAlign: 'center',
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    width: width * 0.85,
+    width: '85%',
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
-    width: width * 0.6,
+    width: '60%',
     alignSelf: 'center',
     marginBottom: 20,
   },

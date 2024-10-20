@@ -1,15 +1,15 @@
 import React, { useState, memo, useCallback } from "react";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { VStack, Text, Image, Button, FlatList, useToast } from "native-base"; 
+import { VStack, Text, Image, Button, FlatList, useToast } from "native-base";
 import { Cabecalho } from "../../components/Cabecalho";
 import { TEMAS } from "../../style/temas";
-import logoCKC1 from "../../assets/logoCKC1.png"; 
+import logoCKC1 from "../../assets/logoCKC1.png";
 import { Dimensions, StyleSheet } from "react-native";
 import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoService";
 import { notificacaoGeral } from "../../service/notificacaoGeral";
 
 type ParamList = {
-  ListaDeKartsSelecionar: { 
+  ListaDeKartsSelecionar: {
     maiorNumeroDeKart: number,
     idCorrida: number,
     qtdDePessoasComCheckIn: number
@@ -18,8 +18,8 @@ type ParamList = {
 
 const KartButton = memo(({ item, isSelected, onPress }: { item: number, isSelected: boolean, onPress: () => void }) => {
   return (
-    <Button 
-      onPress={onPress} 
+    <Button
+      onPress={onPress}
       style={[styles.numeroKartBotao, isSelected && styles.numeroKartBotaoSelected]}
     >
       <Text style={styles.kartText}>{item}</Text>
@@ -27,19 +27,17 @@ const KartButton = memo(({ item, isSelected, onPress }: { item: number, isSelect
   );
 });
 
-const { width } = Dimensions.get("window");
-
 export default function ListaDeKartsSelecionar() {
-  const route = useRoute<RouteProp<ParamList, 'ListaDeKartsSelecionar'>>();  
+  const route = useRoute<RouteProp<ParamList, 'ListaDeKartsSelecionar'>>();
   const { maiorNumeroDeKart, idCorrida, qtdDePessoasComCheckIn } = route.params;
   const [numerosForaDoSorteio, setNumerosForaDoSorteio] = useState<number[]>([]);
   const toast = useToast();
   const navigation = useNavigation();
-  
+
   const handleSelectKart = useCallback((numero: number) => {
-    setNumerosForaDoSorteio(prevState => 
-      prevState.includes(numero) 
-        ? prevState.filter(num => num !== numero) 
+    setNumerosForaDoSorteio(prevState =>
+      prevState.includes(numero)
+        ? prevState.filter(num => num !== numero)
         : [...prevState, numero]
     );
   }, []);
@@ -47,10 +45,10 @@ export default function ListaDeKartsSelecionar() {
   const renderKartButton = ({ item }: { item: number }) => {
     const isSelected = numerosForaDoSorteio.includes(item);
     return (
-      <KartButton 
-        item={item} 
-        isSelected={isSelected} 
-        onPress={() => handleSelectKart(item)} 
+      <KartButton
+        item={item}
+        isSelected={isSelected}
+        onPress={() => handleSelectKart(item)}
       />
     );
   };
@@ -81,27 +79,26 @@ export default function ListaDeKartsSelecionar() {
 
   return (
     <VStack flex={1} style={styles.view}>
-      <FlatList
-        ListHeaderComponent={
-          <VStack>
-            <Cabecalho key="cabecalho">
-              <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
-            </Cabecalho>
+      <Cabecalho key="cabecalho">
+        <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
+      </Cabecalho>
+      <VStack>
             <Text style={styles.titulo}>Lista de Karts</Text>
             <Text style={styles.subtitulo}>Pilotos com Check-in feito [{qtdDePessoasComCheckIn}]</Text>
             <Text style={styles.texto}>Selecione os números que deseja retirar do sorteio:</Text>
           </VStack>
-        }
+      <FlatList
         data={Array.from({ length: maiorNumeroDeKart }, (_, i) => i + 1)}
         keyExtractor={(item) => item.toString()}
         numColumns={3}
-        initialNumToRender={8} 
-        maxToRenderPerBatch={4} 
+        initialNumToRender={8}
+        maxToRenderPerBatch={4}
+        contentContainerStyle={styles.contentContainerStyle}
         windowSize={10}
         renderItem={renderKartButton}
         ListFooterComponent={
           <VStack>
-            <Button style={styles.botao}onPress={handleContinuar}>
+            <Button style={styles.botao} onPress={handleContinuar}>
               Confirmar seleção
             </Button>
           </VStack>
@@ -138,6 +135,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
     paddingBottom: 20,
   },
   numeroKartBotao: {
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
-    width: width * 0.6,
+    width: '100%',
     alignSelf: 'center',
     marginBottom: 20,
   },

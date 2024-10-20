@@ -114,5 +114,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
+    width: '60%',
+    alignSelf: 'center',
   },
 });

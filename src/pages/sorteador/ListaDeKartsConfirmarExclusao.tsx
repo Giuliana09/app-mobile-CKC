@@ -3,7 +3,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { VStack, Text, Image, Button, FlatList, Box } from "native-base";
 import { TEMAS } from "../../style/temas";
 import logoCKC1 from "../../assets/logoCKC1.png";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Cabecalho } from "../../components/Cabecalho";
 import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoService";
 
@@ -16,8 +16,6 @@ type ParamList = {
   };
 };
 
-const { width } = Dimensions.get("window");
-
 export default function ListaDeKartsConfirmarExclusao() {
   const route = useRoute<RouteProp<ParamList, 'ListaDeKartsConfirmarExclusao'>>();
   const navigation = useNavigation();
@@ -29,6 +27,7 @@ export default function ListaDeKartsConfirmarExclusao() {
       numerosForaDoSorteio: numerosForaDoSorteio,
       maiorNumeroDeKart: maiorNumeroDeKart,
       idCorrida: idCorrida,
+      qtdDePessoasComCheckIn: qtdDePessoasComCheckIn,
     });
   };
 
@@ -38,9 +37,7 @@ export default function ListaDeKartsConfirmarExclusao() {
 
   return (
     <VStack flex={1} style={styles.view}>
-      <FlatList
-        ListHeaderComponent={
-          <VStack>
+      <VStack>
             <Cabecalho key="cabecalho">
               <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
             </Cabecalho>
@@ -48,12 +45,13 @@ export default function ListaDeKartsConfirmarExclusao() {
             <Text style={styles.subtitulo}>Pilotos com Check-in feito [{qtdDePessoasComCheckIn}]</Text>
             <Text style={styles.texto}>Estes são os números selecionados para retirar do sorteio:</Text>
           </VStack>
-        }
+      <FlatList
         data={numerosForaDoSorteio}
         keyExtractor={(item) => item.toString()}
         numColumns={3}
         initialNumToRender={8}
         maxToRenderPerBatch={4}
+        contentContainerStyle={styles.contentContainerStyle}
         windowSize={10}
         renderItem={({ item }) => (
           <Box style={styles.numerosDeKartContainer}>
@@ -125,11 +123,15 @@ const styles = StyleSheet.create({
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
+  contentContainerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   botao: {
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
-    width: width * 0.6,
+    width: '100%',
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: TEMAS.colors.gray[500],
     borderRadius: 10,
-    width: width * 0.6,
+    width: '100%',
     alignSelf: 'center',
     marginBottom: 20,
   },
