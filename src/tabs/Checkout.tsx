@@ -18,6 +18,7 @@ export default function Checkout() {
   const [corridas, setCorridas] = useState<any[]>([]);
   const [pesquisa, setPesquisa] = useState<string>("");
   const [kartodromos, setKartodromos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [errorCorridas, setErrorCorridas] = useState<string | null>(null);
   const [errorKartodromos, setErrorKartodromos] = useState<string | null>(null);
   const [temLogKartodromosError, setTemLogKartodromosError] = useState(false);
@@ -45,6 +46,7 @@ export default function Checkout() {
   // Faz a busca dinamicamente em caso de mudanças na pesquisa ou filtros
   useEffect(() => {
     const fetchCorridas = async () => {
+      setLoading(true);
       const parametros = {
         mes: selectedMonth === "undefined" ? undefined : Number(selectedMonth),
         kartodromo: selectedKartodromo,
@@ -53,6 +55,7 @@ export default function Checkout() {
       };
 
       const response = await consultarCorridas(parametros);
+      setLoading(false); 
       if (response.status === 200 && Array.isArray(response.dadosCorridas)) {
         setCorridas(response.dadosCorridas);
         setErrorCorridas(null);
@@ -96,7 +99,7 @@ export default function Checkout() {
       <Box style={styles.seletores}>
         <Select
           selectedValue={selectedMonth}
-          minWidth={200}
+          minWidth={160}
           accessibilityLabel="Mês"
           placeholder="Selecione um mês"
           onValueChange={(itemValue) => setSelectedMonth(itemValue)}
@@ -109,8 +112,9 @@ export default function Checkout() {
           borderRadius={12}
           backgroundColor="#636363"
           color={TEMAS.colors.white}
+          dropdownIcon={<Ionicons name="chevron-down-outline" size={20} color={TEMAS.colors.white} style={{ marginRight: 8 }} />}
         >
-          <Select.Item label="Selecione um Mês" value="undefined" />
+          <Select.Item label="Selecione Mês" value="undefined" />
           {/* Opções de meses */}
           <Select.Item label="Janeiro" value="1" />
           <Select.Item label="Fevereiro" value="2" />
@@ -125,9 +129,7 @@ export default function Checkout() {
           <Select.Item label="Novembro" value="11" />
           <Select.Item label="Dezembro" value="12" />
         </Select>
-      </Box>
 
-      <Box style={styles.seletores}>
         <Select
           selectedValue={selectedKartodromo}
           minWidth={200}
@@ -142,8 +144,11 @@ export default function Checkout() {
           borderRadius={12}
           backgroundColor="#636363"
           color={TEMAS.colors.white}
+          dropdownIcon={<Ionicons name="chevron-down-outline" size={20} color={TEMAS.colors.white} style={{ marginRight: 8 }} />}
         >
-          <Select.Item label="Selecione um Kartodromo" value="" />
+          <Select.Item
+            label="Selecione Kartódromo" value=""
+          />
           {kartodromos.length > 0 && Array.isArray(kartodromos) && !errorKartodromos ? (
             kartodromos.map((kartodromo) => (
               <Select.Item key={`${kartodromo}`} label={kartodromo} value={kartodromo} />
@@ -159,8 +164,11 @@ export default function Checkout() {
         </Select>
       </Box>
 
-      <Text style={styles.titulo_proximas}>Corridas realizadas:</Text>
+      <Text style={styles.titulo_proximas}>Próximas Corridas:</Text>
 
+      {loading ? (
+        <Text>Carregando corridas...</Text>
+      ) : (
       <FlatList
         data={corridas}
         keyExtractor={(item) => item.id.toString()}
@@ -170,7 +178,10 @@ export default function Checkout() {
             <Box style={styles.card_infos}>
               <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
               <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
-              <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
+              <Box style={{ flexDirection: "row", alignItems: "center"}}>
+                <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
+                <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
+              </Box>
               <Button style={styles.card_botao} onPress={() => {
                 navegarParaTelaDeInformacoesDoCheckOut(item.id, navigation);
               }}>
@@ -179,14 +190,8 @@ export default function Checkout() {
             </Box>
           </Box>
         )}
-        ListEmptyComponent={
-          <Text style={styles.aviso}>
-            Nenhuma corrida encontrada.
-            <Ionicons key="aviso-icone" style={styles.aviso_icone} name="cog-outline" />
-          </Text>
-        }
-        contentContainerStyle={{ paddingBottom: 20 }}
       />
+      )}
     </VStack>
   );
 }
@@ -197,40 +202,28 @@ const styles = StyleSheet.create({
     backgroundColor: TEMAS.colors.gray[300],
   },
 
-  input_pequisa: {
-    position: "relative",
-    marginHorizontal: 30,
-    marginVertical: -30,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  pesquisa: {
-    backgroundColor: TEMAS.colors.gray[100],
-  },
-
-  icone_pesquisa: {
-    position: "relative",
-    right: 30,
-  },
-
   titulo_filtrar: {
     marginTop: 80,
     marginHorizontal: 20,
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
+
   seletores: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginHorizontal: 20,
-    marginVertical: 10,
+    marginTop: 10,
   },
+
   titulo_proximas: {
     marginTop: 20,
     marginHorizontal: 20,
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
+
   card_corridas: {
     flex: 1,
     backgroundColor: TEMAS.colors.gray[300],
@@ -246,40 +239,60 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+
   card_img: {
     width: 100,
     height: 100,
     borderRadius: 10,
   },
+
   card_infos: {
     flex: 1,
     marginLeft: 10,
   },
+
   card_titulo: {
     fontSize: TEMAS.fontSizes.md,
     fontFamily: TEMAS.fonts['petch_semiBold'],
   },
+
+  card_icone: {
+    color: TEMAS.colors.black[500],
+    marginRight: 5,
+  },
+
   card_data: {
+    color: TEMAS.colors.black[500],
     fontSize: TEMAS.fontSizes.sm,
     fontFamily: TEMAS.fonts['petch_regular'],
   },
+
   card_botao: {
     marginTop: 10,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
   },
+
   aviso: {
+    display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    marginVertical: 100,
+  },
+
+  aviso_texto: {
     textAlign: "center",
     fontSize: TEMAS.fontSizes.md,
     fontFamily: TEMAS.fonts['petch_Bold'],
-    color: TEMAS.colors.blue[500],
+    color: TEMAS.colors.red[500],
+    marginVertical: 10,
   },
+
   aviso_icone: {
-    flexDirection: "column",
-    fontSize: 50,
+    fontSize: 100,
     color: TEMAS.colors.gray[300],
+    marginVertical: 10,
   },
+
 });

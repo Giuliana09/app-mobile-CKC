@@ -16,6 +16,7 @@ import BarraDePesquisaPorNomeEDia from "../components/BarraDePesquisaPorNomeEDia
 export default function Checkin() {
   const [corridas, setCorridas] = useState<any[]>([]);
   const [kartodromos, setKartodromos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [pesquisa, setPesquisa] = useState<string>("");
   const [errorCorridas, setErrorCorridas] = useState<string | null>(null);
   const [errorKartodromos, setErrorKartodromos] = useState<string | null>(null);
@@ -44,6 +45,8 @@ export default function Checkin() {
   // Faz a busca dinamicamente em caso de mudanças no Filtro de Mes, Kartodromo, Dia ou Nome
   useEffect(() => {
     const fetchCorridas = async () => {
+      setLoading(true);  // Iniciar loading
+
       const parametros = {
         mes: selectedMonth === "undefined" ? undefined : Number(selectedMonth),
         kartodromo: selectedKartodromo,
@@ -52,6 +55,8 @@ export default function Checkin() {
       };
 
       const response = await consultarCorridas(parametros);
+      setLoading(false); // Finalizar loading
+
       if (response.status === 200 && Array.isArray(response.dadosCorridas)) {
         setCorridas(response.dadosCorridas);
         setErrorCorridas(null);
@@ -162,6 +167,9 @@ export default function Checkin() {
 
       <Text style={styles.titulo_proximas}>Próximas Corridas:</Text>
 
+      {loading ? (
+        <Text>Carregando corridas...</Text>
+      ) : (
       <FlatList
         data={corridas}
         keyExtractor={(item) => item.id.toString()}
@@ -183,14 +191,8 @@ export default function Checkin() {
             </Box>
           </Box>
         )}
-        ListEmptyComponent={
-          <Box style={styles.aviso}>
-            <Text style={styles.aviso_texto}>Nenhuma corrida encontrada.</Text>
-            <Ionicons key="aviso-icone" style={styles.aviso_icone} name="cog-outline" />
-          </Box>
-        }
-        contentContainerStyle={{ paddingBottom: 20 }}
       />
+      )}
     </VStack>
   );
 }

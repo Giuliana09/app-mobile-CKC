@@ -74,7 +74,7 @@ export default function Sortear() {
       <Text style={styles.titulo_proximas}>Corridas com Check-in concluído:</Text>
       
       {loading ? (
-        <Text>Carregando...</Text>
+        <Text>Carregando corridas...</Text>
       ) : (
         <FlatList
           data={corridas}
