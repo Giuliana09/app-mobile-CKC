@@ -77,31 +77,27 @@ export default function Sortear() {
         <Text>Carregando corridas...</Text>
       ) : (
         <FlatList
-          data={corridas}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <Box key={item.id} style={styles.card_itens}>
-              <Image style={styles.card_img} source={largada} alt="largada dos karts" />
-              <Box style={styles.card_infos}>
-                <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
-                <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
+        data={corridas}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <Box key={item.id} style={styles.card_itens}>
+            <Image style={styles.card_img} source={largada} alt="largada dos karts" />
+            <Box style={styles.card_infos}>
+              <Text style={styles.card_titulo}>{item.nome} - {item.campeonato_nome}</Text>
+              <CategoriasDeCorridas item={{ classificacao: item.classificacao }} />
+              <Box style={{ flexDirection: "row", alignItems: "center"}}>
+                <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
                 <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
-                <Button style={styles.card_botao} onPress={() => {
-                  verificarERealizarNavegacao(item.id, navigation);
-                }}>
-                  Sortear
-                </Button>
               </Box>
+              <Button style={styles.card_botao} onPress={() => {
+                verificarERealizarNavegacao(item.id, navigation);
+              }}>
+                Sortear
+              </Button>
             </Box>
-          )}
-          ListEmptyComponent={
-            <Text style={styles.aviso}>
-              Nenhuma corrida encontrada.
-              <Ionicons key="aviso-icone" style={styles.aviso_icone} name="cog-outline" />
-            </Text>
-          }
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
+          </Box>
+        )}
+      />
       )}
     </VStack>
   );
@@ -142,6 +138,10 @@ const styles = StyleSheet.create({
   card_infos: {
     flex: 1,
     marginLeft: 10,
+  },
+  card_icone: {
+    color: TEMAS.colors.black[500],
+    marginRight: 5,
   },
   card_titulo: {
     fontSize: TEMAS.fontSizes.md,
