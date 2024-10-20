@@ -12,28 +12,40 @@ interface ConfirmacaoCkecksProps extends ITextProps {
     readonly textSucesso: ReactNode;
     readonly textBotao: ReactNode;
     readonly onPressBotao?: () => void;
+    readonly textBotaoAlterar?: string; // Casos que já tenha Check-in, Check-out ou Sorteio feitos e ele deseja ver os dados e alterar msm assim
+    readonly onPressBotaoAlterar?: () => void;
 
 }
 
 
-export default function ConfirmacoesCkecks( {textSucesso, textBotao, onPressBotao,  ...rest}: ConfirmacaoCkecksProps) {
-
+export default function ConfirmacoesChecks({ 
+    textSucesso, 
+    textBotao, 
+    onPressBotao, 
+    textBotaoAlterar, 
+    onPressBotaoAlterar, 
+    ...rest 
+}: ConfirmacaoCkecksProps) {
+    
     const fontsLoaded = useLoadFonts();
     if (!fontsLoaded) {
-      return null;
+        return null;
     }
 
     return (
         <VStack style={style.container} {...rest}>
+            <Ionicons name="checkmark-circle-outline" size={100} color={TEMAS.colors.yellow[500]} />
+            <Text style={style.sucessoText}>{textSucesso}</Text>
 
-        <Ionicons name="checkmark-circle-outline" size={100} color={TEMAS.colors.yellow[500]} />
-        
-        <Text style={style.sucessoText}>{textSucesso}</Text>
+            <TouchableOpacity style={style.button} onPress={onPressBotao}>
+                <Text style={style.buttonText}>{textBotao}</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={style.button} onPress={onPressBotao}>
-            <Text style={style.buttonText}>{textBotao}</Text>
-        </TouchableOpacity>
-
+            {textBotaoAlterar && (
+                <TouchableOpacity style={style.button} onPress={onPressBotaoAlterar}>
+                    <Text style={style.buttonText}>{textBotaoAlterar}</Text>
+                </TouchableOpacity>
+            )}
         </VStack>
     )
 }

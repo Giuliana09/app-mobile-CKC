@@ -1,6 +1,6 @@
 import React from 'react';
 import {VStack, } from 'native-base';
-import ConfirmacoesCkecks from '../components/ConfirmacoesCkecks';
+import ConfirmacoesCkecks from '../components/ConfirmacoesChecks';
 import { StyleSheet } from 'react-native';
 import { TEMAS } from '../style/temas';
 
