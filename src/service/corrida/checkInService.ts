@@ -98,7 +98,6 @@ export const verificarSeJaFezCheckIn = async (idInscricao: number) => {
           dados: response.data,
       };
   } catch (error: any) {
-      console.log('Erro ao verificar check-in: ID =', idInscricao,  error.response.data.details);
       return {
           status: error.response?.data?.status || 500,
           title: error.response?.data?.title || 'Erro inesperado',
