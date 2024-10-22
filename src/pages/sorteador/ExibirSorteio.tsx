@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { VStack, Text, Spinner, Image, useToast } from "native-base";
+import { VStack, Text, Spinner, Image, useToast, Button } from "native-base";
 import logoCKC1 from "../../assets/logoCKC1.png";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { realizarSorteioDaCorrida } from "../../service/sorteador/sorteadorService";
 import PilotoESeuNumeroDeKart from "../../components/PilotoESeuNumeroDeKart";
 import BotaoSorteio from "../../components/BotaoSorteio";
@@ -10,6 +10,7 @@ import { useSorteioService } from "../../service/sorteador/exibirSorteioService"
 import { Cabecalho } from "../../components/Cabecalho";
 import { TEMAS } from "../../style/temas";
 import { StyleSheet } from "react-native";
+import { navegarParaTelaSemParametros } from "../../service/navegacao/navegacaoService";
 
 type ParamList = {
   ExibirSorteio: {
@@ -23,6 +24,7 @@ type ParamList = {
 export default function ExibirSorteio() {
   const route = useRoute<RouteProp<ParamList, 'ExibirSorteio'>>();
   const toast = useToast();
+  const navigation = useNavigation();
 
   const [dadosSorteio, setDadosSorteio] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -38,13 +40,7 @@ export default function ExibirSorteio() {
         setDadosSorteio(response.dados.pilotos);
         setError(null);
       } else {
-        setError(response.details);
-        const notificacao = notificacaoGeral(response.status, response.title, response.details);
-        toast.show({
-          title: notificacao.title,
-          description: notificacao.details,
-          backgroundColor: notificacao.background,
-        });
+        setError(`${response.title}\n${response.details}`);
       }
       setLoading(false);
     };
@@ -80,7 +76,15 @@ export default function ExibirSorteio() {
       {loading ? (
         <Spinner size="lg" />
       ) : error ? (
-        <Text color="red.500">{error}</Text>
+        <VStack>
+          <Text style={styles.erro}>{error}</Text>
+          <Button
+            style={styles.botao}
+            onPress={() => navegarParaTelaSemParametros(navigation, 'SortearStack', 'SortearScreen1')}
+          >
+            Voltar a lista de corridas
+          </Button>
+        </VStack>
       ) : (
         <PilotoESeuNumeroDeKart pilotoAtual={pilotoAtual} sorteando={sorteando} numeroSorteado={numeroSorteado} />
       )}
@@ -109,5 +113,20 @@ const styles = StyleSheet.create({
     color: TEMAS.colors.white,
     fontFamily: TEMAS.fonts['petch_Bold'],
     textAlign: 'center',
+  },
+  erro: {
+    marginTop: 40,
+    fontSize: TEMAS.fontSizes.md,
+    padding: 20,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    textAlign: 'center',
+  },
+  botao: {
+    marginTop: 20,
+    backgroundColor: TEMAS.colors.blue[500],
+    borderRadius: 10,
+    width: '60%',
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });
