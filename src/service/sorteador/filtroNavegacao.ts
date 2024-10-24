@@ -21,7 +21,6 @@ export async function verificarERealizarNavegacao(idCorrida: number, navigation:
                 qtdDePessoasComCheckIn: totalUsuariosComCheckIn, 
                 idCorrida: idCorrida 
             });  
-            console.log("Entrei no else")
         }
     } catch (error) {
         console.error("Erro ao fazer a requisição de Verificar Sorteio:", error);
