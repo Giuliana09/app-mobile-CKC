@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useToast } from "native-base";
-import { notificacaoGeral } from "../notificacaoGeral";
 import { navegarParaTelaComParametros } from "../navegacao/navegacaoService";
 import { useNavigation } from "@react-navigation/native";
-import { notificacaoSorteioFinalizado } from "./sorteadorService";
 
-export function useSorteioService(dadosSorteio: any[], indexInicial: number, idCorrida: number, qtdDePessoasComCheckIn: number) {
+
+export function useSorteioService(dadosSorteio: any[], indexInicial: number, idCorrida: number, qtdDePessoasComCheckIn: number, maiorNumeroDeKart: number, numerosForaDoSorteio: number[]) {
     const toast = useToast();
     const navigation = useNavigation();
 
@@ -42,19 +41,15 @@ export function useSorteioService(dadosSorteio: any[], indexInicial: number, idC
         } else {
             // Ação dps de clicar em finalizar
             setBotaoTexto("Finalizar");
-            const notificacaoDeFinalizacao = notificacaoSorteioFinalizado();
-
-            toast.show({
-                title: notificacaoDeFinalizacao.title,
-                description: notificacaoDeFinalizacao.details,
-                backgroundColor: notificacaoDeFinalizacao.background,
-            });
 
             // Navegar para a próxima tela passando o maiorNumeroDeKart e o idCorrida
             navegarParaTelaComParametros(navigation, 'SortearStack', 'ConfirmarSorteio', {
                 idCorrida: idCorrida,
+                dadosSorteio: dadosSorteio,
                 qtdDePessoasSorteadas: dadosSorteio.length,
-                qtdDePessoasComCheckIn: qtdDePessoasComCheckIn
+                qtdDePessoasComCheckIn: qtdDePessoasComCheckIn,
+                maiorNumeroDeKart: maiorNumeroDeKart,
+                numerosForaDoSorteio: numerosForaDoSorteio
             });
         }
     };

@@ -50,11 +50,3 @@ export const realizarSorteioDaCorrida = async (idCorrida: number, maiorNumeroDeK
     };
   }
 };
-
-export function notificacaoSorteioFinalizado() {
-  return {
-    title: 'Sorteio finalizado',
-    details: 'Sorteio finalizado com Sucesso!',
-    background: "green.500" // Verde para sucesso
-  };
-}

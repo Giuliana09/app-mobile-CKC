@@ -5,7 +5,6 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { realizarSorteioDaCorrida } from "../../service/sorteador/sorteadorService";
 import PilotoESeuNumeroDeKart from "../../components/PilotoESeuNumeroDeKart";
 import BotaoSorteio from "../../components/BotaoSorteio";
-import { notificacaoGeral } from "../../service/notificacaoGeral";
 import { useSorteioService } from "../../service/sorteador/exibirSorteioService";
 import { Cabecalho } from "../../components/Cabecalho";
 import { TEMAS } from "../../style/temas";
@@ -23,7 +22,6 @@ type ParamList = {
 
 export default function ExibirSorteio() {
   const route = useRoute<RouteProp<ParamList, 'ExibirSorteio'>>();
-  const toast = useToast();
   const navigation = useNavigation();
 
   const [dadosSorteio, setDadosSorteio] = useState<any[]>([]);
@@ -65,7 +63,7 @@ export default function ExibirSorteio() {
     realizarSorteioParaPiloto,
     passarParaProximoPiloto,
 
-  } = useSorteioService(dadosSorteio, 0, idCorrida, qtdDePessoasComCheckIn);
+  } = useSorteioService(dadosSorteio, 0, idCorrida, qtdDePessoasComCheckIn, maiorNumeroDeKart, numerosForaDoSorteio);
 
   return (
     <VStack flex={1} style={styles.view}>
