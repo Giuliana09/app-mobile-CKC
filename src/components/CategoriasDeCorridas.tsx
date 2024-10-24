@@ -5,7 +5,7 @@ import { TEMAS } from '../style/temas';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Definindo os tipos de classificação
-type EstilosCategoria = 'CKC_110' | 'CKC_95' | 'DDL_90';
+export type EstilosCategoria = 'CKC_110' | 'CKC_95' | 'DDL_90';
 
 interface ICategoriasDeCorridas {
   item: {
