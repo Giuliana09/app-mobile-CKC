@@ -50,3 +50,26 @@ export const realizarSorteioDaCorrida = async (idCorrida: number, maiorNumeroDeK
     };
   }
 };
+
+export const obterListaDePilotosParaCompartilharViaWhatsapp = async (idCorrida: number) => {
+  try {
+    const response = await api.get(`/check-in/compartilhar?id_corrida=${idCorrida}`);
+
+    return {
+      status: response.status,
+      dados: response.data
+    };
+
+  } catch (error: any) {
+    console.log('Erro na requisição de compartilhar Lista por Whatsapp:', error.message);
+    if (error.response) {
+      console.log('Erro exposto pela API:', error.response.data);
+    }
+    return {
+      status: error.response?.data?.status || 500,
+      title: error.response?.data?.title || 'Erro inesperado',
+      details: error.response?.data?.details || 'Não foi possível realizar o Sorteio.',
+    };
+  }
+};
+

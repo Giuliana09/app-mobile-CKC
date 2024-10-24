@@ -1,5 +1,5 @@
 import api from "../api";
-import { navegarParaTelaComParametros, navegarParaTelaSemParametros } from "../navegacao/navegacaoService"; 
+import { navegarParaTelaComParametros } from "../navegacao/navegacaoService"; 
 
 export async function verificarERealizarNavegacao(idCorrida: number, navigation: any) {
     try {
@@ -10,12 +10,18 @@ export async function verificarERealizarNavegacao(idCorrida: number, navigation:
 
         // Verificação para indicar a navegação
         if (totalUsuariosComNumeroDeKart === totalUsuariosComCheckIn) {
-            navegarParaTelaSemParametros(navigation, 'SortearStack', 'ConfirmacaoSorteio'); 
+            navegarParaTelaComParametros(navigation, 'SortearStack', 'ConfirmacaoSorteio', { 
+                idCorrida: idCorrida,
+                maiorNumeroDeKart: 0,
+                numerosForaDoSorteio: [],
+                qtdDePessoasComCheckIn: totalUsuariosComCheckIn
+            });
         } else {
             navegarParaTelaComParametros(navigation, 'SortearStack', 'ListaDeKartsConfig', { 
                 qtdDePessoasComCheckIn: totalUsuariosComCheckIn, 
                 idCorrida: idCorrida 
             });  
+            console.log("Entrei no else")
         }
     } catch (error) {
         console.error("Erro ao fazer a requisição de Verificar Sorteio:", error);

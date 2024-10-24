@@ -70,6 +70,9 @@ export default function ConfirmarSorteio() {
     navegarParaTelaComParametros(navigation, 'SortearStack', 'ResultadoSorteio', {
       dadosSorteio: dadosSorteio,
       idCorrida: idCorrida,
+      numerosForaDoSorteio: numerosForaDoSorteio,
+      maiorNumeroDeKart: maiorNumeroDeKart,
+      qtdDePessoasComCheckIn: qtdDePessoasComCheckIn,
     });
   };
 
