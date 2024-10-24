@@ -16,22 +16,62 @@ O projeto Web do Gerenciador já foi feito em PHP, porém notamos que não havia
 
 - ✅ Criação do Readme do front
 
-## ⚙️ Funcionalidades e telas
+## ⚙️ Funcionalidades
 
-- 🟡 CRUD de Kartódromos
-- 🟡 CRUD de Campeonatos
-- 🟡 CRUD de Corridas
-- 🟡 CRUD de Usuários
-- 🟡 CRUD de Produtos
-- 🟡 CRUD de Classificação das Corridas
-- 🟡 Autenticação de usuários
-- 🟡 Compra de ingressos de corridas
-- 🟡 Carrinho de Compras
-- 🟡 Check-out de Pagamentos
-- 🟡 Check-in de Pilotos
-- 🟡 Check-out de Pilotos
-- 🟡 Sorteador de Números de Karts
-- 🟡 Compartilhamento via Whatsapp da Lista de Pilotos
+**Autenticação**
+   - 🟢 Fazer Login
+**Gerenciamento de Corridas**
+   - 🟢 Buscar Lista de Corridas
+   - 🟢 Aplicar Filtros nas Buscas de Corridas
+**Check-in de Pilotos**
+   - 🟢 Realizar Check-in de Pilotos
+   - 🟢 Exibir Lista de Pilotos para Check-in
+   - 🟢 Exibir Campos Disponíveis para Alteração no Check-in
+   - 🟢 Exibir Confirmação de Check-in
+**Sorteio de Pilotos**
+   - 🟢 Realizar Sorteio para os Pilotos
+   - 🟢 Solicitar Maior Número de Kart
+   - 🟢 Excluir Números 
+   - 🟢 Confirmar Exclusão de Números de Kart
+   - 🟢 Exibir Resultado do Sorteio por Piloto
+   - 🟢 Exibir Confirmação do Sorteio
+   - 🟢 Exibir Lista Completa de Pilotos e seus Números de Kart
+**Check-out de Pilotos**
+   - 🟢 Realizar Check-out de Pilotos
+   - 🟢 Exibir Lista de Pilotos para Check-out
+   - 🟢 Exibir Campos Disponíveis para Alteração no Check-out
+   - 🟢 Exibir Confirmação de Check-out
+**Compartilhamento**
+   - 🟡 Compartilhar Informações de Check-in e Sorteio via WhatsApp
+**Navegação**
+   - 🟢 Menu do Aplicativo
+   - 🟡 Navegação da Tela de Check-in feito
+   - 🟡 Navegação da Tela de Check-ou feito
+   - 🟡 Navegação da Tela de Sorteio feito
+
+## 🖥️ Telas
+**Autenticação**
+   - 🟢 Tela de Login
+**Navegação Principal**
+   - 🟢 Menu Principal
+**Check-in**
+   - 🟢 Tela para Exibir Corridas de Check-in
+   - 🟢 Tela para Exibir Lista de Pilotos para Check-in
+   - 🟡 Tela para Exibir Campos Disponíveis para Alteração em Check-in
+   - 🟢 Tela de Confirmação de Check-in
+**Sorteio**
+   - 🟢 Tela para Exibir Corridas para Fazer Sorteio
+   - 🟢 Tela para Exibir Resultados do Sorteio por Piloto
+   - 🟡 Telas de Configurações do Sorteio
+   - 🟡 Tela de Confirmação do Sorteio
+   - 🟡 Tela para Exibir Lista Completa de Pilotos e seus Números de Kart
+**Check-out**
+   - 🟢 Tela para Exibir Corridas para Fazer Check-out
+   - 🟡 Tela para Exibir Lista de Pilotos para Check-out
+   - 🟡 Tela para Exibir Campos Disponíveis para Alteração em Check-out
+   - 🟢 Tela de Confirmação de Check-out
+
+
 
 <br><br><br>
 ---
