@@ -157,7 +157,6 @@ export default function Checkin() {
           ) : (
             !temLogKartodromosError && (
               <>
-                {console.log("Resposta ao carregar os nomes do Kartodromo: ", errorKartodromos)}
                 {setTemLogKartodromosError(true)}
               </>
             )

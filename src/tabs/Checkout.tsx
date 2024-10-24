@@ -6,7 +6,6 @@ import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from "../assets/logoCKC1.png";
 import largada from "../assets/largada.png";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { navegarParaTelaDeInformacoesDoCheckIn } from "../service/corrida/checkInService";
 import { StyleSheet } from "react-native";
 import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
@@ -156,7 +155,6 @@ export default function Checkout() {
           ) : (
             !temLogKartodromosError && (
               <>
-                {console.log("Resposta ao carregar os nomes do Kartodromo: ", errorKartodromos)}
                 {setTemLogKartodromosError(true)}
               </>
             )
