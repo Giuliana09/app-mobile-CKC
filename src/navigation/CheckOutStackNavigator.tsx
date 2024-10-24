@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { TouchableOpacity } from 'react-native'; 
+import { Ionicons } from '@expo/vector-icons'; 
 import Checkout from '../tabs/Checkout';  
 import DetalhesCorridaCheckOut from '../pages/DetalhesCorridaCheckOut';
 import RealizarCheckOut from '../pages/RealizarCheckOut';
@@ -19,7 +21,18 @@ function CheckOutStackNavigator() {
       <Stack.Screen 
         name="DetalhesCorridaCheckOut" 
         component={DetalhesCorridaCheckOut} 
-        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
+        options={({ navigation }) => ({
+          title: '',
+          headerTransparent: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('CheckoutScreen1')}>
+              <Ionicons name="arrow-back" size={24} color="white" style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+        })}  
       />
       <Stack.Screen 
         name="RealizarCheckOut" 

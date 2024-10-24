@@ -5,6 +5,8 @@ import RealizarCheckIn from '../pages/RealizarCheckIn';
 import Checkin from '../tabs/Checkin';
 import CabecalhoTelasOpcoes from '../components/CabecalhoNavegacaoTelasOpcoes';
 import ConfirmacaoCheckIN from '../pages/ConfirmacaoCkeckIN';
+import { TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +21,18 @@ function CheckInStackNavigator() {
       <Stack.Screen 
         name="DetalhesCorridaCheckIn" 
         component={DetalhesCorridaCheckIn} 
-        options={({ navigation }) => CabecalhoTelasOpcoes({ navigation })}  
+        options={({ navigation }) => ({
+          title: '',
+          headerTransparent: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('CheckoutScreen1')}>
+              <Ionicons name="arrow-back" size={24} color="white" style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+        })}  
       />
       <Stack.Screen 
         name="RealizarCheckIn" 
