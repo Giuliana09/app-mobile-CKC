@@ -46,7 +46,7 @@ export default function ListaDeKartsConfirmarExclusao() {
             <Text style={styles.texto}>Estes são os números selecionados para retirar do sorteio:</Text>
           </VStack>
       <FlatList
-        data={numerosForaDoSorteio.sort()}
+        data={numerosForaDoSorteio.sort((a, b) => a - b)}
         keyExtractor={(item) => item.toString()}
         numColumns={3}
         initialNumToRender={8}
