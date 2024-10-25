@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Text, VStack, Modal,  Icon } from 'native-base';
 import ConfirmacoesChecks from '../components/ConfirmacoesChecks';
-import { StyleSheet } from 'react-native';
+import { Share, StyleSheet } from 'react-native';
 import { TEMAS } from '../style/temas';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
@@ -21,7 +21,7 @@ export default function ConfirmacaoSorteio() {
     const route = useRoute<RouteProp<ParamList, 'ConfirmacaoSorteio'>>();
     const { idCorrida, maiorNumeroDeKart, numerosForaDoSorteio, qtdDePessoasComCheckIn } = route.params;
 
-    const [listaParaCompartilhar, setListaParaCompartilhar] = useState<any[]>([]);
+    const [listaParaCompartilhar, setListaParaCompartilhar] = useState<string | null>(null);
     const [modalEstaVisivel, setVisibilidadeModal] = useState(false); 
 
     async function handleCheckout() {
@@ -64,6 +64,20 @@ export default function ConfirmacaoSorteio() {
     // Função para compartilhar via WhatsApp 
     async function consumirApiECompartilharViaWhatsapp() {
         console.log('Consumindo a API e passando o listaParaCompartilhar nela, para compartilhar via WhatsApp...');
+
+        if (listaParaCompartilhar) {
+            try {
+              const resultado = await Share.share({
+                message: listaParaCompartilhar,
+              });
+              if (resultado.action === Share.sharedAction) {
+                console.log('Compartilhado com sucesso!');
+              }
+            } catch (error) {
+                console.error('Erro ao compartilhar:', error);
+              }
+          }
+      
     }
 
     return (

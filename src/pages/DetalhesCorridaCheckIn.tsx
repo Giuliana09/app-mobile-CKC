@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
 import { useToast } from 'native-base';
@@ -22,7 +23,9 @@ import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
+  ConfirmacaoCheckIN: undefined;
 };
+export type CheckInNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckIn'>;
 
 function DetalhesCorridaCheckIn() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckIn'>>();
@@ -32,7 +35,7 @@ function DetalhesCorridaCheckIn() {
   const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-  const navigation = useNavigation();
+  const navigation = useNavigation<CheckInNavigationProp>()
 
 
   useEffect(() => {
@@ -93,6 +96,13 @@ function DetalhesCorridaCheckIn() {
 
   // Calcula a quantidade de check-ins realizados
   const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
+  
+  // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
+  useEffect(() => {
+    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
+      navigation.navigate('ConfirmacaoCheckIN');
+    }
+  }, [qtdPilotosComCheckIn, pilotos]);
 
   return (
     <View style={styles.background}>

@@ -17,7 +17,7 @@ export default function ConfirmacaoCkeckIN() {
 
         <ConfirmacoesCkecks flex={50}
             textSucesso="Todos os check-ins dessa cirrida foram realizados com sucesso!"
-            textBotao="Voltar ao check-in"
+            textBotao="Sortear karts da corrida"
             onPressBotao={navegacao}  
             textBotaoAlterar="Refazer Checkin" 
             onPressBotaoAlterar={() => {

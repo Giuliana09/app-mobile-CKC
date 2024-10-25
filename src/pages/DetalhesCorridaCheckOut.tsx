@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type ParamList = {
   DetalhesCorridaCheckOut: { idCorrida: number };
-  ConfirmacaoCheckOUT: undefined;
+  ConfirmacaoCkeckOUT: undefined;
 };
 export type CheckOutNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckOut'>;
 
@@ -72,7 +72,7 @@ function DetalhesCorridaCheckOut() {
   // Verifica se todos os pilotos já fizeram check-out e navega para a tela de confirmação de check-out
   useEffect(() => {
     if (pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length) {
-      navigation.navigate('ConfirmacaoCheckOUT');
+      navigation.navigate('ConfirmacaoCkeckOUT');
     }
   }, [qtdPilotosComCheckOut, pilotos]);
 
