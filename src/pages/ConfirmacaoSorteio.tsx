@@ -105,8 +105,8 @@ export default function ConfirmacaoSorteio() {
                     <Modal.Body>
                         {listaParaCompartilhar}
                     </Modal.Body>
-                    <Modal.Footer style={style.botaoModal} >
-                        <Button  onPress={consumirApiECompartilharViaWhatsapp}>
+                    <Modal.Footer>
+                        <Button style={style.botao1} onPress={consumirApiECompartilharViaWhatsapp}>
                             <Icon name="share" /> {}
                             Compartilhar via WhatsApp
                         </Button>

@@ -24,8 +24,7 @@ import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoServ
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
-  ConfirmacaoCheckIN: undefined;
-  
+    
 };
 export type CheckInNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckIn'>;
 
@@ -101,11 +100,12 @@ function DetalhesCorridaCheckIn() {
   
   // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
   useEffect(() => {
+    
     if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
       navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
         idCorrida: idCorrida,
       });
-      // navigation.navigate('ConfirmacaoCheckIN');
+      
     }
   }, [qtdPilotosComCheckIn, pilotos]);
 
@@ -167,7 +167,12 @@ function DetalhesCorridaCheckIn() {
           {error || 'Nenhum piloto encontrado.'}
         </Text>
       )}
-      
+      {pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
+          <Button style={styles.card_botao} onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
+            idCorrida: idCorrida })}>
+            Confirmar alterações
+          </Button>
+        )}
       </Box>
     </View>
   );
