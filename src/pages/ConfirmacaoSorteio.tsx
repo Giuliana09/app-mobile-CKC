@@ -89,7 +89,8 @@ export default function ConfirmacaoSorteio() {
                 textBotaoAlterar="Refazer sorteio"
                 onPressBotaoAlterar={handleRefazerSorteio}
             />
-            <Button onPress={handlePrepararEExibirListaParaCompartilhar}>
+            <Button style={style.botao1}
+             onPress={handlePrepararEExibirListaParaCompartilhar}>
                 Compartilhar lista por WhatsApp
             </Button>
 
@@ -104,8 +105,8 @@ export default function ConfirmacaoSorteio() {
                     <Modal.Body>
                         {listaParaCompartilhar}
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button onPress={consumirApiECompartilharViaWhatsapp}>
+                    <Modal.Footer style={style.botaoModal} >
+                        <Button  onPress={consumirApiECompartilharViaWhatsapp}>
                             <Icon name="share" /> {}
                             Compartilhar via WhatsApp
                         </Button>
@@ -124,4 +125,19 @@ export const style = StyleSheet.create({
         backgroundColor: TEMAS.colors.black[300],
         padding: 20,
     },
+    botao1:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: TEMAS.colors.black[500],
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        marginTop: 30,
+        gap: 5,
+    },
+    botaoModal:{
+        backgroundColor: TEMAS.colors.black[500], 
+    }
+   
+   
 });

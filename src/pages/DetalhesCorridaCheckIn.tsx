@@ -16,7 +16,8 @@ import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
 import relogio from '../assets/clock.png'
 import largada from "../assets/largada.png"; 
-import { background } from 'native-base/lib/typescript/theme/styled-system';
+import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
+
 
 
 
@@ -24,6 +25,7 @@ import { background } from 'native-base/lib/typescript/theme/styled-system';
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
   ConfirmacaoCheckIN: undefined;
+  
 };
 export type CheckInNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckIn'>;
 
@@ -100,7 +102,10 @@ function DetalhesCorridaCheckIn() {
   // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
   useEffect(() => {
     if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
-      navigation.navigate('ConfirmacaoCheckIN');
+      navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
+        idCorrida: idCorrida,
+      });
+      // navigation.navigate('ConfirmacaoCheckIN');
     }
   }, [qtdPilotosComCheckIn, pilotos]);
 
@@ -136,9 +141,6 @@ function DetalhesCorridaCheckIn() {
         </Text>
       )}
       
-
-
-
       {pilotos ? (
         <>
           <Text style={styles.titlePilotos}>Pilotos Cadastrados [{qtdPilotosComCheckIn}/{pilotos.length}]</Text>
@@ -166,9 +168,6 @@ function DetalhesCorridaCheckIn() {
         </Text>
       )}
       
-      <Button style={styles.card_botao}>
-                  Confirmar todos os Check-ins
-      </Button>
       </Box>
     </View>
   );
