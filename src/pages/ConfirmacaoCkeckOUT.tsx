@@ -22,6 +22,7 @@ export default function ConfirmacaoCkeckOUT() {
     async function navegacaoRefazerCheckOut(){
         navegarParaTelaComParametros(navigation, 'CheckOutStack', 'DetalhesCorridaCheckOut', {
             idCorrida: idCorridaDeNavegacao,
+            isEdicao: true,
           });
         };
         
@@ -33,7 +34,7 @@ export default function ConfirmacaoCkeckOUT() {
         <VStack style={style.container}>
 
         <ConfirmacoesCkecks 
-        textSucesso="Todos os check-outs dessa cirrida foram realizado com sucesso!"
+        textSucesso="Todos os check-outs dessa corrida foram realizados com sucesso!"
         textBotao="Voltar ao check-out"
         onPressBotao={navegacaoVoltarCheckOuts}
         textBotaoAlterar="Refazer check-out"
