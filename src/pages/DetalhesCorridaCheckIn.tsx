@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
 import { useToast } from 'native-base';
@@ -23,9 +22,7 @@ import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
-  ConfirmacaoCheckIN: undefined;
 };
-export type CheckInNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckIn'>;
 
 function DetalhesCorridaCheckIn() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckIn'>>();
@@ -35,7 +32,7 @@ function DetalhesCorridaCheckIn() {
   const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-  const navigation = useNavigation<CheckInNavigationProp>()
+  const navigation = useNavigation();
 
 
   useEffect(() => {
@@ -96,13 +93,6 @@ function DetalhesCorridaCheckIn() {
 
   // Calcula a quantidade de check-ins realizados
   const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
-  
-  // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
-  useEffect(() => {
-    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
-      navigation.navigate('ConfirmacaoCheckIN');
-    }
-  }, [qtdPilotosComCheckIn, pilotos]);
 
   return (
     <View style={styles.background}>
@@ -119,11 +109,11 @@ function DetalhesCorridaCheckIn() {
           <Box style={styles.corrida_inf}>
              <Text style={{ fontWeight: 'bold' }}>{corrida.nome} - {corrida.campeonato.nome}</Text>
               <Box style={styles.data}>          
-                <Image style={styles.iconCalendario} source={calendario} alt="icone de calendario"/>
+                <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
                 <Text>{formatarDataCorrida(corrida.data)}</Text>
               </Box>
               <Box style={styles.horario}>       
-                <Image style={styles.iconRelogio} source={relogio} alt="icone de relogio"/>
+                <Ionicons style={styles.card_icone} name="time-outline"/>
                 <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
               </Box>
           </Box>
@@ -148,7 +138,8 @@ function DetalhesCorridaCheckIn() {
             renderItem={({ item, index }) => (
               <TouchableOpacity onPress={() => navegarParaTelaDeRealizarCheckIn(item.inscricao_id, navigation)}>
                 <View style={styles.pilotoBox}>
-                <Text style={styles.pilotoTitulo}>Piloto {index + 1}</Text><Box style={styles.check}>
+                <Text style={styles.pilotoTitulo}>Piloto {index + 1}</Text>
+                <Box style={styles.check}>
                   <Text style={styles.pilotoItem}>{`${item.usuario.nome} ${item.usuario.sobrenome}`}</Text>
                   {/* Ícone se fez ou não o Check-in */}
                   {checkIns[item.inscricao_id] && (
@@ -167,7 +158,7 @@ function DetalhesCorridaCheckIn() {
       )}
       
       <Button style={styles.card_botao}>
-                  Confirmar todos os Check-ins
+        Confirmar todos os Check-ins
       </Button>
       </Box>
     </View>
@@ -179,6 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: TEMAS.fonts['petch_Bold'],
+    top: -50,
   },
 
   background: {
@@ -252,12 +244,10 @@ const styles = StyleSheet.create({
   },
   data: {
     marginTop:10,
-    marginBottom:10,
-    marginLeft: 7, 
+    marginBottom:5,
     flexDirection: 'row',
   },
   horario:{
-    marginLeft:7,
     flexDirection: 'row',
   },
 
@@ -265,22 +255,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-  iconCalendario: {
-    width: 20,
-    height: 20,
+  card_icone: {
+    color: TEMAS.colors.black[500],
     alignSelf: "flex-start",
-    marginRight:5,
-  },
-
-  iconRelogio: {
-    width: 20,
-    height: 20,
-    alignSelf: "flex-start",
-    marginRight:5,
+    padding:1,
+    fontSize:20,
   },
 
   logo: {
-    width: 180,
+    width: 110,
     resizeMode: "contain",
   },
 
