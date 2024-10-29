@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { listarDadosDosPilotosParaCheckOut, navegarParaTelaDeRealizarCheckOut } from '../service/corrida/checkOutService';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
 
 type ParamList = {
   DetalhesCorridaCheckOut: { idCorrida: number };
@@ -72,7 +73,10 @@ function DetalhesCorridaCheckOut() {
   // Verifica se todos os pilotos já fizeram check-out e navega para a tela de confirmação de check-out
   useEffect(() => {
     if (pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length) {
-      navigation.navigate('ConfirmacaoCkeckOUT');
+      navegarParaTelaComParametros(navigation, 'CheckOutStack', 'ConfirmacaoCheckOut', {
+        idCorrida: idCorrida,
+      });
+      
     }
   }, [qtdPilotosComCheckOut, pilotos]);
 
