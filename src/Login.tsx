@@ -69,6 +69,7 @@ export default function Login({ navigation }: any) {
         <EntradaTexto
           label="Senha"
           placeholder="Insira sua senha"
+          secureTextEntry={true}
           value={senha}
           onChangeText={setSenha}
         />
@@ -79,7 +80,6 @@ export default function Login({ navigation }: any) {
         <Botao style={style.btEntrar}
           onPress={login}
         //onPress={navigation.navigate('Menu')}
-
         >Entrar</Botao>
       </Box>
 

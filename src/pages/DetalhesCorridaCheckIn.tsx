@@ -15,13 +15,15 @@ import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
 import relogio from '../assets/clock.png'
 import largada from "../assets/largada.png"; 
-import { background } from 'native-base/lib/typescript/theme/styled-system';
+import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
+
 
 
 
 
 type ParamList = {
   DetalhesCorridaCheckIn: { idCorrida: number };
+    
 };
 
 function DetalhesCorridaCheckIn() {
@@ -93,6 +95,17 @@ function DetalhesCorridaCheckIn() {
 
   // Calcula a quantidade de check-ins realizados
   const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
+  
+  // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
+  useEffect(() => {
+    
+    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
+      navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
+        idCorrida: idCorrida,
+      });
+      
+    }
+  }, [qtdPilotosComCheckIn, pilotos]);
 
   return (
     <View style={styles.background}>
@@ -126,9 +139,6 @@ function DetalhesCorridaCheckIn() {
         </Text>
       )}
       
-
-
-
       {pilotos ? (
         <>
           <Text style={styles.titlePilotos}>Pilotos Cadastrados [{qtdPilotosComCheckIn}/{pilotos.length}]</Text>
@@ -156,10 +166,12 @@ function DetalhesCorridaCheckIn() {
           {error || 'Nenhum piloto encontrado.'}
         </Text>
       )}
-      
-      <Button style={styles.card_botao}>
-        Confirmar todos os Check-ins
-      </Button>
+      {pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
+          <Button style={styles.card_botao} onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
+            idCorrida: idCorrida })}>
+            Confirmar alterações
+          </Button>
+        )}
       </Box>
     </View>
   );

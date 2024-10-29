@@ -4,22 +4,27 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
-import { useToast } from 'native-base';
+import { useToast, Button } from 'native-base';
 import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
 import { Ionicons } from '@expo/vector-icons';
 import { listarDadosDosPilotosParaCheckOut, navegarParaTelaDeRealizarCheckOut } from '../service/corrida/checkOutService';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
+import { TEMAS } from '../style/temas';
 
 type ParamList = {
-  DetalhesCorridaCheckOut: { idCorrida: number };
-  ConfirmacaoCkeckOUT: undefined;
+  DetalhesCorridaCheckOut: { 
+    idCorrida: number,
+    isEdicao: boolean, 
+  };
 };
 export type CheckOutNavigationProp = StackNavigationProp<ParamList, 'DetalhesCorridaCheckOut'>;
 
 function DetalhesCorridaCheckOut() {
   const route = useRoute<RouteProp<ParamList, 'DetalhesCorridaCheckOut'>>();
-  const { idCorrida } = route.params;
+  const { idCorrida, isEdicao } = route.params;
+  let isEdicaoTratado = isEdicao ?? false;
   const [corrida, setCorrida] = useState<any>(null);
   const [pilotos, setPilotos] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -71,10 +76,19 @@ function DetalhesCorridaCheckOut() {
   
   // Verifica se todos os pilotos já fizeram check-out e navega para a tela de confirmação de check-out
   useEffect(() => {
-    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length) {
-      navigation.navigate('ConfirmacaoCkeckOUT');
+    if (pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length && !isEdicaoTratado) {
+      navegarParaTelaComParametros(navigation, 'CheckOutStack', 'ConfirmacaoCkeckOUT', {
+        idCorrida: idCorrida,
+      });
+      
     }
   }, [qtdPilotosComCheckOut, pilotos]);
+
+  function handleNavegagarParaConfirmacaoDepoisDeEditar() {
+    isEdicaoTratado = true;
+      navegarParaTelaComParametros(navigation, 'CheckOutStack', 'ConfirmacaoCkeckOUT', {
+      idCorrida: idCorrida })
+  };
 
   return (
     <View style={styles.container}>
@@ -117,9 +131,16 @@ function DetalhesCorridaCheckOut() {
           {error || 'Nenhum piloto encontrado.'}
         </Text>
       )}
+      {pilotos && pilotos.length > 0 && qtdPilotosComCheckOut === pilotos.length && (
+          <Button style={styles.card_botao} onPress={handleNavegagarParaConfirmacaoDepoisDeEditar}>
+            Confirmar alterações
+          </Button>
+        )}
     </View>
   );
+  
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -152,6 +173,16 @@ const styles = StyleSheet.create({
   checkIcon: {
     marginLeft: 10,
   },
+  card_botao:{
+    fontWeight: 'bold',
+    marginTop: 10,
+    backgroundColor: TEMAS.colors.blue[500],
+    borderRadius: 10,
+    marginBottom: 20,
+    position: 'absolute', 
+    //bottom: -125, 
+  },
+
 });
 
 export default DetalhesCorridaCheckOut;
