@@ -8,6 +8,18 @@ import { CheckIcon, Select, useToast } from 'native-base';
 import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
 import { TEMAS } from '../style/temas';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { consultarCorrida } from '../service/corrida/corridaService';
+import { Ionicons } from '@expo/vector-icons';
+import { listarDadosDosPilotosParaCheckOut, navegarParaTelaDeRealizarCheckOut } from '../service/corrida/checkOutService';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
+import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn } from '../service/corrida/checkInService';
+import {VStack, Image, Box} from 'native-base';
+import { Cabecalho } from '../components/Cabecalho';
+import logoCKC1 from '../assets/logoCKC1.png';
+import largada from "../assets/largada.png"; 
+import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 type ParamList = {
   RealizarCheckOut: { idInscricao: number; corrida: any };
@@ -103,14 +115,34 @@ const RealizarCheckOut = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Fazer Check-out para:</Text>
+    <View style={styles.background}>
+    <Cabecalho>
+      <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
+    </Cabecalho>
+      <View style={styles.container}>
+        <Text style={styles.title}>Fazer Check-out para:</Text>
+        <View>
       {corrida ? (
         <>
-          <Text>{corrida.nome} - {corrida.campeonato.nome}</Text>
+        <Box style={styles.Corrida}>
+        <Box style={{flexDirection: "row", alignItems: "center"}}>
+          <Image style={styles.card_img} source={largada} alt="largada dos karts" />
+          <Box style={{flexDirection: "column", alignItems: "flex-start"}}>
+          <Text  style={{fontWeight: 'bold', padding:3}}>{corrida.nome} - {corrida.campeonato.nome}</Text>
+          <Box style={{paddingLeft:2}}>
           <CategoriasDeCorridas item={{ classificacao: corrida.classificacao }} />
+          </Box>
+          <Box style={{ flexDirection: "row", alignItems: "center"}}>
+          <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
           <Text>{formatarDataCorrida(corrida.data)}</Text>
+          </Box>
+          <Box style={{ flexDirection: "row", alignItems: "center"}}>
+          <Ionicons style={styles.card_icone} name="time-outline"/>
           <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
+          </Box>
+          </Box>
+        </Box>
+        </Box>
         </>
       ) : (
         <Text style={styles.errorMessage}>
@@ -119,21 +151,30 @@ const RealizarCheckOut = () => {
       )}
       <Text style={styles.titulo_proximas}>Adicionar informações</Text>
       <View>
-        <Text>Nome</Text>
+        <Box style={styles.caixa}>
+        <Text style={{fontWeight: 'bold', paddingTop:3}}>Nome</Text>
         <Text>{usuarioNome} {usuarioSobrenome}</Text>
-        <Text>Peso Inicial</Text>
+        </Box>
+        <Box style={styles.caixa}>
+        <Text style={{fontWeight: 'bold', paddingTop:3}}>Peso Inicial</Text>
         <Text>{pesoInicial}</Text>
+        </Box>
         
-        <Text>Peso Final</Text>
+        <Box style={styles.caixa}>
+        <Text style={{fontWeight: 'bold', paddingTop:3}}>Peso Final</Text>
         <TextInput
           placeholder="Peso Final"
           value={pesoFinal}
           onChangeText={setPesoFinal}
           keyboardType="numeric"
-          style={{ borderWidth: 1, marginVertical: 10, padding: 10 }}
         />
-        <Text>Lastro:</Text>
+        </Box>
+
+        <Box style={styles.caixa}>
+        <Text style={{fontWeight: 'bold', paddingTop:3}}>Lastro:</Text>
         <Text>{lastro}</Text>
+        </Box>
+
         <View style={styles.classificadoContainer}>
           <Text>Classificado:</Text>
           <Select
@@ -157,7 +198,10 @@ const RealizarCheckOut = () => {
         </View>
       </View>
       <Button title="Confirmar Informações" onPress={confirmarCheckOut} />
+
+      </View>
       {error && <Text style={{ color: 'red' }}>{error}</Text>}
+    </View>
     </View>
   );
 };
@@ -165,23 +209,79 @@ const RealizarCheckOut = () => {
 export default RealizarCheckOut;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
+
+  background: {
     backgroundColor: TEMAS.colors.gray[300],
+    height:850,
+    fontFamily: TEMAS.fonts['petch_Bold'],
   },
+
+  logo: {
+    width: 110,
+    resizeMode: "contain",
+  },
+
+  card_img: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    marginRight:5,
+  },
+
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    paddingLeft: 20,
+    top: -50,
+  },
+
+  card_icone: {
+    color: TEMAS.colors.black[500],
+    marginRight: 5,
+    padding:1,
+    fontSize:20,
+  },
+
+  Corrida: {
+    height:120,
+    marginBottom:7,
+    marginTop:7,
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 15, 
+    flexDirection: 'column',
+    width:360,
+    alignItems: 'flex-start', 
+    paddingLeft: 15,
+    paddingTop:9,
+    paddingRight:200
+  },
+
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    color:'white',
   },
+
   errorMessage: {
     color: 'red',
     marginVertical: 10,
   },
   classificadoContainer: {
-    marginVertical: 10,
+    height:75,
+    marginBottom:7,
+    marginTop:7,
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 15, 
+    flexDirection: 'column',
+    width:340,
+    alignItems: 'flex-start', 
+    paddingLeft: 15,
+    paddingTop:9,
+    fontFamily: TEMAS.fonts['petch_Bold'],
   },
+  
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -194,6 +294,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
     fontSize: TEMAS.fontSizes.lg,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+  },
+
+  caixa: {
+    height:75,
+    marginBottom:7,
+    marginTop:7,
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 15, 
+    flexDirection: 'column',
+    width:340,
+    alignItems: 'flex-start', 
+    paddingLeft: 15,
+    paddingTop:9,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
 });
