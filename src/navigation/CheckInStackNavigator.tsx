@@ -25,7 +25,7 @@ function CheckInStackNavigator() {
           title: '',
           headerTransparent: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('CheckoutScreen1')}>
+            <TouchableOpacity onPress={() => navigation.navigate('CheckinScreen1')}>
               <Ionicons name="arrow-back" size={24} color="white" style={{ marginLeft: 10 }} />
             </TouchableOpacity>
           ),

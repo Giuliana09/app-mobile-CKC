@@ -11,7 +11,7 @@ import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
 import CategoriasDeCorridas from "../components/CategoriasDeCorridas";
 import BarraDePesquisaPorNomeEDia from "../components/BarraDePesquisaPorNomeEDia";
-import { verificarERealizarNavegacao } from "../service/sorteador/filtroNavegacao";
+import { verificarERealizarNavegacaoParaFluxoSorteador } from "../service/sorteador/filtroNavegacao";
 
 export default function Sortear() {
   const [corridas, setCorridas] = useState<any[]>([]);
@@ -90,7 +90,7 @@ export default function Sortear() {
                 <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
               </Box>
               <Button style={styles.card_botao} onPress={() => {
-                verificarERealizarNavegacao(item.id, navigation);
+                verificarERealizarNavegacaoParaFluxoSorteador(item.id, navigation);
               }}>
                 Sortear
               </Button>
