@@ -20,10 +20,15 @@ export const TEMAS = extendTheme({
         },
         white: '#fff',
         green:{
+            200:'#4C815A',
             300:'#069B0C'
         },
         orange:{
             300: '#CC5918',
+        },
+        red:{
+            300:'#CC1818',
+            500:'#DB1000',
         },
     },
 

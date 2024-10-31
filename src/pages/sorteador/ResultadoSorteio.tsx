@@ -50,7 +50,7 @@ export default function ResultadoSorteio() {
       <Text style={styles.titulo}>Resultados do Sorteio</Text>
 
       {loading ? (
-        <Spinner color="blue.500" />
+        <Spinner color="blue.500" mt={10} size={30} />
       ) : (
         <FlatList
           data={dadosSorteio}
@@ -84,10 +84,9 @@ const styles = StyleSheet.create({
     backgroundColor: TEMAS.colors.gray[300],
   },
   titulo: {
+    marginTop: -20,
     alignSelf: 'center',
-    color: TEMAS.colors.white,
-    marginHorizontal: 20,
-    marginBottom: 10,
+    color: TEMAS.colors.white, 
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },

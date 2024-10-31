@@ -1,10 +1,10 @@
 import React, { useState, memo, useCallback } from "react";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { VStack, Text, Image, Button, FlatList, useToast } from "native-base";
+import { VStack, Text, Image, Button, FlatList, useToast, ScrollView } from "native-base";
 import { Cabecalho } from "../../components/Cabecalho";
 import { TEMAS } from "../../style/temas";
 import logoCKC1 from "../../assets/logoCKC1.png";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoService";
 import { notificacaoGeral } from "../../service/notificacaoGeral";
 
@@ -85,7 +85,7 @@ export default function ListaDeKartsSelecionar() {
       <VStack>
             <Text style={styles.titulo}>Lista de Karts</Text>
             <Text style={styles.subtitulo}>Pilotos com Check-in feito [{qtdDePessoasComCheckIn}]</Text>
-            <Text style={styles.texto}>Selecione os números que deseja retirar do sorteio:</Text>
+            <Text style={styles.texto}>Selecione os números que deseja <Text style={{fontFamily:TEMAS.fonts['petch_Bold']}}>retirar</Text> do sorteio:</Text>
           </VStack>
       <FlatList
         data={Array.from({ length: maiorNumeroDeKart }, (_, i) => i + 1)}
@@ -120,15 +120,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitulo: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
     marginBottom: 10,
     paddingHorizontal: 20,
     textAlign: 'center',
   },
   texto: {
-    marginTop: 10,
-    fontSize: TEMAS.fontSizes.sm,
+    marginHorizontal: 10,
+    fontSize: TEMAS.fontSizes.md,
     textAlign: 'center',
     paddingHorizontal: 20,
   },

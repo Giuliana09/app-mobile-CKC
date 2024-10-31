@@ -19,6 +19,7 @@ function Rotas() {
             tabBarShowLabel: false,
             tabBarActiveTintColor: '#0033C1',
             tabBarInactiveTintColor: '#fff',
+            tabBarHideOnKeyboard: true,
             tabBarStyle: {
                 backgroundColor: '#232121',
                 borderTopWidth: 0,

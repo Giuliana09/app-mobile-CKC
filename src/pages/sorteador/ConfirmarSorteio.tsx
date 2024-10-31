@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   titulo: {
     alignSelf: 'center',
     marginTop: 80,
+    marginBottom: 20,
     marginHorizontal: 20,
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
@@ -201,14 +202,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '60%',
     marginTop: 20,
-    backgroundColor: TEMAS.colors.green[700],
+    backgroundColor: TEMAS.colors.green[200],
     borderRadius: 10,
   },
   botao: {
     alignSelf: 'center',
     width: '60%',
     marginTop: 30,
-    backgroundColor: TEMAS.colors.gray[500],
+    backgroundColor: TEMAS.colors.black[300],
     borderRadius: 10,
   },
 });

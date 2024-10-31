@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { VStack, Text, Image, Button, FlatList, Box } from "native-base";
+import { VStack, Text, Image, Button, FlatList, Box, ScrollView } from "native-base";
 import { TEMAS } from "../../style/temas";
 import logoCKC1 from "../../assets/logoCKC1.png";
 import { StyleSheet } from "react-native";
@@ -36,46 +36,47 @@ export default function ListaDeKartsConfirmarExclusao() {
   };
 
   return (
-    <VStack flex={1} style={styles.view}>
-      <VStack>
+    <FlatList
+      style={styles.view}
+      ListHeaderComponent={
+        <VStack>
             <Cabecalho key="cabecalho">
               <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
             </Cabecalho>
             <Text style={styles.titulo}>Lista de Karts</Text>
             <Text style={styles.subtitulo}>Pilotos com Check-in feito [{qtdDePessoasComCheckIn}]</Text>
-            <Text style={styles.texto}>Estes são os números selecionados para retirar do sorteio:</Text>
-          </VStack>
-      <FlatList
-        data={numerosForaDoSorteio.sort((a, b) => a - b)}
-        keyExtractor={(item) => item.toString()}
-        numColumns={3}
-        initialNumToRender={8}
-        maxToRenderPerBatch={4}
-        contentContainerStyle={styles.contentContainerStyle}
-        windowSize={10}
-        renderItem={({ item }) => (
-          <Box style={styles.numerosDeKartContainer}>
-            <Box style={styles.numeroKartBotao}>
-              <Text style={styles.kartText}>{`${item}`}</Text>
-            </Box>
+            <Text style={styles.texto}>Estes são os números selecionados para <Text style={{fontFamily:TEMAS.fonts['petch_Bold']}}>retirar</Text> do sorteio:</Text>
+        </VStack>
+      }
+      data={numerosForaDoSorteio.sort((a, b) => a - b)}
+      keyExtractor={(item) => item.toString()}
+      numColumns={3}
+      initialNumToRender={8}
+      maxToRenderPerBatch={4}
+      contentContainerStyle={styles.contentContainerStyle}
+      windowSize={10}
+      renderItem={({ item }) => (
+        <Box style={styles.numerosDeKartContainer}>
+          <Box style={styles.numeroKartBotao}>
+            <Text style={styles.kartText}>{`${item}`}</Text>
           </Box>
-        )}
-        ListEmptyComponent={
-          <Text style={styles.subtitulo}>Nenhum número foi retirado do sorteio.</Text>
-        }
-        ListFooterComponent={
-          <VStack>
-            <Text style={styles.subtitulo}>Deseja confirmar?</Text>
+        </Box>
+      )}   
+      ListEmptyComponent={
+        <Text style={styles.subtitulo}>Nenhum número foi retirado do sorteio.</Text>
+      }
+      ListFooterComponent={
+        <VStack>
+          <Text style={styles.subtitulo}>Deseja confirmar?</Text>
             <Button style={styles.botao} onPress={handleConfirmar} colorScheme="blue" mt={4}>
               Sim
             </Button>
             <Button style={styles.botaoRecusar} onPress={handleVoltar} colorScheme="gray" mt={2}>
               Não
             </Button>
-          </VStack>
-        }
-      />
-    </VStack>
+        </VStack>
+      }
+    />
   );
 }
 
@@ -95,15 +96,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitulo: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
     marginBottom: 10,
     paddingHorizontal: 20,
     textAlign: 'center',
   },
   texto: {
-    marginTop: 10,
-    fontSize: TEMAS.fontSizes.sm,
+    marginHorizontal: 10,
+    fontSize: TEMAS.fontSizes.md,
     textAlign: 'center',
     paddingHorizontal: 20,
   },
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   },
   botao: {
     marginTop: 20,
-    backgroundColor: TEMAS.colors.blue[500],
+    backgroundColor: TEMAS.colors.green[200],
     borderRadius: 10,
     width: '100%',
     alignSelf: 'center',
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   },
   botaoRecusar: {
     marginTop: 5,
-    backgroundColor: TEMAS.colors.gray[500],
+    backgroundColor: TEMAS.colors.black[300],
     borderRadius: 10,
     width: '100%',
     alignSelf: 'center',

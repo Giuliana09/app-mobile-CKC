@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
     color: TEMAS.colors.white,
     fontFamily: TEMAS.fonts['petch_Bold'],
     textAlign: 'center',
+    marginTop: -20,
+  
   },
   erro: {
     marginTop: 40,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Text, Image, Box, Input, Button, useToast } from "native-base";
+import { Text, Image, Box, Button, useToast, ScrollView } from "native-base";
 import { Cabecalho } from "../../components/Cabecalho";
 import { TEMAS } from "../../style/temas";
 import logoCKC1 from "../../assets/logoCKC1.png";
@@ -7,6 +7,7 @@ import { StyleSheet } from "react-native";
 import { notificacaoGeral } from "../../service/notificacaoGeral";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoService";
+import { TextInput } from "react-native-gesture-handler";
 
 type ParamList = {
   ListaDeKartsConfig: {
@@ -46,7 +47,7 @@ export default function ListaDeKartsConfig() {
   };
 
   return (
-    <VStack flex={1} style={styles.view}>
+    <ScrollView flex={1} style={styles.view}>
       <Cabecalho key="cabecalho">
         <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
       </Cabecalho>
@@ -58,8 +59,7 @@ export default function ListaDeKartsConfig() {
       {/* Card para o maior número de kart */}
       <Box style={styles.card}>
         <Text style={styles.subtitulo}>Kart de maior número:</Text>
-        <Input
-          placeholder="Digite o maior número"
+        <TextInput
           value={maiorNumeroDeKart}
           onChangeText={setMaiorNumeroDeKart}
           keyboardType="numeric"
@@ -70,7 +70,7 @@ export default function ListaDeKartsConfig() {
       <Button onPress={handleContinuar} style={styles.botao}>
         Selecionar Karts
       </Button>
-    </VStack>
+    </ScrollView>
   );
 }
 
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   texto: {
-    marginTop: 10,
-    fontSize: TEMAS.fontSizes.sm,
+    marginHorizontal: 10,
+    fontSize: TEMAS.fontSizes.md,
     textAlign: 'center',
     padding: 20
   },
@@ -100,15 +100,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   subtitulo: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
     marginBottom: 10,
     textAlign: 'center',
   },
   input: {
-    backgroundColor: TEMAS.colors.gray[200],
+    fontSize: TEMAS.fontSizes.xl,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    backgroundColor: TEMAS.colors.white,
     borderRadius: 10,
     padding: 10,
+    textAlign: 'center',
   },
   botao: {
     marginTop: 20,

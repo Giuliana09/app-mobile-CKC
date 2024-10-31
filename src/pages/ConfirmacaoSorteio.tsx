@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Text, VStack, Modal,  Icon } from 'native-base';
+import { Button, Text, VStack, Modal,  Icon, Box } from 'native-base';
 import ConfirmacoesChecks from '../components/ConfirmacoesChecks';
-import { Share, StyleSheet } from 'react-native';
+import { Share, StyleSheet, Touchable } from 'react-native';
 import { TEMAS } from '../style/temas';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
 import { obterListaDePilotosParaCompartilharViaWhatsapp } from '../service/sorteador/sorteadorService';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type ParamList = {
     ConfirmacaoSorteio: {
@@ -89,10 +91,11 @@ export default function ConfirmacaoSorteio() {
                 textBotaoAlterar="Refazer sorteio"
                 onPressBotaoAlterar={handleRefazerSorteio}
             />
-            <Button onPress={handlePrepararEExibirListaParaCompartilhar}>
-                Compartilhar lista por WhatsApp
-            </Button>
-
+            <TouchableOpacity style={style.bt_cor} onPress={handlePrepararEExibirListaParaCompartilhar}>
+                <Text style={style.tx_wtzaap}>Compartilhar</Text>
+                <Ionicons style={style.ic_wtzaap} name="logo-whatsapp"></Ionicons>
+            </TouchableOpacity>
+                
             {/* Modal para compartilhar lista */}
             <Modal isOpen={modalEstaVisivel} onClose={() => setVisibilidadeModal(false)} size="lg">
                 <Modal.Content>
@@ -105,8 +108,7 @@ export default function ConfirmacaoSorteio() {
                         {listaParaCompartilhar}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onPress={consumirApiECompartilharViaWhatsapp}>
-                            <Icon name="share" /> {}
+                        <Button onPress={consumirApiECompartilharViaWhatsapp}>{}
                             Compartilhar via WhatsApp
                         </Button>
                     </Modal.Footer>
@@ -124,4 +126,26 @@ export const style = StyleSheet.create({
         backgroundColor: TEMAS.colors.black[300],
         padding: 20,
     },
+
+    bt_cor: {
+        width: '50%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,  
+        backgroundColor: TEMAS.colors.gray[300],
+    },
+
+    tx_wtzaap: {
+        color: TEMAS.colors.black[300],
+        fontSize: 20,
+        marginRight: 5,
+    },
+
+    ic_wtzaap: {
+        color: TEMAS.colors.green[300],
+        fontSize: 22,
+    },
+
 });

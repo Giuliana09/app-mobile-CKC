@@ -9,13 +9,12 @@ import { navegarParaTelaComParametros } from "../../service/navegacao/navegacaoS
 import { listarDadosDePilotosQueParticiparaoDoSorteio } from "../../service/sorteador/sorteadorService";
 import { notificacaoGeral } from "../../service/notificacaoGeral";
 
-
 type ParamList = {
   NomesDosPilotosSorteio: {
     numerosForaDoSorteio: number[];
     maiorNumeroDeKart: number;
     idCorrida: number;
-    qtdDePessoasComCheckIn: number,
+    qtdDePessoasComCheckIn: number;
   };
 };
 
@@ -25,7 +24,6 @@ export default function NomesDosPilotosSorteio() {
   const navigation = useNavigation();
   const [dadosPilotos, setDadosPilotos] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-
   const [loading, setLoading] = useState(true);
 
   const { numerosForaDoSorteio, maiorNumeroDeKart, idCorrida, qtdDePessoasComCheckIn } = route.params;
@@ -37,7 +35,6 @@ export default function NomesDosPilotosSorteio() {
   const fetchPilotos = async () => {
     const response = await listarDadosDePilotosQueParticiparaoDoSorteio(idCorrida);
     try {
-
       if (response.status === 200) {
         setDadosPilotos(response.dados.content);
         setLoading(false);
@@ -66,42 +63,39 @@ export default function NomesDosPilotosSorteio() {
   };
 
   return (
-    <VStack flex={1} style={styles.view}>
-      <Cabecalho key="cabecalho">
-        <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
-      </Cabecalho>
-      <Text style={styles.titulo}>Nome dos Pilotos</Text>
-      <Text style={styles.texto}>Lista de nomes dos pilotos que irão participar da corrida:</Text>
-      <FlatList
-        ListHeaderComponent={
-          <VStack>
-            <Text style={styles.texto}>
-              {loading ? "Carregando..." : null}
-            </Text>
-          </VStack>
-        }
-        data={dadosPilotos}
-        keyExtractor={(item) => `${item.nome}-${Math.random().toString(36).substr(2, 9)}`}
-        renderItem={({ item, index }) => (
-          <Box style={styles.containerPilotos} key={`${item.nome}-${item.sobrenome}-${Math.random()}`}>
-            <Text style={styles.card_titulo}>Piloto {index + 1}</Text>
-            <Text>{item.nome} {item.sobrenome}</Text>
-          </Box>
-        )}
-        ListEmptyComponent={
-          !loading && dadosPilotos.length === 0 ? (
-            <Text style={styles.subtitulo}>Nenhum piloto foi encontrado.</Text>
-          ) : null
-        }
-        ListFooterComponent={
-          <VStack>
-            <Button style={styles.botao} onPress={handleConfirmar} colorScheme="blue" mt={4}>
-              Sortear
-            </Button>
-          </VStack>
-        }
-      />
-    </VStack>
+    <FlatList
+      ListHeaderComponent={
+        <VStack>
+          <Cabecalho key="cabecalho">
+            <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
+          </Cabecalho>
+          <Text style={styles.titulo}>Nome dos Pilotos</Text>
+          <Text style={styles.texto}>Lista de nomes dos pilotos que irão participar da corrida:</Text>
+          {loading && <Text style={styles.texto}>Carregando...</Text>}
+        </VStack>
+      }
+      data={dadosPilotos}
+      keyExtractor={(item) => `${item.nome}-${Math.random().toString(36).substr(2, 9)}`}
+      renderItem={({ item, index }) => (
+        <Box style={styles.containerPilotos} key={`${item.nome}-${item.sobrenome}-${Math.random()}`}>
+          <Text style={styles.card_titulo}>Piloto {index + 1}</Text>
+          <Text>{item.nome} {item.sobrenome}</Text>
+        </Box>
+      )}
+      ListEmptyComponent={
+        !loading && dadosPilotos.length === 0 ? (
+          <Text style={styles.subtitulo}>Nenhum piloto foi encontrado.</Text>
+        ) : null
+      }
+      ListFooterComponent={
+        <VStack>
+          <Button style={styles.botao} onPress={handleConfirmar} colorScheme="blue" mt={4}>
+            Sortear
+          </Button>
+        </VStack>
+      }
+      contentContainerStyle={styles.contentContainerStyle}
+    />
   );
 }
 
@@ -110,7 +104,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: TEMAS.colors.gray[300],
   },
-
   containerPilotos: {
     backgroundColor: TEMAS.colors.white,
     borderRadius: 8,
@@ -121,7 +114,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
   },
-
   logo: {
     alignSelf: 'center',
     marginVertical: 20,
@@ -134,30 +126,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitulo: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
     marginBottom: 10,
     paddingHorizontal: 20,
     textAlign: 'center',
   },
   texto: {
-    marginTop: 10,
-    fontSize: TEMAS.fontSizes.sm,
+    marginHorizontal: 10,
+    fontSize: TEMAS.fontSizes.md,
     textAlign: 'center',
     paddingHorizontal: 20,
-  },
-  card_itens: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: TEMAS.colors.white,
-    borderRadius: 8,
-    shadowColor: TEMAS.colors.gray[500],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    width: '85%',
-    flexDirection: 'column',
-    justifyContent: 'center',
   },
   card_titulo: {
     fontSize: TEMAS.fontSizes.md,
@@ -170,5 +149,8 @@ const styles = StyleSheet.create({
     width: '60%',
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  contentContainerStyle: {
+    paddingBottom: 20,
   },
 });

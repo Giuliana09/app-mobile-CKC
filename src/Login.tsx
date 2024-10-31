@@ -138,11 +138,12 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 5,
+    marginTop: 10,
   },
 
   linkSenhaTexto: {
     fontSize: TEMAS.fontSizes.md,
+    marginHorizontal: 5,
   },
 
   linkSenhaClick: {
