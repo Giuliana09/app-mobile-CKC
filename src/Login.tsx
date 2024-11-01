@@ -18,7 +18,7 @@ export default function Login({ navigation }: any) {
   const [senha, setSenha] = useState('');
   const toast = useToast();
 
-  async function login() {
+  async function loginNavigation() {
     const resultado = await fazerLogin(email, senha);
     const notificacao = notificacaoLogin(resultado?.status, resultado?.title, resultado?.details);
     
@@ -40,8 +40,7 @@ export default function Login({ navigation }: any) {
     });
     
   }
-
-  
+   
   const fontsLoaded = useLoadFonts();
   if (!fontsLoaded) {
     return null;
@@ -78,15 +77,15 @@ export default function Login({ navigation }: any) {
       {/* botão */}
       <Box style={style.botoes}>
         <Botao style={style.btEntrar}
-          onPress={login}
-        //onPress={navigation.navigate('Menu')}
+          onPress={loginNavigation}
+        //onPress={() => navigation.navigate('Menu')}
         >Entrar</Botao>
       </Box>
 
       {/* link de esqueci a senha */}
       <Box style={style.linkSenha}>
         <Text style={style.linkSenhaTexto}>Esqueceu sua senha?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('EsqueciSenhaStack', { screen: 'EsqueciSenha' })}>
           <Text style={style.linkSenhaClick}>Clique aqui</Text>
         </TouchableOpacity>
       </Box>
@@ -138,16 +137,16 @@ export const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: 50,
   },
 
   linkSenhaTexto: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: 18,
     marginHorizontal: 5,
   },
 
   linkSenhaClick: {
-    fontSize: TEMAS.fontSizes.md,
+    fontSize: 18,
     fontFamily: 'ChakraPetch-Bold',
   },
 });

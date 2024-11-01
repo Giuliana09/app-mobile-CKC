@@ -7,6 +7,7 @@ import { TEMAS } from './src/style/temas';
 import Rotas from './src/navigation/Rotas';
 import Login from './src/Login';
 import Checkin from './src/tabs/Checkin';
+import SenhaStackNavigator from './src/navigation/SenhaStackNavigator';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,11 @@ export default function App() {
               component={Checkin}
               options={{headerShown: false}}
             />
+            <Stack.Screen
+            name="EsqueciSenhaStack"
+            component={SenhaStackNavigator}
+            options={{headerShown: false}}
+          />
           </Stack.Navigator>      
         </NavigationContainer>
     </NativeBaseProvider>

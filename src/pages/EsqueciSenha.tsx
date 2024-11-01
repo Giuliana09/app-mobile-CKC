@@ -2,27 +2,26 @@ import React from 'react';
 import {VStack, Image, Text, Box, FormControl, Input, Button} from 'native-base'; //como se fosse a View do react-native
 import { TEMAS } from '../style/temas';
 import curva from '../assets/curva.png'
+// import { useNavigation } from '@react-navigation/native';
+import { Cabecalho } from '../components/Cabecalho';
+import logoCKC1 from '../assets/logoCKC1.png';
 
-export default function EsqueciSenha() {
+
+
+
+export default function EsqueciSenha({ navigation }: any) {
+  // const navigation = useNavigation();
 
   return (
         // flex={1} => quer dizer que a VStack vai ocupar a tela inteira
         <VStack flex={1} bgColor={TEMAS.colors.gray[300]}>  
              {/* cabeçalho */}
-          <Box flex={2} backgroundColor={TEMAS.colors.black[300]} alignItems="center" justifyContent="center">
-            <Text color={'while'} fontSize={'lg'}>Esqueci minha senha</Text>
-          </Box>
-          {/* Onda do cabeçalho */}
-          <Box position="relative">
-            <Image source={curva} alt="Onda"
-            width="100%" 
-            height={100} 
-            resizeMode="cover"/>
-          </Box>
+             <Cabecalho>
+                <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode='contain' />
+              </Cabecalho>
 
-          <Text>
-            Preencha seu e-mail abaixo, te enviaremos um código para que você possa entrar.
-          </Text>
+            <Text color={'while'} fontSize={'lg'}>Esqueci minha senha</Text>
+          <Text>Preencha seu e-mail abaixo, te enviaremos um código para que você possa entrar.</Text>
 
           <Box flex={5} backgroundColor={TEMAS.colors.gray[300]} alignItems="center"  p={5} >  
           
@@ -60,7 +59,7 @@ export default function EsqueciSenha() {
           <Button 
           mb={5}
           bg='black.300'
-          mt={10}>
+          mt={10} onPress={() => navigation.navigate('EsqueciSenhaCodigo')}>
             Entrar
           </Button>
 
