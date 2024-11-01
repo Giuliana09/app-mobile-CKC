@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Text, VStack, Modal,  Icon, Box } from 'native-base';
+import { Button, Text, VStack, Modal,  Icon, Box, View } from 'native-base';
 import ConfirmacoesChecks from '../components/ConfirmacoesChecks';
 import { Share, StyleSheet, Touchable } from 'react-native';
 import { TEMAS } from '../style/temas';
@@ -97,20 +97,23 @@ export default function ConfirmacaoSorteio() {
             </TouchableOpacity>
                 
             {/* Modal para compartilhar lista */}
-            <Modal isOpen={modalEstaVisivel} onClose={() => setVisibilidadeModal(false)} size="lg">
-                <Modal.Content>
+            <Modal  isOpen={modalEstaVisivel} onClose={() => setVisibilidadeModal(false)} size="lg">
+                <Modal.Content style={style.boxModal}>
                     <Modal.CloseButton />
-                    <Modal.Header>
-                        <Text>Lista de Pilotos</Text>
-                        <Text>OBS.: Mensagem já formatada para o Whatsapp</Text>
+                    <Modal.Header style={style.tituloModal}>
+                        <Text style={style.txTituloModal} fontSize="27">Lista de Pilotos</Text>
+                        <Text style={style.txSubTituloModal}>OBS.: Mensagem já formatada para o Whatsapp</Text>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body style={style.textoModal}>
                         {listaParaCompartilhar}
                     </Modal.Body>
-                    <Modal.Footer>                        
-                        <Button style={style.botao1} onPress={consumirApiECompartilharViaWhatsapp}>
-                            <Icon name="share" /> {}
-                            Compartilhar via WhatsApp
+                    <Modal.Footer style={style.footerModal}>                        
+                        <Button style={style.btCompartilharWhatsModal} onPress={consumirApiECompartilharViaWhatsapp}>
+                            <View style={style.containerIconeTexto}>
+                                <Text style={style.txBtModal}>Compartilhar via WhatsApp</Text>
+                                <Ionicons style={style.ic_whatsModal} name="logo-whatsapp"></Ionicons> 
+                            </View>
+                            
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>
@@ -148,20 +151,71 @@ export const style = StyleSheet.create({
         color: TEMAS.colors.green[300],
         fontSize: 22,
     },
-
-    botao1:{
-        flexDirection: 'row',
+    boxModal:{
+        width:"90%",
+        borderRadius: 20,
+    },
+ 
+    tituloModal:{
+        backgroundColor: '#f0f0f0', 
+        borderBottomWidth: 1, 
+        borderColor: '#ccc',
         alignItems: 'center',
-        backgroundColor: TEMAS.colors.black[500],
+    },
+    txTituloModal:{
+        flexShrink: 1,
+        marginTop: 10,
+        fontFamily: 'ChakraPetch-Bold',
+        alignSelf: 'center', 
+        textAlign: 'center',
+    },
+    txSubTituloModal:{
+        fontFamily: 'ChakraPetch-Medium',
+        marginTop:5,
+        marginBottom:-10,
+    },
+    textoModal:{
+        fontSize: 15,
+        marginBottom: 5,
+        marginLeft:10,
+        color: "#138E34", 
+        textAlign: 'center',
+        justifyContent: 'center',
+        fontFamily: 'ChakraPetch-Medium',
+    },
+    
+
+    btCompartilharWhatsModal:{
+        backgroundColor: '#138E34',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10,
-        marginTop: 30,
-        gap: 5,
+        width: '100%',
     },
-    botaoModal:{
-        backgroundColor: TEMAS.colors.black[500], 
-    }
-   
-   
+    containerIconeTexto: {
+        padding:12,
+        flexDirection: 'row',
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        gap: 8, 
+    },
+    txBtModal:{
+        fontSize: 19,
+        color: '#ffffff',
+        fontFamily: 'ChakraPetch-SemiBold',
+        
+    },
+    ic_whatsModal:{
+        fontSize: 28,
+        color: '#ffffff',
+        fontFamily: 'ChakraPetch-Bold',
+       
+    },
+    footerModal:{
+        flexDirection: 'row',
+        backgroundColor: '#f0f0f0',
+        padding: 10,
+        justifyContent: 'center',
+
+    },
 });
