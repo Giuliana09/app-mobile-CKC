@@ -189,7 +189,7 @@ const RealizarCheckOut = () => {
             fontSize={TEMAS.fontSizes.sm}
             borderColor={TEMAS.colors.black[300]}
             borderRadius={12}
-            backgroundColor="#636363"
+            backgroundColor="#0033C1"
             color={TEMAS.colors.white}
           >
             <Select.Item label="Sim" value="true" />
@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: TEMAS.fonts['petch_Bold'],
     color:'white',
+    alignItems: 'center'
   },
 
   errorMessage: {

@@ -9,11 +9,9 @@ import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/
 import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { Ionicons } from '@expo/vector-icons';
 import { TEMAS } from "../style/temas";
-import calendario from '../assets/calendar.png';
 import {VStack, Image, Box, Button} from 'native-base';
 import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
-import relogio from '../assets/clock.png'
 import largada from "../assets/largada.png"; 
 import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
 
@@ -167,7 +165,11 @@ function DetalhesCorridaCheckIn() {
         </Text>
       )}
       {pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
-          <Button style={styles.card_botao} onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
+          <Button 
+            mb={5}
+            bg='black.300'
+            mt={10}
+            onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
             idCorrida: idCorrida })}>
             Confirmar alterações
           </Button>

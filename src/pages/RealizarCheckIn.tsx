@@ -4,7 +4,7 @@ import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { listarDadosParaCheckIn, processarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
 import { notificacaoGeral } from '../service/notificacaoGeral';
-import { Box, useToast } from 'native-base';
+import { Box, useToast, FormControl } from 'native-base';
 import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
 import { TEMAS } from "../style/temas";
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
@@ -14,6 +14,9 @@ import { Image, Select, CheckIcon, VStack } from "native-base";
 import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from '../assets/logoCKC1.png';
 import { Botao } from '../components/Botao';
+import { Input } from 'native-base'; //como se fosse a View do react-native
+import curva from '../assets/curva.png'
+import exclamacaoIcon from '../assets/exclamacaoIcon.png'
 
 type ParamList = {
     RealizarCheckIn: { idInscricao: number };
@@ -199,12 +202,14 @@ const RealizarCheckIn = () => {
                 <Text style={styles.statusPago}> {statusPagamento}</Text>
                 </Box>
                 </Box>
-                <Box style={styles.botao}>
-                <Button
-                    title={dadosCheckIn ? "Realizar Check-in" : "Criar Check-in"} 
-                    onPress={iniciarCheckIn}>
-                </Button>
-                </Box>
+                
+                <TouchableOpacity style={styles.botao} onPress={iniciarCheckIn}>
+               <Text style={styles.textoBotao}>
+                {dadosCheckIn ? "Realizar Check-in" : "Criar Check-in"}
+                </Text>
+                </TouchableOpacity>
+
+
             </View>
             {error && <Text style={{ color: 'red' }}>{error}</Text>}
         </View>
@@ -235,8 +240,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 20,
         position: 'absolute', 
-        bottom: -125, 
+        bottom: -125,
+        height:40,
+        width:357,
+        alignContent:'center',
+        justifyContent:'center',
       },
+
+    textoBotao:{
+        fontFamily: TEMAS.fonts['petch_Bold'],
+        color:'white',
+        textAlign: "center",
+        fontSize: 15,
+        padding:5
+    },
   
     
     title: {
