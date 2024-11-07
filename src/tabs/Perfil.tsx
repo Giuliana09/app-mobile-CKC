@@ -13,8 +13,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Image  } from "native-base";
 import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from '../assets/logoCKC1.png';
+import { confirmarLogoffENavegar } from "../service/perfil/perfilService";
 
 export default function Perfil() {
+  const navigation = useNavigation();
+  
   return (
     <VStack>
       <View style={styles.background}>
@@ -25,7 +28,7 @@ export default function Perfil() {
       <View style={styles.container}>
         <Text style={{fontFamily: TEMAS.fonts['petch_Bold'], fontSize: 20, alignSelf:'center'}}> Perfil    </Text>
       </View>
-      <TouchableOpacity style={styles.botao}>
+      <TouchableOpacity style={styles.botao} onPress={() => confirmarLogoffENavegar(navigation)}>
         <Text style={styles.textoBotao}>
           Log out
         </Text>
