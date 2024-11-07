@@ -53,7 +53,6 @@ export default function ListaDeKartsConfirmarExclusao() {
       numColumns={3}
       initialNumToRender={8}
       maxToRenderPerBatch={4}
-      contentContainerStyle={styles.contentContainerStyle}
       windowSize={10}
       renderItem={({ item }) => (
         <Box style={styles.numerosDeKartContainer}>
@@ -110,6 +109,8 @@ const styles = StyleSheet.create({
   },
   numerosDeKartContainer: {
     padding: 20,
+    flex: 1,
+    alignItems: 'center',
   },
   numeroKartBotao: {
     backgroundColor: TEMAS.colors.red[500],
@@ -124,15 +125,12 @@ const styles = StyleSheet.create({
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
-  contentContainerStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   botao: {
     marginTop: 20,
     backgroundColor: TEMAS.colors.green[200],
     borderRadius: 10,
-    width: '100%',
+    width: '80%',
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: TEMAS.colors.black[300],
     borderRadius: 10,
-    width: '100%',
+    width: '80%',
     alignSelf: 'center',
     marginBottom: 20,
   },
