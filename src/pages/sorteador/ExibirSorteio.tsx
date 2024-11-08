@@ -72,7 +72,7 @@ export default function ExibirSorteio() {
       </Cabecalho>
       <Text style={styles.titulo}>Resultado</Text>
       {loading ? (
-        <Spinner size="lg" />
+        <Spinner color={TEMAS.colors.blue[500]} mt={20} size="xl" />
       ) : error ? (
         <VStack>
           <Text style={styles.erro}>{error}</Text>

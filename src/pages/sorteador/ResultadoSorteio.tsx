@@ -50,7 +50,7 @@ export default function ResultadoSorteio() {
       <Text style={styles.titulo}>Resultados do Sorteio</Text>
 
       {loading ? (
-        <Spinner color="blue.500" mt={10} size={30} />
+        <Spinner color={TEMAS.colors.blue[500]} mt={10} size="xl" />
       ) : (
         <FlatList
           data={dadosSorteio}

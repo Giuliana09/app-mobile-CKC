@@ -110,7 +110,7 @@ export default function ConfirmarSorteio() {
       <Text style={styles.titulo}>Karts e Pilotos sorteados:</Text>
 
       {loading ? (
-        <Spinner color={TEMAS.colors.blue[500]} size="lg" />
+        <Spinner style={styles.loading} color={TEMAS.colors.blue[500]} size="xl" />
       ) : (
         corrida && (
           <VStack style={styles.card_corridas}>
@@ -211,5 +211,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: TEMAS.colors.black[300],
     borderRadius: 10,
+  },
+  loading: {
+    marginTop: 10,
   },
 });

@@ -4,7 +4,7 @@ import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/nativ
 import { RouteProp } from '@react-navigation/native';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
-import { useToast } from 'native-base';
+import { Spinner, useToast } from 'native-base';
 import { listarPilotosPorCorrida, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { Ionicons } from '@expo/vector-icons';
 import { TEMAS } from "../style/temas";
@@ -125,7 +125,7 @@ function DetalhesCorridaCheckIn() {
         )}
       </VStack>
       {loading ? (
-        <ActivityIndicator size="large" color={TEMAS.colors.blue[500]} style={styles.loading} />
+        <Spinner size="xl" color={TEMAS.colors.blue[500]} style={styles.loading} />
       ) : (
         <FlatList
           data={pilotos}
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   errorMessage1: {
     alignItems: "center",
     width: '100%',
-    marginTop: 20,
+    marginTop: 25,
     textAlign: "center",
     fontSize: TEMAS.fontSizes.sm,
     fontFamily: TEMAS.fonts['petch_Bold'],
