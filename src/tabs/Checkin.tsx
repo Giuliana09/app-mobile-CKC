@@ -12,6 +12,7 @@ import { TEMAS } from "../style/temas";
 import { useNavigation } from '@react-navigation/native';
 import CategoriasDeCorridas from "../components/CategoriasDeCorridas";
 import BarraDePesquisaPorNomeEDia from "../components/BarraDePesquisaPorNomeEDia";
+import { navegarParaTelaComParametros, navegarParaTelaSemParametrosENavigator } from "../service/navegacao/navegacaoService";
 
 export default function Checkin() {
   const [corridas, setCorridas] = useState<any[]>([]);
@@ -183,7 +184,9 @@ export default function Checkin() {
                 <Text style={styles.card_data}>{formatarDataCorrida(item.data)}</Text>
               </Box>
               <Button style={styles.card_botao} onPress={() => {
-                navegarParaTelaDeInformacoesDoCheckIn(item.id, navigation);
+                navegarParaTelaComParametros(navigation, 'CheckInStack', 'DetalhesCorridaCheckIn', { 
+                  idCorrida: item.id,
+                });
               }}>
                 Fazer Check-in
               </Button>

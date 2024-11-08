@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { listarDadosParaCheckIn, processarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
-import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
+import { calcularLastro, listarDadosParaCheckIn, processarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { notificacaoGeral } from '../service/notificacaoGeral';
-import { Box, useToast, FormControl } from 'native-base';
-import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
+import { Box, Button, useToast, ScrollView } from 'native-base';
 import { TEMAS } from "../style/temas";
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet,  TouchableOpacity } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import largada from "../assets/largada.png";
-import { Image, Select, CheckIcon, VStack } from "native-base";
+import FeatherIcons from "react-native-vector-icons/Feather";
+import { Image } from "native-base";
 import { Cabecalho } from "../components/Cabecalho";
 import logoCKC1 from '../assets/logoCKC1.png';
-import { Botao } from '../components/Botao';
-import { Input } from 'native-base'; //como se fosse a View do react-native
-import curva from '../assets/curva.png'
-import exclamacaoIcon from '../assets/exclamacaoIcon.png'
+import ConfirmacaoCheckInModal from '../components/ConfirmacaoModal';
+import CardDetalhesCorrida from '../components/CardDetalhesCorrida';
 
 type ParamList = {
-    RealizarCheckIn: { idInscricao: number };
+    RealizarCheckIn: {
+        idInscricao: number;
+        corrida: any;
+    };
 };
 
 // Definindo os tipos de classificação
@@ -27,22 +26,64 @@ type EstilosCategoria = 'CKC_110' | 'CKC_95' | 'DDL_90';
 
 const RealizarCheckIn = () => {
     const route = useRoute<RouteProp<ParamList, 'RealizarCheckIn'>>();
-    const { idInscricao } = route.params;
+    const { idInscricao, corrida } = route.params;
+
     const navigation = useNavigation();
     const [dadosCheckIn, setDadosCheckIn] = useState<any>(null);
-    const [pesoInicial, setPesoInicial] = useState<string>('');
-    const [lastro, setLastro] = useState<string>('0');
+    const [pesoInicial, setPesoInicial] = useState<string>('0');
+    const [lastro, setLastro] = useState<string>('');
     const [usuarioNome, setUsuarioNome] = useState<string>('');
     const [usuarioSobrenome, setUsuarioSobrenome] = useState<string>('');
-    const [corrida, setCorrida] = useState<{ nome: string; data: string; horario: string;  classificacao: EstilosCategoria | null; }>({
-        nome: '',
-        data: '',
-        horario: '',
-        classificacao: null
-    });
     const [statusPagamento, setStatusPagamento] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [placeholderLastro, setPlaceholderLastro] = useState<string>('Insira a quantidade total de Lastro');
     const toast = useToast();
+    const inputRef = useRef<TextInput>(null);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleEdit = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
+    const handleConfirmarCheckIn = async () => {
+        setIsModalVisible(false);
+        const pesoInicialNumber = parseFloat(pesoInicial) || 0;
+        const lastroNumber = parseInt(lastro) || 0;
+
+        try {
+            const resultado = await processarCheckIn(idInscricao, pesoInicialNumber, lastroNumber);
+            const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
+
+            toast.show({
+                title: notificacao.title,
+                description: notificacao.details,
+                backgroundColor: notificacao.background,
+            });
+
+            if (resultado.status >= 200 && resultado.status < 300) {
+                navigation.goBack();
+            } else {
+                console.log(resultado.details);
+                setError(resultado.details);
+            }
+        } catch (error: any) {
+            console.log('Erro ao realizar check-in:', error);
+            toast.show({
+                title: 'Erro',
+                description: 'Ocorreu um erro ao realizar o check-in. Por favor, tente novamente.',
+                backgroundColor: 'red',
+            });
+            setError(error.response?.data?.details);
+        }
+    };
+
+
+    const handleCancelar = () => {
+        setIsModalVisible(false);
+    };
 
     useEffect(() => {
         const fetchDadosCheckIn = async () => {
@@ -55,34 +96,22 @@ const RealizarCheckIn = () => {
                 setLastro(checkInData.lastro.toString());
                 setUsuarioNome(checkInData.inscricao.usuario.nome);
                 setUsuarioSobrenome(checkInData.inscricao.usuario.sobrenome);
-                setCorrida({
-                    nome: checkInData.inscricao.corrida.nome,
-                    data: formatarDataCorrida(checkInData.inscricao.corrida.data),
-                    horario: formatarHorarioCorrida(checkInData.inscricao.corrida.horario),
-                    classificacao: checkInData.inscricao.corrida.classificacao as EstilosCategoria || null,
-                });
                 setStatusPagamento(checkInData.inscricao.status_pagamento);
             } else {
                 const inscricaoResponse = await listarDadosParaCheckIn(idInscricao);
                 if (inscricaoResponse.status === 200) {
                     const inscricaoData = inscricaoResponse.dados;
                     setDadosCheckIn(inscricaoData);
-                    setPesoInicial(''); 
-                    setLastro('0'); 
+                    setPesoInicial('');
+                    setLastro('');
                     setUsuarioNome(inscricaoData.usuario.nome);
                     setUsuarioSobrenome(inscricaoData.usuario.sobrenome);
-                    setCorrida({
-                        nome: inscricaoData.corrida.nome,
-                        data: formatarDataCorrida(inscricaoData.corrida.data),
-                        horario: formatarHorarioCorrida(inscricaoData.corrida.horario),
-                        classificacao: inscricaoData.corrida.classificacao as EstilosCategoria || null,
-                    });
                     setStatusPagamento(inscricaoData.status_pagamento);
                 } else {
                     setDadosCheckIn(null);
                     setError(inscricaoResponse.details);
                     setPesoInicial('');
-                    setLastro('0');
+                    setLastro('');
                 }
             }
         };
@@ -90,279 +119,219 @@ const RealizarCheckIn = () => {
         fetchDadosCheckIn();
     }, [idInscricao]);
 
-    const iniciarCheckIn = async () => {
-        const pesoInicialNumber = parseFloat(pesoInicial) || 0;
-        const lastroNumber = parseInt(lastro) || 0;
+    // Função para calcular o lastro
+    const handleCalcularLastro = () => {
+        setLastro('');
+        setPlaceholderLastro("Calculando lastro...");
 
-        Alert.alert(
-            'Confirmação',
-            'Deseja confirmar o Check-in?',
-            [
-                {
-                    text: 'Não',
-                    onPress: () => console.log('Check-in cancelado'),
-                    style: 'cancel',
-                },
-                {
-                    text: 'Sim',
-                    onPress: async () => {
-                        try {
-                            const resultado = await processarCheckIn(idInscricao, pesoInicialNumber, lastroNumber);
-                            const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
-                            
-                            toast.show({
-                                title: notificacao.title,
-                                description: notificacao.details,
-                                backgroundColor: notificacao.background,
-                            });
+        // Calcular o lastro
+        const calculatedLastro = calcularLastro(Number(pesoInicial), corrida.classificacao);
 
-                            if (resultado.status >= 200 && resultado.status < 300) {
-                                navigation.goBack();
-                            } else {
-                                console.log(resultado.details);
-                                setError(resultado.details);
-                            }
-                        } catch (error: any) {
-                            console.log('Erro ao realizar check-in:', error);
-                            toast.show({
-                                title: 'Erro',
-                                description: 'Ocorreu um erro ao realizar o check-in. Por favor, tente novamente.',
-                                backgroundColor: 'red',
-                            });
-                            setError(error.response?.data?.details);
-                        }
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
+        setTimeout(() => {
+            setLastro(String(calculatedLastro));
+            setPlaceholderLastro("Insira a quantidade total de Lastro");
+        }, 1000);
     };
 
     return (
-        <View style={styles.background}>
-        <Cabecalho>
-          <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
-        </Cabecalho>
-        <View style={styles.container}>
-            <Text style={styles.title}>Detalhes do Check-in do Piloto</Text>
-            <View>
-                <Box style={styles.Corrida}>
-                 <Box style={{flexDirection: "row", alignItems: "center"}}>
-                    <Image style={styles.card_img} source={largada} alt="largada dos karts" />
-                    <Box style={{flexDirection: "column", alignItems: "flex-start"}}>
-                    <Text style={{fontWeight: 'bold', padding:3}}>{corrida.nome}</Text>
-                 <Box style={{ flexDirection: "row", alignItems: "center"}}>
-                    <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
-                 <Text>{corrida.data}</Text>
-                    </Box>
-                    <Box style={{ flexDirection: "row", alignItems: "center"}}>
-                    <Ionicons style={styles.card_icone} name="time-outline"/>
-                    <Text>{corrida.horario}</Text>
-                    </Box>
-                    <Box style={{paddingLeft:2}}>
-                    <CategoriasDeCorridas item={{ classificacao: corrida.classificacao }} />
-                    </Box>
-                    </Box>
-                 </Box>
-                </Box>
+        <ScrollView style={styles.view}>
+            <Cabecalho>
+                <Image style={styles.logo} source={logoCKC1} alt="Logo CKC" />
+            </Cabecalho>
 
-                <Box style={{paddingLeft:8}}>
+            <Box style={styles.container}>
+                <Text style={styles.title}>Detalhes do Check-in do Piloto:</Text>
+                {corrida ? (
+                    <CardDetalhesCorrida corrida={corrida} />
+                ) : (
+                    <Text style={styles.errorMessage}>
+                        {error || 'Nenhuma corrida encontrada.'}
+                    </Text>
+                )}
+            </Box>
+
+            <Text style={styles.subtitulo}>Adicionar informações:</Text>
+            <Box style={styles.infoCheckInContainer}>
                 <Box style={styles.caixa}>
-                <Text style={{fontWeight: 'bold', paddingTop:3}}>Nome</Text> 
-                <Text style={{paddingTop:4}}>{usuarioNome} {usuarioSobrenome}</Text>
+                    <Text style={styles.tituloLabel}>Nome</Text>
+                    <Text style={styles.conteudoLabel}>{usuarioNome} {usuarioSobrenome}</Text>
                 </Box>
 
-                
+                {error && <Text style={styles.errorMessage1}>{error}</Text>}
                 <Box style={styles.caixa}>
-                <Text style={{fontWeight: 'bold', paddingTop:3}}>Peso Inicial</Text>
-                <TextInput
-                    placeholder="80"
-                    value={pesoInicial}
-                    onChangeText={setPesoInicial}
-                    keyboardType="numeric"
-                    style={{ opacity: .7 }}
-                />
+                    <Text style={styles.tituloLabel}>Peso Inicial:</Text>
+                    <View style={styles.containerInputComIcon}>
+                        <TextInput
+                            ref={inputRef}
+                            style={styles.inputComIcone}
+                            value={pesoInicial}
+                            onChangeText={setPesoInicial}
+                            placeholder="Digite o peso inicial"
+                            keyboardType="numeric"
+                        />
+                        <TouchableOpacity onPress={handleEdit} style={styles.iconeButton}>
+                            <FeatherIcons
+                                name="edit"
+                                style={styles.inputComIcone}
+                                size={22}
+                                color={TEMAS.colors.black[500]}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </Box>
-
 
                 <Box style={styles.caixa}>
-                <Text style={{fontWeight: 'bold', paddingTop:3}}>Lastro</Text>
-                <TextInput
-                    placeholder="Insira a quantidade total de Lastro"
-                    value={lastro}
-                    onChangeText={setLastro}
-                    keyboardType="numeric"
-                    style={{ opacity: .7 }}
-                />
+                    <Text style={styles.tituloLabel}>Lastro</Text>
+                    <View style={styles.containerInputComIcon}>
+                        <TextInput
+                            placeholder={placeholderLastro}
+                            value={lastro}
+                            onChangeText={setLastro}
+                            keyboardType="numeric"
+                            style={styles.inputComIcone}
+                        />
+                        <TouchableOpacity onPress={handleCalcularLastro} style={styles.iconeButton}>
+                            <Ionicons name="calculator" style={styles.inputComIcone} size={24} color={TEMAS.colors.black[500]} />
+                        </TouchableOpacity>
+                    </View>
                 </Box>
-
 
                 <Box style={styles.status}>
-                <Text style={{fontWeight: 'bold'}}>Status de pagamento</Text>
-                <Text style={styles.statusPago}> {statusPagamento}</Text>
+                    <Text style={styles.tituloLabel}>Status de pagamento</Text>
+                    <Text style={styles.statusPago}>{statusPagamento}</Text>
                 </Box>
-                </Box>
-                
-                <TouchableOpacity style={styles.botao} onPress={iniciarCheckIn}>
-               <Text style={styles.textoBotao}>
-                {dadosCheckIn ? "Realizar Check-in" : "Criar Check-in"}
-                </Text>
-                </TouchableOpacity>
 
+                <Button onPress={() => setIsModalVisible(true)} style={styles.botao}>
+                    {dadosCheckIn ? "Realizar Check-in" : "Criar Check-in"}
+                </Button>
 
-            </View>
-            {error && <Text style={{ color: 'red' }}>{error}</Text>}
-        </View>
-        </View>
+                <ConfirmacaoCheckInModal
+                    isVisible={isModalVisible}
+                    onConfirm={handleConfirmarCheckIn}
+                    onCancel={handleCancelar}
+                    titulo="Deseja confirmar Check-in?"
+                />
+            </Box>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-
     container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: TEMAS.fonts['petch_Bold'],
-      paddingLeft: 20,
-      top: -50,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontFamily: TEMAS.fonts['petch_Bold'],
+        top: -50,
     },
-  
-    background: {
-      backgroundColor: TEMAS.colors.gray[300],
-      height:850,
-      fontFamily: TEMAS.fonts['petch_Bold'],
+    view: {
+        flex: 1,
+        backgroundColor: TEMAS.colors.gray[300],
     },
-
+    infoCheckInContainer: {
+        flex: 1,
+        alignItems: 'center',
+        top: -40,
+    },
     botao: {
-        fontWeight: 'bold',
-        marginTop: 10,
+        marginTop: 20,
         backgroundColor: TEMAS.colors.blue[500],
         borderRadius: 10,
+        width: '60%',
+        alignSelf: 'center',
         marginBottom: 20,
-        position: 'absolute', 
-        bottom: -125,
-        height:40,
-        width:357,
-        alignContent:'center',
-        justifyContent:'center',
-      },
-
-    textoBotao:{
-        fontFamily: TEMAS.fonts['petch_Bold'],
-        color:'white',
-        textAlign: "center",
-        fontSize: 15,
-        padding:5
     },
-  
-    
+
     title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      fontFamily: TEMAS.fonts['petch_Bold'],
-      color:'white',
+        fontSize: TEMAS.fontSizes.lg,
+        fontFamily: TEMAS.fonts['petch_Bold'],
+        color: TEMAS.colors.white,
+    },
+
+    subtitulo: {
+        top: -40,
+        fontSize: TEMAS.fontSizes.lg,
+        fontFamily: TEMAS.fonts['petch_Bold'],
+        alignSelf: 'center',
+        marginBottom: 5,
+    },
+    tituloLabel: {
+        fontSize: TEMAS.fontSizes.sm,
+        fontFamily: TEMAS.fonts['petch_Bold'],
+    },
+
+    conteudoLabel: {
+        fontSize: TEMAS.fontSizes.sm,
+        fontFamily: TEMAS.fonts['body'],
     },
 
     errorMessage: {
-      color: 'red',
-      marginTop: 10,
+        color: 'red',
+        marginTop: 10,
     },
-
-    Corrida: {
-      height:120,
-      marginBottom:7,
-      marginTop:7,
-      backgroundColor: '#f0f0f0', 
-      borderRadius: 15, 
-      flexDirection: 'column',
-      width:360,
-      alignItems: 'flex-start', 
-      paddingLeft: 15,
-      paddingTop:9,
-      paddingRight:200
-    },
-
-    card_icone: {
-        color: TEMAS.colors.black[500],
-        marginRight: 5,
-        padding:1,
-        fontSize:20,
-      },
-
-  
     caixa: {
-      height:75,
-      marginBottom:7,
-      marginTop:7,
-      backgroundColor: '#f0f0f0', 
-      borderRadius: 15, 
-      flexDirection: 'column',
-      width:340,
-      alignItems: 'flex-start', 
-      paddingLeft: 15,
-      paddingTop:9,
-      fontFamily: TEMAS.fonts['petch_Bold'],
+        height: 75,
+        marginBottom: 7,
+        marginTop: 7,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 15,
+        flexDirection: 'column',
+        width: 340,
+        alignItems: 'flex-start',
+        paddingLeft: 15,
+        paddingTop: 9,
+        fontFamily: TEMAS.fonts['petch_Bold'],
     },
     status: {
-        height:75,
-        marginBottom:7,
-        marginTop:7,
-        backgroundColor: '#9C9C9C', 
-        borderRadius: 15, 
+        height: 75,
+        marginBottom: 7,
+        marginTop: 7,
+        backgroundColor: '#9C9C9C',
+        borderRadius: 15,
         flexDirection: 'column',
-        width:340,
-        alignItems: 'flex-start', 
+        width: 340,
+        alignItems: 'flex-start',
         paddingLeft: 15,
-        paddingTop:9,
+        paddingTop: 9,
         fontFamily: TEMAS.fonts['petch_Bold'],
     },
 
     statusPago: {
-        height:26,
-        marginBottom:7,
-        marginTop:7,
-        backgroundColor: '#74CC8B', 
-        borderRadius: 25, 
-        width:70,
+        height: 26,
+        marginBottom: 7,
+        backgroundColor: '#74CC8B',
+        borderRadius: 25,
+        width: 70,
         paddingLeft: 15,
         fontFamily: TEMAS.fonts['petch_Bold'],
-        color:'#417851',
+        color: '#417851',
+    },
+    containerInputComIcon: {
+        flexDirection: 'row',
     },
 
-  
+    inputComIcone: {
+        flex: 1,
+        opacity: .7,
+        fontFamily: TEMAS.fonts['body'],
+    },
+    iconeButton: {
+        paddingRight: 20,
+    },
+
     logo: {
-      width: 110,
-      resizeMode: "contain",
+        width: 110,
+        resizeMode: "contain",
     },
-  
-    card_img: {
-      width: 100,
-      height: 100,
-      borderRadius: 10,
-      marginRight:5,
+    errorMessage1: {
+        alignItems: "center",
+        width: '90%',
+        marginTop: 20,
+        textAlign: "center",
+        fontSize: TEMAS.fontSizes.sm,
+        fontFamily: TEMAS.fonts['petch_Bold'],
+        color: TEMAS.colors.red[500],
     },
-
-  
-    errorMessage1:{
-      flexDirection: "column",
-      alignItems: "center",
-      marginTop: 20,
-      textAlign: "center",
-      fontSize: TEMAS.fontSizes.md,
-      fontFamily: TEMAS.fonts['petch_Bold'],
-      color: TEMAS.colors.blue[500],
-    },
-  
-    errorMessage2:{
-      flexDirection: "column",
-      alignItems: "center",
-      marginTop: 20,
-      textAlign: "center",
-      fontSize: TEMAS.fontSizes.md,
-      fontFamily: TEMAS.fonts['petch_Bold'],
-      color: TEMAS.colors.blue[500],
-    }
-  
-  });
+});
 
 export default RealizarCheckIn;

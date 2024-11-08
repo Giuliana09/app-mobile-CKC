@@ -32,7 +32,7 @@ export default function ConfirmacaoCkeckIN() {
     return (
         <VStack style={style.container} >
         <ConfirmacoesChecks flex={50}
-            textSucesso="Todos os check-ins dessa cirrida foram realizados com sucesso!"
+            textSucesso="Todos os check-ins dessa corrida foram realizados com sucesso!"
             textBotao="Sortear karts da corrida"
             onPressBotao={navegacaoSortear}  
             textBotaoAlterar="Refazer Checkin" 

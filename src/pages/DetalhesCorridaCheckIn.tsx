@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
 import { useToast } from 'native-base';
-import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
-import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
+import { listarPilotosPorCorrida, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { Ionicons } from '@expo/vector-icons';
 import { TEMAS } from "../style/temas";
-import {VStack, Image, Box, Button} from 'native-base';
+import { VStack, Image, Box, Button } from 'native-base';
 import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
-import largada from "../assets/largada.png"; 
 import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
-
-
-
-
+import CardDetalhesCorrida from '../components/CardDetalhesCorrida';
 
 type ParamList = {
-  DetalhesCorridaCheckIn: { idCorrida: number };
-    
+  DetalhesCorridaCheckIn: {
+    idCorrida: number
+  };
 };
 
 function DetalhesCorridaCheckIn() {
@@ -30,13 +26,14 @@ function DetalhesCorridaCheckIn() {
   const [corrida, setCorrida] = useState<any>(null);
   const [pilotos, setPilotos] = useState<any>(null);
   const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigation = useNavigation();
 
-
   useEffect(() => {
     const dadoCorrida = async () => {
+      setLoading(true);
       const resultado = await consultarCorrida(idCorrida);
       const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
 
@@ -58,8 +55,9 @@ function DetalhesCorridaCheckIn() {
 
   useEffect(() => {
     const dadosPilotos = async () => {
-      const resultado = await listarPilotosPorCorrida(idCorrida);
       
+      const resultado = await listarPilotosPorCorrida(idCorrida);
+
       if (resultado.status === 200 && resultado.qtdPilotos > 0) {
         setPilotos(resultado.dadosPilotos);
         setError(null);
@@ -67,6 +65,7 @@ function DetalhesCorridaCheckIn() {
       } else {
         setError(resultado.details);
       }
+      setLoading(false);
     };
 
     dadosPilotos();
@@ -74,12 +73,12 @@ function DetalhesCorridaCheckIn() {
 
   const verificarCheckIns = async (pilotos: any) => {
     const checkInStatus: { [key: number]: boolean } = {};
-    
+
     for (const piloto of pilotos) {
       const { status } = await verificarSeJaFezCheckIn(piloto.inscricao_id);
       checkInStatus[piloto.inscricao_id] = status === 200;
     }
-    
+
     setCheckIns(checkInStatus);
   };
 
@@ -93,235 +92,153 @@ function DetalhesCorridaCheckIn() {
 
   // Calcula a quantidade de check-ins realizados
   const qtdPilotosComCheckIn = Object.values(checkIns).filter(Boolean).length;
-  
+
   // se o numero de pilotos com check-in for igual a quantidade de pilotos inscritos, redirecionar a tela de confirmação
   useEffect(() => {
-    
     if (pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length) {
       navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
         idCorrida: idCorrida,
       });
-      
     }
   }, [qtdPilotosComCheckIn, pilotos]);
 
   return (
-    <View style={styles.background}>
+    <View style={styles.view}>
+      <VStack style={styles.background}>
         <Cabecalho>
-          <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
+          <Image style={styles.logo} source={logoCKC1} alt="Logo CKC" />
         </Cabecalho>
-      <Box style={styles.container}>
-      <Text style={styles.title}>Fazer Check-in para:</Text>
-      {corrida ? (
-        <>
-        <View style={styles.Corrida}>
-        <Box style={styles.corrida_itens}>          
-            <Image style={styles.card_img} source={largada} alt="largada dos karts"/>
-          <Box style={styles.corrida_inf}>
-             <Text style={{ fontWeight: 'bold' }}>{corrida.nome} - {corrida.campeonato.nome}</Text>
-              <Box style={styles.data}>          
-                <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
-                <Text>{formatarDataCorrida(corrida.data)}</Text>
-              </Box>
-              <Box style={styles.horario}>       
-                <Ionicons style={styles.card_icone} name="time-outline"/>
-                <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
-              </Box>
-          </Box>
-        </Box> 
-          </View>
-        </>
-      ) : (
-        <Text style={styles.errorMessage1}>
-          {error || 'Nenhuma corrida encontrada.'}
-        </Text>
-      )}
-      
-      {pilotos ? (
-        <>
-          <Text style={styles.titlePilotos}>Pilotos Cadastrados [{qtdPilotosComCheckIn}/{pilotos.length}]</Text>
-          <FlatList
-            data={pilotos}
-            keyExtractor={(piloto) => piloto.inscricao_id.toString()}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity onPress={() => navegarParaTelaDeRealizarCheckIn(item.inscricao_id, navigation)}>
-                <View style={styles.pilotoBox}>
-                <Text style={styles.pilotoTitulo}>Piloto {index + 1}</Text>
-                <Box style={styles.check}>
-                  <Text style={styles.pilotoItem}>{`${item.usuario.nome} ${item.usuario.sobrenome}`}</Text>
-                  {/* Ícone se fez ou não o Check-in */}
-                  {checkIns[item.inscricao_id] && (
-                    <Ionicons name="checkmark-circle" size={24} color="blue" style={styles.checkIcon} />
-                  )}
-                  </Box>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        </>
-      ) : (
-        <Text style={styles.errorMessage2}>
-          {error || 'Nenhum piloto encontrado.'}
-        </Text>
-      )}
-      {pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
-          <Button 
-            mb={5}
-            bg='black.300'
-            mt={10}
-            onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', {
-            idCorrida: idCorrida })}>
-            Confirmar alterações
-          </Button>
+        <Box style={styles.container}>
+          <Text style={styles.title}>Fazer Check-in para:</Text>
+          {corrida ? (
+            <CardDetalhesCorrida corrida={corrida} />
+          ) : (
+            <Text style={styles.errorMessage1}>
+              {error || 'Nenhuma corrida encontrada.'}
+            </Text>
+          )}
+        </Box>
+        {pilotos && pilotos.length > 0 && (
+          <Text style={styles.titlePilotos}>
+            Pilotos com Check-in [{qtdPilotosComCheckIn}/{pilotos.length}]
+          </Text>
         )}
-      </Box>
+      </VStack>
+      {loading ? (
+        <ActivityIndicator size="large" color={TEMAS.colors.blue[500]} style={styles.loading} />
+      ) : (
+        <FlatList
+          data={pilotos}
+          keyExtractor={(item) => item.inscricao_id.toString()}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'RealizarCheckIn', {
+                corrida,
+                idInscricao: item.inscricao_id,
+              })}
+            >
+              <Box style={styles.card_piloto}>
+                <Text style={styles.card_titulo}>Piloto {index + 1}</Text>
+                <Box style={styles.card_info_piloto}>
+                  <Text style={styles.pilotoNome}>{`${item.usuario.nome} ${item.usuario.sobrenome}`}</Text>
+                  {checkIns[item.inscricao_id] && (
+                    <Ionicons name="checkmark-circle" size={24} color="blue"/>
+                  )}
+                </Box>
+              </Box>
+            </TouchableOpacity>
+          )}
+          ListEmptyComponent={<Text style={styles.errorMessage1}>{error || 'Nenhum piloto encontrado.'}</Text>}
+          ListFooterComponent={pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
+            <Button
+              style={styles.botaoConfirmar}
+              onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', { idCorrida })}
+            >
+              Confirmar alterações
+            </Button>
+          )}
+        />
+      )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: TEMAS.colors.gray[300],
+  },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: TEMAS.fonts['petch_Bold'],
     top: -50,
   },
-
   background: {
     backgroundColor: TEMAS.colors.gray[300],
-    height:850,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
-
-  
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  card_piloto: {
+    alignSelf: 'center',
+    height: 75,
+    marginBottom: 7,
+    marginTop: 7,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 15,
+    flexDirection: 'column',
+    width: 340,
+    alignItems: 'flex-start',
+    paddingLeft: 15,
+    paddingTop: 9,
     fontFamily: TEMAS.fonts['petch_Bold'],
-    color:'white'
+  },
+  title: {
+    fontSize: TEMAS.fontSizes.lg,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    color: TEMAS.colors.white,
   },
   titlePilotos: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
+    alignSelf: 'center',
+    top: -20,
   },
-  errorMessage: {
-    color: 'red',
-    marginTop: 10,
+  card_titulo: {
+    fontSize: TEMAS.fontSizes.md,
+    fontFamily: TEMAS.fonts['petch_semiBold'],
   },
-  Corrida: {
-    height:120,
-    marginBottom:7,
-    marginTop:7,
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 15, 
-    flexDirection: 'column',
-    width:360,
-    alignItems: 'flex-start', 
-    paddingLeft: 15,
-    paddingTop:9,
-    paddingRight:200
+  card_info_piloto: {
+    flexDirection: 'row',   
+    width: '90%',  
   },
-  pilotoTitulo: {
-    fontSize: 16,
-    paddingVertical: 5,
-    fontWeight: 'bold',
-    alignItems: 'flex-start', 
+  pilotoNome: {
+    fontSize: TEMAS.fontSizes.sm,
+    fontFamily: TEMAS.fonts['body'],
+    flex: 1, 
   },
-  pilotoItem: {
-    fontSize: 16,
-  },
-
-  pilotoBox: {
-    height:75,
-    marginBottom:7,
-    marginTop:7,
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 15, 
-    flexDirection: 'column',
-    width:340,
-    alignItems: 'flex-start', 
-    paddingLeft: 15,
-    paddingTop:9,
-    fontFamily: TEMAS.fonts['petch_Bold'],
-  },
-  checkIcon: {
-    marginLeft: 10, 
-  },
-  corrida_itens: {
-    flexDirection:'row'
-  },
-  corrida_inf:{
-    marginLeft:5,
-    flexDirection:'column',
-    width:240,
-  },
-  data: {
-    marginTop:10,
-    marginBottom:5,
-    flexDirection: 'row',
-  },
-  horario:{
-    flexDirection: 'row',
-  },
-
-  check:{
-    flexDirection: 'row',
-  },
-
-  card_icone: {
-    color: TEMAS.colors.black[500],
-    alignSelf: "flex-start",
-    padding:1,
-    fontSize:20,
-  },
-
   logo: {
     width: 110,
     resizeMode: "contain",
   },
-
-  view: {
-    flex: 1,
-    justifyContent: "center",
+  errorMessage1: {
+    alignItems: "center",
+    width: '100%',
+    marginTop: 20,
+    textAlign: "center",
+    fontSize: TEMAS.fontSizes.sm,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    color: TEMAS.colors.red[500],
   },
-  card_img: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight:5,
-  },
-
-  card_botao:{
-    fontWeight: 'bold',
-    marginTop: 10,
+  botaoConfirmar: {
+    marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
+    width: '60%',
+    alignSelf: 'center',
     borderRadius: 10,
-    marginBottom: 20,
-    position: 'absolute', 
-    bottom: -125, 
   },
-
-  errorMessage1:{
-    flexDirection: "column",
-    alignItems: "center",
+  loading: {
     marginTop: 20,
-    textAlign: "center",
-    fontSize: TEMAS.fontSizes.md,
-    fontFamily: TEMAS.fonts['petch_Bold'],
-    color: TEMAS.colors.blue[500],
   },
-
-  errorMessage2:{
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: 20,
-    textAlign: "center",
-    fontSize: TEMAS.fontSizes.md,
-    fontFamily: TEMAS.fonts['petch_Bold'],
-    color: TEMAS.colors.blue[500],
-  }
-
 });
 
 export default DetalhesCorridaCheckIn;
