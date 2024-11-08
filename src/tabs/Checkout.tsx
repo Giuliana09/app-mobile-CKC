@@ -84,7 +84,7 @@ export default function Checkout() {
   };
 
   return (
-    <VStack flex={1}>
+    <VStack flex={1} style={styles.view}>
       <Cabecalho key="cabecalho">
         <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" />
       </Cabecalho>
