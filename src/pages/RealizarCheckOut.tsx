@@ -1,50 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
 import { realizarCheckOutDoPiloto } from '../service/corrida/checkOutService';
 import { notificacaoGeral } from '../service/notificacaoGeral';
-import { CheckIcon, Select, useToast } from 'native-base';
-import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
+import { Select, useToast, Button, } from 'native-base';
 import { TEMAS } from '../style/temas';
-import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
-import { FlatList, TouchableOpacity } from 'react-native';
-import { consultarCorrida } from '../service/corrida/corridaService';
-import { Ionicons } from '@expo/vector-icons';
-import { listarDadosDosPilotosParaCheckOut, navegarParaTelaDeRealizarCheckOut } from '../service/corrida/checkOutService';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { navegarParaTelaComParametros } from '../service/navegacao/navegacaoService';
-import { listarPilotosPorCorrida, navegarParaTelaDeRealizarCheckIn } from '../service/corrida/checkInService';
-import {VStack, Image, Box} from 'native-base';
+import { TouchableOpacity } from 'react-native';
+import { Image, Box} from 'native-base';
 import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
-import largada from "../assets/largada.png"; 
-import { background } from 'native-base/lib/typescript/theme/styled-system';
+import CardDetalhesCorrida from '../components/CardDetalhesCorrida';
+import ConfirmacaoCheckOutModal from '../components/ConfirmacaoModal';
+import FeatherIcons from "react-native-vector-icons/Feather";
 
 type ParamList = {
-  RealizarCheckOut: { idInscricao: number; corrida: any };
+  RealizarCheckOut: { 
+    idInscricao: number; 
+    corrida: any };
 };
 
 const RealizarCheckOut = () => {
-  const route = useRoute<RouteProp<ParamList, 'RealizarCheckOut'>>();
-  const { idInscricao, corrida } = route.params;
-  const navigation = useNavigation();
-  const [dadosCheckOut, setDadosCheckOut] = useState<any>(null);
-  const [pesoFinal, setPesoFinal] = useState<string>('');
-  const [classificado, setClassificado] = useState<boolean>(true);
-  const [usuarioNome, setUsuarioNome] = useState<string>('');
-  const [usuarioSobrenome, setUsuarioSobrenome] = useState<string>('');
-  const [pesoInicial, setPesoInicial] = useState<string>('');
-  const [lastro, setLastro] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
+  const route = useRoute<RouteProp<ParamList, 'RealizarCheckOut'>>(); 
+  const { idInscricao, corrida } = route.params; 
+  const navigation = useNavigation(); 
+  const [pesoFinal, setPesoFinal] = useState<string>(''); 
+  const [classificado, setClassificado] = useState<boolean>(true); 
+  const [usuarioNome, setUsuarioNome] = useState<string>(''); 
+  const [usuarioSobrenome, setUsuarioSobrenome] = useState<string>(''); 
+  const [pesoInicial, setPesoInicial] = useState<string>(''); 
+  const [lastro, setLastro] = useState<string>(''); 
+  const [error, setError] = useState<string | null>(null); 
+  const [estaCarregandoOsDados, setEstaCarregandoOsDados] = useState<boolean>(true);  
+  const toast = useToast(); 
+  const inputRef = useRef<TextInput>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchDadosCheckOut = async () => {
       const checkOutResponse = await verificarSeJaFezCheckIn(idInscricao);
       if (checkOutResponse.status === 200) {
         const checkOutData = checkOutResponse.dados;
-        setDadosCheckOut(checkOutData);
         setPesoInicial(checkOutData.peso_inicial ? checkOutData.peso_inicial.toString() : '');
         setLastro(checkOutData.lastro.toString());
         setUsuarioNome(checkOutData.inscricao.usuario.nome);
@@ -52,263 +48,285 @@ const RealizarCheckOut = () => {
         setPesoFinal(checkOutData.peso_final ? checkOutData.peso_final.toString() : '');
         setClassificado(checkOutData.classificado ?? true);
       } else {
-        setDadosCheckOut(null);
         setError(checkOutResponse.details);
       }
+      setEstaCarregandoOsDados(false);  
     };
 
     fetchDadosCheckOut();
   }, [idInscricao]);
 
-  const confirmarCheckOut = async () => {
-    if (isNaN(parseFloat(pesoFinal))) {
-      Alert.alert('Erro', 'Peso Final deve ser um número válido.');
-      return;
+
+  const handleEdit = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
+  };
 
-    Alert.alert(
-      'Confirmação',
-      'Deseja confirmar as informações do Check-out?',
-      [
-        {
-          text: 'Não',
-          onPress: () => console.log('Check-out cancelado'),
-          style: 'cancel',
-        },
-        {
-          text: 'Sim',
-          onPress: async () => {
-            try {
-              const resultado = await realizarCheckOutDoPiloto(
-                dadosCheckOut.inscricao.id,
-                parseFloat(pesoFinal) || 0,
-                classificado
-              );
+  const handleRealizarCheckOut = () => {
+    setIsModalVisible(true); 
+  };
 
-              const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
-              toast.show({
-                title: notificacao.title,
-                description: notificacao.details,
-                backgroundColor: notificacao.background,
-              });
+  const handleConfirmarCheckOut = async () => {
+    setIsModalVisible(false);
+    const pesoFinalNumber = parseFloat(pesoFinal) || 0;
 
-              if (resultado.status >= 200 && resultado.status < 300) {
-                navigation.goBack();
-              } else {
-                console.log(resultado.details);
-                setError(resultado.details);
-              }
-            } catch (error: any) {
-              console.log('Erro ao realizar check-out:', error);
-              toast.show({
-                title: 'Erro',
-                description: 'Ocorreu um erro ao realizar o check-out. Por favor, tente novamente.',
-                backgroundColor: 'red',
-              });
-              setError(error.response?.data?.details);
-            }
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    try {
+      const resultado = await realizarCheckOutDoPiloto(idInscricao, pesoFinalNumber, classificado);
+      const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
+
+      toast.show({
+        title: notificacao.title,
+        description: notificacao.details,
+        backgroundColor: notificacao.background,
+      });
+
+      if (resultado.status >= 200 && resultado.status < 300) {
+        navigation.goBack();
+      } else {
+        console.log(resultado.details);
+        setError(resultado.details);
+      }
+    } catch (error: any) {
+      console.log('Erro ao realizar check-out:', error);
+      toast.show({
+        title: 'Erro',
+        description: 'Ocorreu um erro ao realizar o check-out. Por favor, tente novamente.',
+        backgroundColor: 'red',
+      });
+      setError(error.response?.data?.details);
+    }
+  };
+
+  const handleCancelar = () => {
+    setIsModalVisible(false);
   };
 
   return (
-    <View style={styles.background}>
-    <Cabecalho>
-      <Image style={styles.logo} source={logoCKC1} alt="Logo CKC"/>
-    </Cabecalho>
-      <View style={styles.container}>
-        <Text style={styles.title}>Fazer Check-out para:</Text>
-        <View>
-      {corrida ? (
-        <>
-        <Box style={styles.Corrida}>
-        <Box style={{flexDirection: "row", alignItems: "center"}}>
-          <Image style={styles.card_img} source={largada} alt="largada dos karts" />
-          <Box style={{flexDirection: "column", alignItems: "flex-start"}}>
-          <Text  style={{fontWeight: 'bold', padding:3}}>{corrida.nome} - {corrida.campeonato.nome}</Text>
-          <Box style={{paddingLeft:2}}>
-          <CategoriasDeCorridas item={{ classificacao: corrida.classificacao }} />
-          </Box>
-          <Box style={{ flexDirection: "row", alignItems: "center"}}>
-          <Ionicons style={styles.card_icone} name="calendar-clear-outline" />
-          <Text>{formatarDataCorrida(corrida.data)}</Text>
-          </Box>
-          <Box style={{ flexDirection: "row", alignItems: "center"}}>
-          <Ionicons style={styles.card_icone} name="time-outline"/>
-          <Text>{formatarHorarioCorrida(corrida.horario)}</Text>
-          </Box>
-          </Box>
-        </Box>
-        </Box>
-        </>
-      ) : (
-        <Text style={styles.errorMessage}>
-          {error || 'Nenhuma corrida encontrada.'}
-        </Text>
-      )}
-      <Text style={styles.titulo_proximas}>Adicionar informações</Text>
-      <View>
+    <ScrollView style={styles.view}>
+      <Cabecalho>
+        <Image style={styles.logo} source={logoCKC1} alt="Logo CKC" />
+      </Cabecalho>
+
+      <Box style={styles.container}>
+        <Text style={styles.title}>Detalhes do Check-out do Piloto:</Text>
+        {corrida ? (
+          <CardDetalhesCorrida corrida={corrida} />
+        ) : (
+          <Text style={styles.errorMessage}>
+            {error || 'Nenhuma corrida encontrada.'}
+          </Text>
+        )}
+      </Box>
+
+      <Text style={styles.subtitulo}>Adicionar informações:</Text>
+      <Box style={styles.infoCheckOutContainer}>
         <Box style={styles.caixa}>
-        <Text style={{fontWeight: 'bold', paddingTop:3}}>Nome</Text>
-        <Text>{usuarioNome} {usuarioSobrenome}</Text>
-        </Box>
-        <Box style={styles.caixa}>
-        <Text style={{fontWeight: 'bold', paddingTop:3}}>Peso Inicial</Text>
-        <Text>{pesoInicial}</Text>
-        </Box>
-        
-        <Box style={styles.caixa}>
-        <Text style={{fontWeight: 'bold', paddingTop:3}}>Peso Final</Text>
-        <TextInput
-          placeholder="Peso Final"
-          value={pesoFinal}
-          onChangeText={setPesoFinal}
-          keyboardType="numeric"
-        />
+          <Text style={styles.tituloLabel}>Nome</Text>
+          <Text style={styles.conteudoLabel}>
+            {estaCarregandoOsDados ? 'Carregando...' : `${usuarioNome} ${usuarioSobrenome}`}
+          </Text>
         </Box>
 
         <Box style={styles.caixa}>
-        <Text style={{fontWeight: 'bold', paddingTop:3}}>Lastro:</Text>
-        <Text>{lastro}</Text>
+          <Text style={styles.tituloLabel}>Peso inicial</Text>
+          <Text style={styles.conteudoLabel}>{estaCarregandoOsDados ? 'Carregando...' : pesoInicial}</Text>
         </Box>
 
-        <View style={styles.classificadoContainer}>
-          <Text>Classificado:</Text>
+        {error && <Text style={styles.errorMessage1}>{error}</Text>}
+        <Box style={styles.caixa}>
+          <Text style={styles.tituloLabel}>Peso final:</Text>
+          <View style={styles.containerInputComIcon}>
+            <TextInput
+              ref={inputRef}
+              style={styles.inputComIcone}
+              value={pesoFinal}
+              onChangeText={setPesoFinal}
+              placeholder={estaCarregandoOsDados ? 'Carregando...' : 'Digite o peso final'}
+              keyboardType="numeric"
+            />
+            <TouchableOpacity onPress={handleEdit} style={styles.iconeButton}>
+              <FeatherIcons
+                name="edit"
+                style={styles.inputComIcone}
+                size={22}
+                color={TEMAS.colors.black[500]}
+              />
+            </TouchableOpacity>
+          </View>
+        </Box>
+
+        <Box style={styles.caixa}>
+          <Text style={styles.tituloLabel}>Lastro</Text>
+          <Text style={styles.conteudoLabel}>{estaCarregandoOsDados ? 'Carregando...' : lastro}</Text>
+        </Box>
+
+        <Box style={styles.caixa_select}>
+          <Text style={styles.tituloLabel}>Classificado</Text>
           <Select
-            selectedValue={classificado ? 'true' : 'false'}
-            minWidth={200}
-            accessibilityLabel="Classificado"
-            onValueChange={(itemValue) => setClassificado(itemValue === 'true')}
+            selectedValue={classificado.toString()}
+            minWidth="300"
+            accessibilityLabel="Selecione a classificação"
+            placeholder={estaCarregandoOsDados ? 'Carregando...' : 'Selecione a classificação'}
             _selectedItem={{
               bg: "blue.400",
-              endIcon: <CheckIcon size={5} color="#fff" />,
+              endIcon: <FeatherIcons name="check" size={22} color={TEMAS.colors.white} />
             }}
-            fontSize={TEMAS.fontSizes.sm}
-            borderColor={TEMAS.colors.black[300]}
-            borderRadius={12}
-            backgroundColor="#0033C1"
-            color={TEMAS.colors.white}
+            mt={1}
+            onValueChange={(itemValue) => setClassificado(itemValue === 'true')}
           >
             <Select.Item label="Sim" value="true" />
             <Select.Item label="Não" value="false" />
           </Select>
-        </View>
-      </View>
-      <Button title="Confirmar Informações" onPress={confirmarCheckOut} />
+        </Box>
 
-      </View>
-      {error && <Text style={{ color: 'red' }}>{error}</Text>}
-    </View>
-    </View>
+        <Button style={styles.botao} onPress={handleRealizarCheckOut}>
+          Confirmar informações
+        </Button>
+
+        <ConfirmacaoCheckOutModal
+          isVisible={isModalVisible}
+          onConfirm={handleConfirmarCheckOut}
+          onCancel={handleCancelar}
+          titulo="Deseja confirmar Check-out?"
+        />
+      </Box>
+    </ScrollView>
   );
 };
 
-export default RealizarCheckOut;
+
 
 const styles = StyleSheet.create({
-
-  background: {
-    backgroundColor: TEMAS.colors.gray[300],
-    height:850,
-    fontFamily: TEMAS.fonts['petch_Bold'],
-  },
-
-  logo: {
-    width: 110,
-    resizeMode: "contain",
-  },
-
-  card_img: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight:5,
-  },
-
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontFamily: TEMAS.fonts['petch_Bold'],
-    paddingLeft: 20,
-    top: -50,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: TEMAS.fonts['petch_Bold'],
+      top: -50,
   },
-
-  card_icone: {
-    color: TEMAS.colors.black[500],
-    marginRight: 5,
-    padding:1,
-    fontSize:20,
+  view: {
+      flex: 1,
+      backgroundColor: TEMAS.colors.gray[300],
   },
-
-  Corrida: {
-    height:120,
-    marginBottom:7,
-    marginTop:7,
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 15, 
-    flexDirection: 'column',
-    width:360,
-    alignItems: 'flex-start', 
-    paddingLeft: 15,
-    paddingTop:9,
-    paddingRight:200
+  infoCheckOutContainer: {
+      flex: 1,
+      alignItems: 'center',
+      top: -40,
+  },
+  botao: {
+      marginTop: 20,
+      backgroundColor: TEMAS.colors.blue[500],
+      borderRadius: 10,
+      width: 320,
+      alignSelf: 'center',
+      marginBottom: 20,
   },
 
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    fontFamily: TEMAS.fonts['petch_Bold'],
-    color:'white',
-    alignItems: 'center'
+      fontSize: TEMAS.fontSizes.lg,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+      color: TEMAS.colors.white,
+  },
+
+  subtitulo: {
+      top: -40,
+      fontSize: TEMAS.fontSizes.lg,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+      alignSelf: 'center',
+      marginBottom: 5,
+  },
+  tituloLabel: {
+      fontSize: TEMAS.fontSizes.sm,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+  },
+
+  conteudoLabel: {
+      fontSize: TEMAS.fontSizes.sm,
+      fontFamily: TEMAS.fonts['body'],
   },
 
   errorMessage: {
-    color: 'red',
-    marginVertical: 10,
+      color: 'red',
+      marginTop: 10,
   },
-  classificadoContainer: {
-    height:75,
-    marginBottom:7,
-    marginTop:7,
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 15, 
-    flexDirection: 'column',
-    width:340,
-    alignItems: 'flex-start', 
-    paddingLeft: 15,
-    paddingTop:9,
-    fontFamily: TEMAS.fonts['petch_Bold'],
-  },
-  
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  seletores: {
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  titulo_proximas: {
-    marginTop: 20,
-    marginHorizontal: 20,
-    fontSize: TEMAS.fontSizes.lg,
-    fontFamily: TEMAS.fonts['petch_Bold'],
+  caixa: {
+      height: 75,
+      marginBottom: 7,
+      marginTop: 7,
+      backgroundColor: TEMAS.colors.white,
+      borderRadius: 15,
+      flexDirection: 'column',
+      width: 340,
+      alignItems: 'flex-start',
+      paddingLeft: 15,
+      paddingTop: 9,
+      fontFamily: TEMAS.fonts['petch_Bold'],
   },
 
-  caixa: {
-    height:75,
-    marginBottom:7,
-    marginTop:7,
-    backgroundColor: '#f0f0f0', 
-    borderRadius: 15, 
+  caixa_select: {
+    height: 100,
+    marginBottom: 7,
+    marginTop: 7,
+    backgroundColor: TEMAS.colors.white,
+    borderRadius: 15,
     flexDirection: 'column',
-    width:340,
-    alignItems: 'flex-start', 
+    width: 340,
+    alignItems: 'flex-start',
     paddingLeft: 15,
-    paddingTop:9,
+    paddingTop: 9,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
+  status: {
+      height: 75,
+      marginBottom: 7,
+      marginTop: 7,
+      backgroundColor: '#9C9C9C',
+      borderRadius: 15,
+      flexDirection: 'column',
+      width: 340,
+      alignItems: 'flex-start',
+      paddingLeft: 15,
+      paddingTop: 9,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+  },
+
+  statusPago: {
+      height: 26,
+      marginBottom: 7,
+      backgroundColor: '#74CC8B',
+      borderRadius: 25,
+      width: 70,
+      paddingLeft: 15,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+      color: '#417851',
+  },
+  containerInputComIcon: {
+      flexDirection: 'row',
+  },
+
+  inputComIcone: {
+      flex: 1,
+      opacity: .7,
+      fontFamily: TEMAS.fonts['body'],
+  },
+  iconeButton: {
+      paddingRight: 20,
+  },
+
+  logo: {
+      width: 110,
+      resizeMode: "contain",
+  },
+  errorMessage1: {
+      alignItems: "center",
+      width: '90%',
+      marginTop: 20,
+      textAlign: "center",
+      fontSize: TEMAS.fontSizes.sm,
+      fontFamily: TEMAS.fonts['petch_Bold'],
+      color: TEMAS.colors.red[500],
+  },
 });
+
+export default RealizarCheckOut;
