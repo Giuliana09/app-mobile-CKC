@@ -21,9 +21,12 @@ export function navegarParaTelaDeRealizarCheckOut(idInscricao: number, corrida: 
 export const listarDadosDosPilotosParaCheckOut = async (idCorrida: number) => {
     try {
         const resultado = await api.get(`/check-out?id_corrida=${idCorrida}`);
+        
+        const resultadoTotal = await api.get(`/check-out?id_corrida=${idCorrida}&tamanho=${resultado.data.totalElements}`);
+
       return {
-        status: resultado.status,
-        dados: resultado.data
+        status: resultadoTotal.status,
+        dados: resultadoTotal.data
       };
     } catch (error: any) {
       console.log('Erro na requisição:', error.message);

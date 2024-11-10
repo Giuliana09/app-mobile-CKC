@@ -3,9 +3,10 @@ import api from "../api";
 export const listarDadosDePilotosQueParticiparaoDoSorteio = async (idCorrida: number) => {
   try {
     const response = await api.get(`/sorteador?id_corrida=${idCorrida}`);
+    const responseTotal = await api.get(`/sorteador?id_corrida=${idCorrida}&tamanho=${response.data.totalElements}`);
     return {
-      status: response.status,
-      dados: response.data
+      status: responseTotal.status,
+      dados: responseTotal.data
     };
   } catch (error: any) {
     console.log('Erro na requisição para Sorteador:', error.message);

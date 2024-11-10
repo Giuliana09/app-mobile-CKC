@@ -17,11 +17,15 @@ export function navegarParaTelaDeRealizarCheckIn(idInscricao: number, navigation
 export const listarPilotosPorCorrida = async (idCorrida: number) => {
   try {
     const response = await api.get(`/inscricao?check=true&id_corrida=${idCorrida}`);
+    
+    const responseTotal = await api.get(`/inscricao?check=true&id_corrida=${idCorrida}&tamanho=${response.data.totalElements}`);
+
     return {
-      status: response.status,
-      dadosPilotos: response.data.content,
-      qtdPilotos: response.data.totalElements
+      status: responseTotal.status,
+      dadosPilotos: responseTotal.data.content,
+      qtdPilotos: responseTotal.data.totalElements
     };
+
   } catch (error: any) {
     console.log('Erro na requisição:', error.message);
     if (error.response) {
