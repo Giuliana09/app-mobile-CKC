@@ -1,80 +1,119 @@
-# 🖥️🏎️ Interface Gerenciador de Corridas de Kart
+# 🖥️🏎️ Aplicativo Gerenciador de Corridas de Kart
 
-Interface desenvolvida para atender as necessidades de um Organizador de Corridas de Kart. Tem como foco principal trazer uma interface intuitiva e solucionar os problemas do Cliente e criar uma Ponte de Comunicação entre Aplicação Web e Mobile.
+Este é um **Aplicativo Mobile** desenvolvido para atender às necessidades de um Organizador de Corridas de Kart. O foco principal é auxiliar o organizador nas tarefas realizadas durante o evento, proporcionando uma forma prática e eficiente de realizar o sorteio dos números de kart e gerenciar check-in, check-out, e outros aspectos relacionados às corridas.
 
-O projeto Web do Gerenciador já foi feito em PHP, porém notamos que não havia uma boa estrutura, além de não conseguirmos conectar essa aplicação com o Mobile. Logo, a solução de fazer uma conexão através de uma API que lidasse com os dois tipos de APP foi a solução adotada.
-
-## 🚀👩‍💻 Tempo de Desenvolvimento
+## 🚀👩‍💻 Time de Desenvolvimento
 
 -   [Emily Izabelle]( https://github.com/em1ky ) como Engenheira de Banco de Dados
 -   [Giuliana Gralha]( https://github.com/Giuliana09 ) como Engenheira Front-end
--   [Larissa Silva]( https://github.com/LarissaSL ) como Engenheira Back-end
+-   [Larissa Silva]( https://github.com/LarissaSL ) como Engenheira Back-end e Fullstack
 -   [Leticia Graziele]( https://github.com/LeticiaGaziel ) como UX/UI e Auxiliar de Banco de Dados
 -   [Silvana Sales]( https://github.com/SilvanaMenezes ) como UX/UI e Fullstack
 
+---
+
+<br><br>
+
+## 📌 Pré-requisitos de Tecnologias
+
+Para iniciar o projeto, você precisa ter os seguintes requisitos instalados:
+
+### 1. Configurando a API:
+- **[Repositório da API](https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart/tree/main)**  
+  A API é a ponte entre a Aplicação Web e a Aplicação Mobile, sendo responsável por fornecer os dados necessários para o funcionamento do aplicativo mobile. Lembre-se de que a aplicação mobile depende dos dados inseridos na aplicação web.
+
+### 2. Ambiente para o Aplicativo Mobile:
+- **[Node.js](https://nodejs.org/pt)**  
+⚠️ OBS.: Recomendamos que baixe a versão LTS, pois é mais estável.
+
+- **IDE para React Native**  
+  Recomendamos o uso do VScode, caso não tenha:
+  - [Visual Studio Code](https://code.visualstudio.com/)
+
+- **[Android Studio](https://developer.android.com/studio)**  
+Android Studio é necessário para emular o ambiente Android, realizar testes locais e garantir que os Endpoints da API estão funcionando corretamente com o app.
+
+<br><br>
+
+---
+
+
+## 📑 Índice
+### 1. Inclusões
+- [Inclusões](#-inclus%C3%B5es)
+
+### 2. Funcionalidades
+- [Funcionalidades](#%EF%B8%8F-funcionalidades)
+
+### 3. Primeiros passos
+- [Primeiros passos](#%EF%B8%8F%EF%B8%8F-primeiros-passos)
+- [Clonando o Projeto Mobile](#-1-clonando-o-projeto-mobile)
+- [Instalando Dependências e Bibliotecas](#-2-instalando-depend%C3%AAncias-e-bibliotecas)
+- [Configurando a URL da API](#-3-configurando-a-url-da-api)
+- [Emulando via Celular com Expo Go](#-4-emulando-via-celular-com-o-expo-go)
+- [Executando o Projeto](#-5-executando-o-projeto)
+
+### Extra 
+- [Tecnologias](#-tecnologias)
+- [Apêndices](#-ap%C3%AAndices)
+
+---
+
+<br><br>
+
 ## 🎯 Inclusões
 
-- ✅ Criação do Readme do front
+- ✅ Criação do Readme do Aplicativo Mobile
+
+---
+
+<br><br>
 
 ## ⚙️ Funcionalidades
 
 **Autenticação**
    - 🟢 Fazer Login
+     
 **Gerenciamento de Corridas**
    - 🟢 Buscar Lista de Corridas
    - 🟢 Aplicar Filtros nas Buscas de Corridas
+     
 **Check-in de Pilotos**
    - 🟢 Realizar Check-in de Pilotos
    - 🟢 Exibir Lista de Pilotos para Check-in
-   - 🟢 Exibir Campos Disponíveis para Alteração no Check-in
+   - 🟢 Exibir Campos Disponíveis para Criar e Alterar no Check-in
    - 🟢 Exibir Confirmação de Check-in
+     
 **Sorteio de Pilotos**
    - 🟢 Realizar Sorteio para os Pilotos
-   - 🟢 Solicitar Maior Número de Kart
-   - 🟢 Excluir Números 
-   - 🟢 Confirmar Exclusão de Números de Kart
+   - 🟢 Excluir Números do Sorteio 
    - 🟢 Exibir Resultado do Sorteio por Piloto
-   - 🟢 Exibir Confirmação do Sorteio
    - 🟢 Exibir Lista Completa de Pilotos e seus Números de Kart
+     
 **Check-out de Pilotos**
    - 🟢 Realizar Check-out de Pilotos
    - 🟢 Exibir Lista de Pilotos para Check-out
    - 🟢 Exibir Campos Disponíveis para Alteração no Check-out
    - 🟢 Exibir Confirmação de Check-out
+     
 **Compartilhamento**
-   - 🟡 Compartilhar Informações de Check-in e Sorteio via WhatsApp
+   - 🟢 Compartilhar Informações de Check-in e Sorteio via WhatsApp
+     
 **Navegação**
    - 🟢 Menu do Aplicativo
-   - 🟡 Navegação da Tela de Check-in feito
-   - 🟡 Navegação da Tela de Check-ou feito
-   - 🟡 Navegação da Tela de Sorteio feito
+   - 🟢 Navegação da Tela de Check-in feito
+   - 🟢 Navegação da Tela de Check-ou feito
+   - 🟢 Navegação da Tela de Sorteio feito
 
-## 🖥️ Telas
-**Autenticação**
-   - 🟢 Tela de Login
-**Navegação Principal**
-   - 🟢 Menu Principal
-**Check-in**
-   - 🟢 Tela para Exibir Corridas de Check-in
-   - 🟢 Tela para Exibir Lista de Pilotos para Check-in
-   - 🟡 Tela para Exibir Campos Disponíveis para Alteração em Check-in
-   - 🟢 Tela de Confirmação de Check-in
-**Sorteio**
-   - 🟢 Tela para Exibir Corridas para Fazer Sorteio
-   - 🟢 Tela para Exibir Resultados do Sorteio por Piloto
-   - 🟡 Telas de Configurações do Sorteio
-   - 🟡 Tela de Confirmação do Sorteio
-   - 🟡 Tela para Exibir Lista Completa de Pilotos e seus Números de Kart
-**Check-out**
-   - 🟢 Tela para Exibir Corridas para Fazer Check-out
-   - 🟡 Tela para Exibir Lista de Pilotos para Check-out
-   - 🟡 Tela para Exibir Campos Disponíveis para Alteração em Check-out
-   - 🟢 Tela de Confirmação de Check-out
+<br>
 
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
 
-
-<br><br><br>
 ---
+
+<br><br>
+
+
 ## 📓 Padrões de Nomenclatura nos Commits
 
 Abaixo segue uma tabela onde explicamos um padrão para nossos commits.
@@ -100,149 +139,134 @@ Exemplo de uso:
 git commit -m "FEAT - CRUD de Usuarios"
 ```
 
-<br><br>
 ---
 
-# 🖥️🛠️ Como usar?
+<br><br>
 
-## 1° Instalando dependências e bibliotecas
 
-**_Utilizando seu IP de Rede em uma variável de ambiente_**
+# 🖥️🛠️ Primeiros passos
 
-Crie um arquivo .env na raiz do projeto
+## ✅ 1° **Clonando o Projeto Mobile**
+
+Para começar a trabalhar no projeto mobile, você precisa clonar o repositório. Abra seu terminal e execute o seguinte comando para clonar o repositório do projeto para o seu computador:
+
+```bash
+git clone https://github.com/Giuliana09/app-mobile-CKC.git
+```
+
+- Após clonar, navegue até a pasta do projeto.
+  
+---
+
+<br><br> 
+
+## ✅ 2° **Instalando Dependências e Bibliotecas**
+
+Depois de clonar o projeto, você precisa instalar as dependências que o aplicativo requer para rodar. Com o projeto clonado e dentro da pasta do projeto, execute o seguinte comando:
+
+```bash
+npm install
+```
+
+Esse comando irá baixar e instalar todas as dependências listadas no arquivo `package.json`.
+
+Isso vai garantir que todas as bibliotecas necessárias para o funcionamento do seu projeto sejam instaladas corretamente.
+
+---
+
+<br><br>
+
+
+## ✅ 3° **Configurando a URL da API**
+
+Para que o aplicativo mobile se conecte à API, você precisará configurar a URL que ele usará para realizar as requisições.
+
+### 🖥️Utilizando seu IP de Rede em uma variável de ambiente**
+
+1. **Crie um arquivo `.env`** na raiz do projeto, onde você armazenará variáveis de ambiente, como a URL da API. No arquivo `.env`, adicione o seguinte código, substituindo `{SEU-IP-DE-REDE}` pelo seu IP de rede local ou pelo IP do servidor onde a API está hospedada:
+
 ```
 API_URL="http://{SEU-IP-DE-REDE}:8080"
 ```
 
-No projeto instale o plugin que irá permitir a leitura dessa variável no código.
+- **Exemplo**: Se o seu IP local for `123.456.7.10`, a linha no arquivo `.env` ficaria assim:
 
 ```
-npm install dotenv
+API_URL="http://123.456.7.10:8080"
 ```
 
-Resultado esperado:
+✅ Resultado esperado:
 
 ![image](https://github.com/user-attachments/assets/b0e85850-e690-4f7e-9954-017462da316f)
 
+<br>
 
-Como este projeto é desenvolvido com React Native, é necessário ter o NodeJS instalado [instale a última versão LTS](https://nodejs.org/en/) e algumas bibliotecas:
+⚠️ OBS.: **Não troque a porta 8080**, pois ela é a porta que a API utiliza.
 
+<br>
 
-### 1- Adicionando o node_modules.
-Como este arquivo é muito pesado, então é padrão que ele esteja entre os arquivos que são ignorados através do gitgnore.
-
-- Antes de tudo, é importante em seu terminal que esteja dentro do diretório do projeto, EX:  `**C:\Users\app-mobile-CKC:** `
-- Em seu terminal digite o seguinte comando:
-
-```
-npm install
-```
----
-### 2- React Navigation
-React Navigation é composto de alguns utilitários principais e eles são usados ​​para criar a estrutura de navegação em aplicativos
-
-**_Instalação_**
-
-```
-npm install @react-navigation/native
-```
-**_Instalando suas dependências_**
-```
-npx expo install react-native-screens react-native-safe-area-context
-```
-**_Instalando native stack navigator_**
-- Ele fornece uma maneira para o aplicativo fazer a transição entre telas e gerenciar o histórico de navegação
-
-```
-npm install @react-navigation/native-stack
-```
-**_Instalando tabs para barra de navegação_**
-- Ele fornece a estrutura para desenvolver a navbar do aplicativo
-
-```
-npm install @react-navigation/bottom-tabs
-```
-**_Instalando ícones do react_**
-- Ele fornece uma biblioteca de ícones que podem ser usados diretamente no código, utilizando apenas o seu nome
-
-```
-npm install react-native-vector-icons
-```
-**_Instalando recurso para o typescript_**
-- Ele fornece um recurso para que o typescript reconheça os ícones do react.
-
-```
-npm i --save-dev @types/react-native-vector-icons
-```
----
-### 3 - Uso da font
-
-- Primeiro comando:
- 
-	```
-	npx expo install expo-font
-	```
- 
- - Segundo comando:
- 
-	```
-	npx expo install expo-splash-screen  
-	```
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
 
 ---
 
-### 4- Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
+<br><br><br>
+
+## ✅ 4° **Emulando via Celular com o Expo Go**
+
+1. Em seu celular baixe o aplicativo da Expo chamado "Expo Go", compatível com Android e IOS.
  
 Através dele é possível utilizar seu próprio celular para emular o projeto, sem a necessidade de sobrecarregar seu pc com o emulador Android por exemplo.
 
-- Com ele você pode ler o QR code que irá aparecer quando executar a aplicação para conectar com seu celular, porém é necessário que esteja na mesma rede de internet que seu computador. Ou pode conectar com o cabo USB:
+⚠️ OBS.: É necessário que o celular esteja na mesma rede de internet que seu computador.
 
-### 5- Conexão via USB
+---
+
+<br>
+
+2. Conexão via USB 
 Com o celular conectado ao computador, você irá verificar se seu celular está sendo reconhecido através do comando:
 
 ```
 adb devices 
 ```
-- Deve aparecer assim:
+
+- ✅ Deve aparecer assim:
   
 ![image](https://github.com/user-attachments/assets/29fe6fb7-8746-4fbc-98c8-80b084266310)
 
-Caso apareça `OFFILINE` no lugar do Devices, você irá precisar habilitá-lo:
-- execute o comando:
+❌ Caso apareça `OFFILINE` no lugar do Devices, você irá precisar habilitá-lo:
+- Execute o comando:
 ```
 adb kill-server
 ```
+
+
 - Em seguida
 ```
  adb start-server
 ```
 
+
 - Excute este comando novamente.
 ```
 adb devices
 ```
+
 `Dessa vez irá aparecer Devices no lugar do offiline`
+
+
 <br>
 
-- Ainda no terminal digite:
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
 
-```
-npm uninstall -g ngrok
-```
-- Em seguida:
-```
-npm install -g ngrok
-```
-## 6 - Executando o projeto
+---
+
+<br><br><br>
+
+## ✅ 5° **Executando o Projeto**
 Para iniciar o projeto escreva o seguinte comando:
 ```
 npx expo start 
-```
-
-Caso deseja usa a conexão via USB:
-
-```
-npx expo start --tunnel
 ```
 
 Para limpar o cache:
@@ -256,39 +280,15 @@ npx expo start -c
 
 ![image](https://github.com/user-attachments/assets/cefda90f-4479-4883-b1ec-03af9e5c1694)
 
-- QR code e o link:
-  
-![image](https://github.com/user-attachments/assets/ae7aa87f-67d0-49fd-b590-7b25aa22fcdb)
+<br>
 
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
 
-<br><br>
 ---
 
-## Como Resolver o Problema de "ADB Devices" Não Reconhecido
+<br><br><br>
 
-Se o seu computador não reconhecer o comando `adb devices`, siga os passos abaixo:
 
-1. **Baixar Ferramenta ADB**  
-   - Você precisará baixar a ferramenta ADB da plataforma oficial do Android.
-   - Acesse o link para a página de download: [SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools?hl=pt-br).
-   - Na seção **Downloads**, faça o download do SDK Platform-Tools de acordo com o seu sistema operacional (Windows, macOS ou Linux).
-
-2. **Descompactar e Configurar Caminho**  
-   - Após o download, descompacte a pasta baixada.
-   - Abra a pasta **Platform-tools** e copie o caminho dela.
-
-3. **Configurar Variáveis de Ambiente no Windows**  
-   - No Windows, procure por "Editar as Variáveis de Ambiente do Sistema" no menu de pesquisa.
-   - Clique em **Variáveis de Ambiente**.
-   - Na seção **Variáveis do Sistema**, procure por `Path`, selecione-o e clique em **Editar**.
-   - Clique em **Novo** e cole o caminho da pasta **Platform-tools** que você copiou anteriormente.
-
-4. **Testar Configuração**  
-   - Feche e reabra o prompt de comando (CMD).
-   - Execute o comando `adb devices` para verificar se o ADB foi reconhecido corretamente.
-
---- 
-<br><br>
 
 ## 🛠 Tecnologias
 
@@ -298,10 +298,15 @@ As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 -  **[ReactNative]( https://reactnative.dev/ )**
 -  **[ Expo ]( https://docs.expo.dev/)**
 -  **[ Html ]( https://developer.mozilla.org/pt-BR/docs/Web/HTML )**
--  **[ MySQL ]( https://www.mysql.com )**
+
+---
 
 ## 📑 Apêndices
 
--  ` Confira o Projeto antes de mudar API aqui: `  ➡️➡️ [ Projeto Web via PHP ]( https://github.com/LarissaSL/SistemaCKC )
--  ` Confira o Projeto Mobile aqui: ` ➡️➡️ [ Projeto Mobile ]( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
+-  ` Confira o Projeto antes da mudança em PHP: `  ➡️➡️ [ Projeto Web via PHP ]( https://github.com/LarissaSL/SistemaCKC )
+-  ` Confira o Projeto da API aqui: ` ➡️➡️ [ Projeto Mobile ]( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
 -  ` Confira o Novo Projeto Web aqui: ` ➡️➡️ [ Projeto Web via JS ]( https://github.com/LarissaSL/API_Gerenciador-De-Corridas-de-Kart )
+
+<br>
+
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
