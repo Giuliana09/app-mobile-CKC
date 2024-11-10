@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { notificacaoGeral } from '../service/notificacaoGeral';
@@ -26,14 +26,14 @@ function DetalhesCorridaCheckIn() {
   const [corrida, setCorrida] = useState<any>(null);
   const [pilotos, setPilotos] = useState<any>(null);
   const [checkIns, setCheckIns] = useState<{ [key: number]: boolean }>({});
-  const [loading, setLoading] = useState<boolean>(true);
+  const [estaCarregandoOsDados, setEstaCarregandoOsDados] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigation = useNavigation();
 
   useEffect(() => {
     const dadoCorrida = async () => {
-      setLoading(true);
+      setEstaCarregandoOsDados(true);
       const resultado = await consultarCorrida(idCorrida);
       const notificacao = notificacaoGeral(resultado.status, resultado.title, resultado.details);
 
@@ -55,7 +55,7 @@ function DetalhesCorridaCheckIn() {
 
   useEffect(() => {
     const dadosPilotos = async () => {
-      
+
       const resultado = await listarPilotosPorCorrida(idCorrida);
 
       if (resultado.status === 200 && resultado.qtdPilotos > 0) {
@@ -65,7 +65,7 @@ function DetalhesCorridaCheckIn() {
       } else {
         setError(resultado.details);
       }
-      setLoading(false);
+      setEstaCarregandoOsDados(false);
     };
 
     dadosPilotos();
@@ -118,14 +118,14 @@ function DetalhesCorridaCheckIn() {
             </Text>
           )}
         </Box>
-        {pilotos && pilotos.length > 0 && (
-          <Text style={styles.titlePilotos}>
-            Pilotos com Check-in [{qtdPilotosComCheckIn}/{pilotos.length}]
-          </Text>
-        )}
+
+        <Text style={styles.titlePilotos}>
+          Pilotos com Check-in [{qtdPilotosComCheckIn || 0}/{(pilotos && pilotos.length) || 0}]
+        </Text>
+
       </VStack>
-      {loading ? (
-        <Spinner size="xl" color={TEMAS.colors.blue[500]} style={styles.loading} />
+      {estaCarregandoOsDados ? (
+        <Spinner size="xl" color={TEMAS.colors.blue[500]} style={styles.estaCarregandoOsDados} />
       ) : (
         <FlatList
           data={pilotos}
@@ -142,7 +142,7 @@ function DetalhesCorridaCheckIn() {
                 <Box style={styles.card_info_piloto}>
                   <Text style={styles.pilotoNome}>{`${item.usuario.nome} ${item.usuario.sobrenome}`}</Text>
                   {checkIns[item.inscricao_id] && (
-                    <Ionicons name="checkmark-circle" size={24} color="blue"/>
+                    <Ionicons name="checkmark-circle" size={24} color="blue" />
                   )}
                 </Box>
               </Box>
@@ -151,7 +151,7 @@ function DetalhesCorridaCheckIn() {
           ListEmptyComponent={<Text style={styles.errorMessage1}>{error || 'Nenhum piloto encontrado.'}</Text>}
           ListFooterComponent={pilotos && pilotos.length > 0 && qtdPilotosComCheckIn === pilotos.length && (
             <Button
-              style={styles.botaoConfirmar}
+              style={styles.botao}
               onPress={() => navegarParaTelaComParametros(navigation, 'CheckInStack', 'ConfirmacaoCheckIN', { idCorrida })}
             >
               Confirmar alterações
@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
     height: 75,
     marginBottom: 7,
     marginTop: 7,
-    backgroundColor: '#f0f0f0',
     borderRadius: 15,
     flexDirection: 'column',
     width: 340,
@@ -191,6 +190,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingTop: 9,
     fontFamily: TEMAS.fonts['petch_Bold'],
+    backgroundColor: TEMAS.colors.white,
   },
   title: {
     fontSize: TEMAS.fontSizes.lg,
@@ -208,13 +208,13 @@ const styles = StyleSheet.create({
     fontFamily: TEMAS.fonts['petch_semiBold'],
   },
   card_info_piloto: {
-    flexDirection: 'row',   
-    width: '90%',  
+    flexDirection: 'row',
+    width: '90%',
   },
   pilotoNome: {
     fontSize: TEMAS.fontSizes.sm,
     fontFamily: TEMAS.fonts['body'],
-    flex: 1, 
+    flex: 1,
   },
   logo: {
     width: 110,
@@ -229,14 +229,15 @@ const styles = StyleSheet.create({
     fontFamily: TEMAS.fonts['petch_Bold'],
     color: TEMAS.colors.red[500],
   },
-  botaoConfirmar: {
+  botao: {
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
-    width: '60%',
-    alignSelf: 'center',
     borderRadius: 10,
+    width: 320,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
-  loading: {
+  estaCarregandoOsDados: {
     marginTop: 20,
   },
 });

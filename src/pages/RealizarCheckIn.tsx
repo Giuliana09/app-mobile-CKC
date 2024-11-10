@@ -5,7 +5,7 @@ import { calcularLastro, listarDadosParaCheckIn, processarCheckIn, verificarSeJa
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { Box, Button, useToast, ScrollView } from 'native-base';
 import { TEMAS } from "../style/temas";
-import { StyleSheet,  TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FeatherIcons from "react-native-vector-icons/Feather";
 import { Image } from "native-base";
@@ -30,15 +30,17 @@ const RealizarCheckIn = () => {
 
     const navigation = useNavigation();
     const [dadosCheckIn, setDadosCheckIn] = useState<any>(null);
-    const [pesoInicial, setPesoInicial] = useState<string>('0');
+    const [pesoInicial, setPesoInicial] = useState<string>('');
     const [lastro, setLastro] = useState<string>('');
     const [usuarioNome, setUsuarioNome] = useState<string>('');
     const [usuarioSobrenome, setUsuarioSobrenome] = useState<string>('');
     const [statusPagamento, setStatusPagamento] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
-    const [placeholderLastro, setPlaceholderLastro] = useState<string>('Insira a quantidade total de Lastro');
+    const [estaCarregandoOsDados, setEstaCarregandoOsDados] = useState<boolean>(true);
+    const [placeholderLastro, setPlaceholderLastro] = useState<string>('Carregando...');
     const toast = useToast();
     const inputRef = useRef<TextInput>(null);
+
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -88,6 +90,7 @@ const RealizarCheckIn = () => {
     useEffect(() => {
         const fetchDadosCheckIn = async () => {
             const checkInResponse = await verificarSeJaFezCheckIn(idInscricao);
+            setEstaCarregandoOsDados(true);
 
             if (checkInResponse.status === 200) {
                 const checkInData = checkInResponse.dados;
@@ -114,6 +117,8 @@ const RealizarCheckIn = () => {
                     setLastro('');
                 }
             }
+            setEstaCarregandoOsDados(false);
+            setPlaceholderLastro("Insira a quantidade total de Lastro");
         };
 
         fetchDadosCheckIn();
@@ -154,7 +159,7 @@ const RealizarCheckIn = () => {
             <Box style={styles.infoCheckInContainer}>
                 <Box style={styles.caixa}>
                     <Text style={styles.tituloLabel}>Nome</Text>
-                    <Text style={styles.conteudoLabel}>{usuarioNome} {usuarioSobrenome}</Text>
+                    {estaCarregandoOsDados ? "Carregando..." : `${usuarioNome} ${usuarioSobrenome}`}
                 </Box>
 
                 {error && <Text style={styles.errorMessage1}>{error}</Text>}
@@ -166,7 +171,7 @@ const RealizarCheckIn = () => {
                             style={styles.inputComIcone}
                             value={pesoInicial}
                             onChangeText={setPesoInicial}
-                            placeholder="Digite o peso inicial"
+                            placeholder={estaCarregandoOsDados ? 'Carregando...' : 'Digite o peso inicial'}
                             keyboardType="numeric"
                         />
                         <TouchableOpacity onPress={handleEdit} style={styles.iconeButton}>
@@ -198,11 +203,13 @@ const RealizarCheckIn = () => {
 
                 <Box style={styles.status}>
                     <Text style={styles.tituloLabel}>Status de pagamento</Text>
-                    <Text style={styles.statusPago}>{statusPagamento}</Text>
+                    {!estaCarregandoOsDados && (
+                        <Text style={styles.statusPago}>{statusPagamento}</Text>
+                    )}
                 </Box>
 
                 <Button onPress={() => setIsModalVisible(true)} style={styles.botao}>
-                    {dadosCheckIn ? "Realizar Check-in" : "Criar Check-in"}
+                    Confirmar informações
                 </Button>
 
                 <ConfirmacaoCheckInModal
@@ -237,7 +244,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: TEMAS.colors.blue[500],
         borderRadius: 10,
-        width: '60%',
+        width: 320,
         alignSelf: 'center',
         marginBottom: 20,
     },
@@ -273,7 +280,7 @@ const styles = StyleSheet.create({
         height: 75,
         marginBottom: 7,
         marginTop: 7,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: TEMAS.colors.white,
         borderRadius: 15,
         flexDirection: 'column',
         width: 340,
