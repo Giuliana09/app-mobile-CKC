@@ -1,5 +1,5 @@
 import React from 'react';
-import {VStack, Image, Text, Box, FormControl, Input, Button} from 'native-base'; //como se fosse a View do react-native
+import { Image, Text, Box, FormControl, Input, Button, ScrollView} from 'native-base'; //como se fosse a View do react-native
 import { TEMAS } from '../style/temas';
 import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
@@ -14,7 +14,7 @@ export default function EsqueciSenha({ navigation }: any) {
 
   return (
         // flex={1} => quer dizer que a VStack vai ocupar a tela inteira
-        <VStack flex={1} bgColor={TEMAS.colors.gray[300]}>  
+        <ScrollView flex={1} bgColor={TEMAS.colors.gray[300]}>  
              {/* cabeçalho */}
              <Cabecalho>
                 <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode='contain' />
@@ -61,7 +61,7 @@ export default function EsqueciSenha({ navigation }: any) {
           <Button style={[styles.botaoEntrar]}
            onPress={() => navigation.navigate('EsqueciSenhaCodigo')}> Entrar</Button>
           <Text style={styles.msgAviso}>Você poderá solicitar o código novamente em 2 minutos, após a primeira tentativa.</Text>
-        </VStack>
+        </ScrollView>
   );
 }
 
