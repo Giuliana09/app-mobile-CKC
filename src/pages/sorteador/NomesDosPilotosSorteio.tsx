@@ -63,39 +63,39 @@ export default function NomesDosPilotosSorteio() {
   };
 
   return (
-    <FlatList
-      ListHeaderComponent={
-        <VStack>
-          <Cabecalho key="cabecalho">
-            <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
-          </Cabecalho>
-          <Text style={styles.titulo}>Nome dos Pilotos</Text>
-          <Text style={styles.texto}>Lista de nomes dos pilotos que irão participar da corrida:</Text>
-          {loading && <Text style={styles.texto}>Carregando...</Text>}
-        </VStack>
-      }
-      data={dadosPilotos}
-      keyExtractor={(item) => `${item.nome}-${Math.random().toString(36).substr(2, 9)}`}
-      renderItem={({ item, index }) => (
-        <Box style={styles.containerPilotos} key={`${item.nome}-${item.sobrenome}-${Math.random()}`}>
-          <Text style={styles.card_titulo}>Piloto {index + 1}</Text>
-          <Text>{item.nome} {item.sobrenome}</Text>
-        </Box>
-      )}
-      ListEmptyComponent={
-        !loading && dadosPilotos.length === 0 ? (
-          <Text style={styles.subtitulo}>Nenhum piloto foi encontrado.</Text>
-        ) : null
-      }
-      ListFooterComponent={
-        <VStack>
+    <VStack style={styles.view}>
+      <FlatList
+        ListHeaderComponent={
+          <VStack>
+            <Cabecalho key="cabecalho">
+              <Image source={logoCKC1} alt="Logo CKC" width={40} resizeMode="contain" style={styles.logo} />
+            </Cabecalho>
+            <Text style={styles.titulo}>Nome dos Pilotos</Text>
+            <Text style={styles.texto}>Lista de nomes dos pilotos que irão participar da corrida:</Text>
+            {loading && <Text style={styles.texto}>Carregando...</Text>}
+          </VStack>
+        }
+        data={dadosPilotos}
+        keyExtractor={(item) => `${item.nome}-${Math.random().toString(36).substr(2, 9)}`}
+        renderItem={({ item, index }) => (
+          <Box style={styles.containerPilotos} key={`${item.nome}-${item.sobrenome}-${Math.random()}`}>
+            <Text style={styles.card_titulo}>Piloto {index + 1}</Text>
+            <Text>{item.nome} {item.sobrenome}</Text>
+          </Box>
+        )}
+        ListEmptyComponent={
+          !loading && dadosPilotos.length === 0 ? (
+            <Text style={styles.subtitulo}>Nenhum piloto foi encontrado.</Text>
+          ) : null
+        }
+        contentContainerStyle={styles.contentContainerStyle}
+      />
+      <VStack>
           <Button style={styles.botao} onPress={handleConfirmar} colorScheme="blue" mt={4}>
             Sortear
           </Button>
-        </VStack>
-      }
-      contentContainerStyle={styles.contentContainerStyle}
-    />
+      </VStack>
+    </VStack>
   );
 }
 

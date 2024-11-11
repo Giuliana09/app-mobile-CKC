@@ -86,7 +86,7 @@ export default function ListaDeKartsSelecionar() {
             <Text style={styles.titulo}>Lista de Karts</Text>
             <Text style={styles.subtitulo}>Pilotos com Check-in feito [{qtdDePessoasComCheckIn}]</Text>
             <Text style={styles.texto}>Selecione os números que deseja <Text style={{fontFamily:TEMAS.fonts['petch_Bold']}}>retirar</Text> do sorteio:</Text>
-          </VStack>
+      </VStack>
       <FlatList
         data={Array.from({ length: maiorNumeroDeKart }, (_, i) => i + 1)}
         keyExtractor={(item) => item.toString()}
@@ -96,14 +96,12 @@ export default function ListaDeKartsSelecionar() {
         contentContainerStyle={styles.contentContainerStyle}
         windowSize={10}
         renderItem={renderKartButton}
-        ListFooterComponent={
-          <VStack>
-            <Button style={styles.botao} onPress={handleContinuar}>
-              Confirmar seleção
-            </Button>
-          </VStack>
-        }
       />
+        <VStack>
+          <Button style={styles.botao} onPress={handleContinuar}>
+            Confirmar seleção
+          </Button>
+        </VStack>
     </VStack>
   );
 }
@@ -159,7 +157,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
-    width: '100%',
+    width: '50%',
     alignSelf: 'center',
     marginBottom: 20,
   },
