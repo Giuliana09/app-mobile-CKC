@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   card_data: {
     fontSize: TEMAS.fontSizes.sm,
-    fontFamily: TEMAS.fonts['petch_regular'],
+    fontFamily: TEMAS.fonts['body'],
   },
   card_sorteio: {
     marginTop: 20,

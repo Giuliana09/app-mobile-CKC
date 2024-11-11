@@ -100,7 +100,7 @@ export const style = StyleSheet.create({
   },
 
   tituloPag: {
-    fontFamily: 'ChakraPetch-Bold',
+    fontFamily: TEMAS.fonts['petch_Bold'],
     color: TEMAS.colors.black[300],
     textAlign: 'center',
     marginTop: 60,
