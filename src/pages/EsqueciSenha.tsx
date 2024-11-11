@@ -1,23 +1,11 @@
 import React from 'react';
 import {VStack, Image, Text, Box, FormControl, Input, Button} from 'native-base'; //como se fosse a View do react-native
 import { TEMAS } from '../style/temas';
-import curva from '../assets/curva.png'
-// import { useNavigation } from '@react-navigation/native';
 import { Cabecalho } from '../components/Cabecalho';
 import logoCKC1 from '../assets/logoCKC1.png';
-import { View, TextInput, Alert } from 'react-native';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { listarDadosParaCheckIn, processarCheckIn, verificarSeJaFezCheckIn } from '../service/corrida/checkInService';
-import { formatarDataCorrida, formatarHorarioCorrida } from '../service/corrida/corridaService';
-import { notificacaoGeral } from '../service/notificacaoGeral';
-import { useToast } from 'native-base';
-import CategoriasDeCorridas from '../components/CategoriasDeCorridas';
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import Ionicons from "react-native-vector-icons/Ionicons";
-import largada from "../assets/largada.png";
-import { Select, CheckIcon } from "native-base";
-import { Botao } from '../components/Botao';
-import { Pressable } from 'react-native';
+import { StyleSheet} from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -37,15 +25,16 @@ export default function EsqueciSenha({ navigation }: any) {
 
           <Box flex={5} backgroundColor={TEMAS.colors.gray[300]} alignItems="center"  p={5} >  
           
-            <FormControl mt={3}>
-              <FormControl.Label>CPF:</FormControl.Label>
+            <FormControl mt={2}>
+              <FormControl.Label _text={{ fontWeight: 'bold' }}>CPF:</FormControl.Label>
               <Input 
                 placeholder='000 000 000 00'
                 size='lg'
                 w="100%"
-                borderRadius='lg'
-                bgColor='gray.100'
-                //sombra  
+                p={"4"}
+                mt={"1.5"}
+                borderRadius="xl"
+                bgColor="gray.100"
                 shadow={3}
                 keyboardType='numeric'  // Para exibir o teclado numérico
               />
@@ -53,36 +42,30 @@ export default function EsqueciSenha({ navigation }: any) {
 
               {/* compo de Email */}
             <FormControl mt={3}>
-              <FormControl.Label>Email:</FormControl.Label>
+              <FormControl.Label _text={{ fontWeight: 'bold', marginTop:5 }}>Email:</FormControl.Label>
               <Input 
                 placeholder='Insira seu email aqui'
                 /* tamanho do texto dentro do input */
                 size='lg'
                 w="100%"
-                borderRadius='lg'
-                bgColor='gray.100'
+                p={"4"}
+                mt={"1.5"}
+                borderRadius="xl"
+                bgColor="gray.100"
                 //sombra  
                 shadow={3}
               />
             </FormControl>
-
           </Box>
           {/* bt entar */}
-          <Button 
-          mb={5}
-          bg='black.300'
-          mt={10}
-          justifyContent= 'center'
-          onPress={() => navigation.navigate('EsqueciSenhaCodigo')}>
-            Entrar
-          </Button>
-
+          <Button style={[styles.botaoEntrar]}
+           onPress={() => navigation.navigate('EsqueciSenhaCodigo')}> Entrar</Button>
+          <Text style={styles.msgAviso}>Você poderá solicitar o código novamente em 2 minutos, após a primeira tentativa.</Text>
         </VStack>
   );
 }
-const styles = StyleSheet.create({
 
-  
+const styles = StyleSheet.create({ 
   title: {
     fontFamily: TEMAS.fonts['petch_Bold'],
     color:'white',
@@ -90,58 +73,32 @@ const styles = StyleSheet.create({
     textAlign:'center',
     paddingBottom:40,
   },
-
+  
   titlePreencha: {
     fontSize: 15,
     fontFamily: TEMAS.fonts['petch_Bold'],
-    paddingTop:5,
+    paddingTop:20,
     textAlign:'center',
+    marginLeft: 5,
+    marginRight: 5,
   },
-  errorMessage: {
-    color: 'red',
-    marginTop: 10,
-  },
-  
-  corrida_inf:{
-    marginLeft:5,
-    flexDirection:'column',
-    width:240,
-  },
-
-  card_icone: {
-    color: TEMAS.colors.black[500],
-    alignSelf: "flex-start",
-    padding:1,
-    fontSize:20,
-  },
-
-  logo: {
-    width: 110,
-    resizeMode: "contain",
-  },
-
-  view: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  card_img: {
-    width: 100,
-    height: 100,
+  botaoEntrar: {
+    width: '90%',       
+    height:50,           
+    marginBottom:80,  
     borderRadius: 10,
-    marginRight:5,
+    justifyContent: 'center',        
+    backgroundColor: TEMAS.colors.black[300], 
+    alignSelf: 'center',              
   },
-
-  card_botao:{
-    fontWeight: 'bold',
-    marginTop: 10,
-    backgroundColor: TEMAS.colors.blue[500],
-    borderRadius: 10,
-    marginBottom: 20,
-    position: 'absolute', 
-    bottom: -125, 
-  }
-
-
-
+  msgAviso:{
+    height:50,
+    width: '90%', 
+    marginLeft: 20,
+    marginBottom:10,  
+    flexDirection:'row',
+    textAlign:'center',
+    fontSize: TEMAS.fontSizes.sm
+  },
 });
 

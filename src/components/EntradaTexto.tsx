@@ -28,13 +28,22 @@ export function EntradaTexto ({
 
     return (
       <FormControl mb={3}>
-        {label && <FormControl.Label>{label}</FormControl.Label>}
+        {label &&(
+      <FormControl.Label
+        _text={{
+          fontWeight: 'bold', // Define o peso da fonte
+        }}
+      >
+        {label}
+      </FormControl.Label>
+    )}
         <HStack alignItems="center">
           <Input
             placeholder={placeholder}
             size="lg"
             w="100%"
             p={"4"}
+            mt={"1"}
             fontFamily='body'
             borderRadius="xl"
             bgColor="gray.100"

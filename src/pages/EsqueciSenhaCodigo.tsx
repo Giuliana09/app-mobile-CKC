@@ -20,16 +20,17 @@ export default function EsqueciSenhaCodigo() {
           <Text style={styles.title}>Esqueci minha senha</Text>
           <Text style={styles.titlePreencha}>Insira o código que enviamos para seu e-mail:</Text>
           
-          <Box backgroundColor={TEMAS.colors.gray[300]} alignItems="center">  
-            <FormControl mt={3}>
-              <FormControl.Label>Códico:</FormControl.Label>
+          <Box backgroundColor={TEMAS.colors.gray[300]} alignItems="center" p={5} >  
+            <FormControl mt={6}>
+              <FormControl.Label _text={{ fontWeight: 'bold'}}>Códico:</FormControl.Label>
               <Input 
                 placeholder='_ _ _ _ _'
-                size='lg'
+                size='xl'
                 w="100%"
-                borderRadius='lg'
-                bgColor='gray.100'
-                //sombra  
+                p={"4"}
+                mt={"1.5"}
+                borderRadius="xl"
+                bgColor="gray.100"
                 shadow={3}
                 keyboardType='numeric'  // Para exibir o teclado numérico
               />
@@ -38,16 +39,17 @@ export default function EsqueciSenhaCodigo() {
              
           </Box>
           {/* bt entar */}
-          <Button 
+          <Button  
+          style={[styles.botaoEntrar]}
           mb={5}
           bg='black.300'
           mt={10}>
             Entrar
           </Button>
           
-          <Box>
+          <Box style={styles.msgAlerta}>
             <Image source={exclamacaoIcon} alt="Icone de exclamação"/>
-            <Text>
+            <Text style={styles.alertaTexto}>
               Acesse sua conta administrador no sistema web para alterar sua senha.
             </Text>
           </Box>
@@ -69,8 +71,35 @@ const styles = StyleSheet.create({
       titlePreencha: {
         fontSize: 15,
         fontFamily: TEMAS.fonts['petch_Bold'],
-        paddingTop:5,
+        paddingTop:20,
         textAlign:'center',
-      },  
+        marginLeft: 5,
+        marginRight: 5,
+      }, 
+      botaoEntrar: {
+        width: '90%',       
+        height:50,   
+        marginTop:50,        
+        marginBottom:150,  
+        borderRadius: 10,
+        justifyContent: 'center',        
+        backgroundColor: TEMAS.colors.black[300], 
+        alignSelf: 'center',              
+      }, 
+      msgAlerta:{
+        height:50,
+        width: '90%', 
+        marginLeft: 30,
+        marginRight: 20,
+        flexDirection:'row',
+        alignItems:'center',
+        gap:10,
+        
+      },
+      alertaTexto:{
+        marginRight: 50,
+        flexWrap:"wrap",
+        fontWeight:'semibold',
+      },
   });
 
