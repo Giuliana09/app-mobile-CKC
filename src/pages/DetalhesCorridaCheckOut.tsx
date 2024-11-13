@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { consultarCorrida } from '../service/corrida/corridaService';
@@ -56,23 +56,23 @@ function DetalhesCorridaCheckOut() {
     dadoCorrida();
   }, [idCorrida]);
 
-  useEffect(() => {
-    const dadosPilotos = async () => {
-      const resultado = await listarDadosDosPilotosParaCheckOut(idCorrida);
-
-      if (resultado.status === 200) {
-        setPilotos(resultado.dados.content);
-        setError(null);
-      } else {
-        setError(resultado.details);
-      }
-      setEstaCarregandoOsDados(false);
-    };
-
-    
-    dadosPilotos();
-
-  }, [idCorrida, navigation]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const dadosPilotos = async () => {
+        const resultado = await listarDadosDosPilotosParaCheckOut(idCorrida);
+  
+        if (resultado.status === 200) {
+          setPilotos(resultado.dados.content);
+          setError(null);
+        } else {
+          setError(resultado.details);
+        }
+        setEstaCarregandoOsDados(false);
+      };
+  
+      dadosPilotos();
+    }, [idCorrida])
+  );
 
   // Calcula a quantidade de check-outs realizados
   const qtdPilotosComCheckOut = pilotos.filter(item => item.check_out_feito).length;
