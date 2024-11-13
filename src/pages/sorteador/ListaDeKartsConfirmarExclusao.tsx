@@ -49,20 +49,20 @@ export default function ListaDeKartsConfirmarExclusao() {
         </VStack>
       }
       data={numerosForaDoSorteio.sort((a, b) => a - b)}
-      keyExtractor={(item) => item.toString()}
+      keyExtractor={(item) => `${item}-${Math.random().toString(36).substr(2, 9)}`}
       numColumns={3}
       initialNumToRender={8}
       maxToRenderPerBatch={4}
       windowSize={10}
       renderItem={({ item }) => (
         <Box style={styles.numerosDeKartContainer}>
-          <Box style={styles.numeroKartBotao}>
+          <Box style={styles.numeroKartBotao} id="">
             <Text style={styles.kartText}>{`${item}`}</Text>
           </Box>
         </Box>
       )}   
       ListEmptyComponent={
-        <Text style={styles.subtitulo}>Nenhum número foi retirado do sorteio.</Text>
+        <Text style={styles.subtitulo2}>Nenhum número foi retirado do sorteio.</Text>
       }
       ListFooterComponent={
         <VStack>
@@ -97,8 +97,13 @@ const styles = StyleSheet.create({
   subtitulo: {
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
-    marginBottom: 10,
     paddingHorizontal: 20,
+    textAlign: 'center',
+  },
+  subtitulo2: {
+    fontSize: TEMAS.fontSizes.lg,
+    fontFamily: TEMAS.fonts['petch_Bold'],
+    marginVertical: 40,
     textAlign: 'center',
   },
   texto: {
