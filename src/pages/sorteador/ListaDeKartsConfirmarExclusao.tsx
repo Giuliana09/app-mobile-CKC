@@ -56,8 +56,8 @@ export default function ListaDeKartsConfirmarExclusao() {
       windowSize={10}
       renderItem={({ item }) => (
         <Box style={styles.numerosDeKartContainer}>
-          <Box style={styles.numeroKartBotao} id="">
-            <Text style={styles.kartText}>{`${item}`}</Text>
+          <Box style={styles.numeroKartBotao}>
+            <Text id={`${item}-${Math.random().toString(36).substr(2, 9)}`} style={styles.kartText}>{`${item}`}</Text>
           </Box>
         </Box>
       )}   
