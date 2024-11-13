@@ -53,6 +53,11 @@ Android Studio é necessário para emular o ambiente Android, realizar testes lo
 - [Emulando via Celular com Expo Go](#-4-emulando-via-celular-com-o-expo-go)
 - [Executando o Projeto](#-5-executando-o-projeto)
 
+### 4. Fluxos das funcionalidades
+- [Fluxo de Check-in](#-1-fluxo-de-check-in)
+- [Fluxo de Sorteio](#-2-fluxo-de-sorteio)
+- [Fluxo de Check-out](#-3-fluxo-de-check-out)
+
 ### Extra 
 - [Tecnologias](#-tecnologias)
 - [Apêndices](#-ap%C3%AAndices)
@@ -288,14 +293,51 @@ npx expo start -c
 
 <br><br><br>
 
+# 📱 4 **Fluxo das Funcionalidades**
+## ✅ 1° **Fluxo de Check-in**
+📌Objetivo: Oferece a lista de pilotos com pagamentos confirmados, permitindo a edição do peso inicial e lastro, medidos no dia da corrida.
+
+https://github.com/user-attachments/assets/a58c55f8-fd88-4655-b2eb-9241720a573a
+
+<br>
+
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
+
+<br><br>
+
+## ✅ 2° **Fluxo de Sorteio**
+📌Objetivo: Oferece a lista de pilotos com check-in, permitindo as configurações para inicio do sorteio de karts, vinculando cada número ao seu respectivo piloto.
+
+https://github.com/user-attachments/assets/f15a80ef-b727-42cc-9ae0-6bdf901332e3
+
+<br>
+
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
+
+<br><br>
+
+## ✅ 3° **Fluxo de Check-out**
+📌Objetivo: Oferece a lista de pilotos com check-in, permitindo a edição do peso final e se o piloto está classificado.
+
+
+https://github.com/user-attachments/assets/1e7125a2-5174-4701-b509-fd0d99d0598b
+
+<br>
+
+**🔝 [Voltar ao Índice](#-%C3%ADndice)**
+
+---
+
+<br><br><br>
+
 
 
 ## 🛠 Tecnologias
 
 As seguintes tecnologias foram utilizadas no desenvolvimento desse projeto:
 
--  **[JavaScript]( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript )**
--  **[ReactNative]( https://reactnative.dev/ )**
+-  **[ JavaScript ]( https://developer.mozilla.org/pt-BR/docs/Web/JavaScript )**
+-  **[ ReactNative ]( https://reactnative.dev/ )**
 -  **[ Expo ]( https://docs.expo.dev/)**
 -  **[ Html ]( https://developer.mozilla.org/pt-BR/docs/Web/HTML )**
 
