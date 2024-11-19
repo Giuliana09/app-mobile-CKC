@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, Box, Text, FlatList, Button, useToast, VStack } from "native-base";
+import { Image, Box, Text, FlatList, Button, useToast, VStack, Spinner } from "native-base";
 import { consultarCorridas, formatarDataCorrida } from '../service/corrida/corridaService';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { Cabecalho } from "../components/Cabecalho";
@@ -74,7 +74,7 @@ export default function Sortear() {
       <Text style={styles.titulo_proximas}>Corridas com Check-in concluído:</Text>
       
       {loading ? (
-        <Text>Carregando corridas...</Text>
+        <Spinner style={styles.carregando} size="xl" color={TEMAS.colors.blue[500]} />
       ) : (
         <FlatList
         data={corridas}
@@ -115,6 +115,15 @@ const styles = StyleSheet.create({
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
   },
+
+  carregando: {
+    color: TEMAS.colors.blue[500],
+    flexDirection: "column", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    height: 200, 
+  },
+
   card_corridas: {
     flex: 1,
     backgroundColor: TEMAS.colors.gray[300],
@@ -130,32 +139,39 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+
   card_img: {
     width: 100,
     height: 100,
     borderRadius: 10,
   },
+
   card_infos: {
     flex: 1,
     marginLeft: 10,
   },
+
   card_icone: {
     color: TEMAS.colors.black[500],
     marginRight: 5,
   },
+
   card_titulo: {
     fontSize: TEMAS.fontSizes.md,
     fontFamily: TEMAS.fonts['petch_semiBold'],
   },
+
   card_data: {
     fontSize: TEMAS.fontSizes.sm,
     fontFamily: TEMAS.fonts['body'],
   },
+
   card_botao: {
     marginTop: 10,
     backgroundColor: TEMAS.colors.blue[500],
     borderRadius: 10,
   },
+
   aviso: {
     flexDirection: "column",
     alignItems: "center",
@@ -165,9 +181,11 @@ const styles = StyleSheet.create({
     fontFamily: TEMAS.fonts['petch_Bold'],
     color: TEMAS.colors.blue[500],
   },
+
   aviso_icone: {
     flexDirection: "column",
     fontSize: 50,
     color: TEMAS.colors.gray[300],
   },
+  
 });

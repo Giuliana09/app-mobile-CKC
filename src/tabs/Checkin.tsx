@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack } from "native-base";
+import { Image, Box, Text, Select, CheckIcon, FlatList, Button, useToast, VStack, Spinner } from "native-base";
 import { consultarCorridas, formatarDataCorrida, consultarKartodromos } from '../service/corrida/corridaService';
 import { notificacaoGeral } from '../service/notificacaoGeral';
 import { Cabecalho } from "../components/Cabecalho";
@@ -168,7 +168,7 @@ export default function Checkin() {
       <Text style={styles.titulo_proximas}>Próximas Corridas:</Text>
 
       {loading ? (
-        <Text>Carregando corridas...</Text>
+        <Spinner style={styles.carregando} size="xl" color={TEMAS.colors.blue[500]} />
       ) : (
       <FlatList
         data={corridas}
@@ -225,6 +225,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     fontSize: TEMAS.fontSizes.lg,
     fontFamily: TEMAS.fonts['petch_Bold'],
+  },
+
+  carregando: {
+    color: TEMAS.colors.blue[500],
+    flexDirection: "column", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    height: 200, 
   },
 
   card_corridas: {
