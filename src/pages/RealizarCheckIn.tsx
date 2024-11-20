@@ -118,7 +118,7 @@ const RealizarCheckIn = () => {
                 }
             }
             setEstaCarregandoOsDados(false);
-            setPlaceholderLastro("Insira a quantidade total de Lastro");
+            setPlaceholderLastro("Use a calculadora para calcular o lastro");
         };
 
         fetchDadosCheckIn();
@@ -196,7 +196,7 @@ const RealizarCheckIn = () => {
                             style={styles.inputComIcone}
                         />
                         <TouchableOpacity onPress={handleCalcularLastro} style={styles.iconeButton}>
-                            <Ionicons name="calculator" style={styles.inputComIcone} size={24} color={TEMAS.colors.black[500]} />
+                            <Ionicons name="calculator" style={styles.inputComIcone} size={24} color={TEMAS.colors.orange[300]} />
                         </TouchableOpacity>
                     </View>
                 </Box>
@@ -230,15 +230,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontFamily: TEMAS.fonts['petch_Bold'],
         top: -50,
+
     },
     view: {
         flex: 1,
         backgroundColor: TEMAS.colors.gray[300],
     },
     infoCheckInContainer: {
+        top: -50,
         flex: 1,
         alignItems: 'center',
-        top: -40,
     },
     botao: {
         marginTop: 20,
@@ -246,7 +247,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 320,
         alignSelf: 'center',
-        marginBottom: 20,
     },
 
     title: {
@@ -256,11 +256,10 @@ const styles = StyleSheet.create({
     },
 
     subtitulo: {
-        top: -40,
         fontSize: TEMAS.fontSizes.lg,
         fontFamily: TEMAS.fonts['petch_Bold'],
         alignSelf: 'center',
-        marginBottom: 5,
+        top: -50,
     },
     tituloLabel: {
         fontSize: TEMAS.fontSizes.sm,
